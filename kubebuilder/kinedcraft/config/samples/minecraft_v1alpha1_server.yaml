@@ -1,0 +1,10 @@
+apiVersion: minecraft.github.com/v1alpha1
+kind: Server
+metadata:
+  name: my-sample
+spec:
+  EULA: true
+  serverName: "Yoo Server"
+  serverType: "VANILLA"
+  ops: ["tan"]
+  allowList: ["tan"]
