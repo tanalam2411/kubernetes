@@ -1,0 +1,14 @@
+apiVersion: cnat.programming-kubernetes.info/v1alpha1
+kind: At
+metadata:
+  name: cnrex
+spec:
+  schedule: "2019-11-01T04:30:00Z"
+  containers:
+  - name: shell
+    image: centos:7
+    command:
+    - "bin/bash"
+    - "-c"
+    - echo "Kubernetes native rocks!"
+  
