@@ -18,13 +18,15 @@
     - They also implement a resync mechanism that enforces periodic [`reconciliation`](https://speakerdeck.com/thockin/kubernetes-what-is-reconciliation)`(the action of making one view compatible with another)`.
     - Periodic Reconciliation - is often used to make sure that the cluster state and the assumed state cached in memory do no drift`(carried away)` due to bugs or network issues etc.
     
-  **Work queues** - 
+  **Work queues** - Is used by the event handler to handle queuing of state changes and help to implement retries. [Work Queue](#work-queue)
   
-  
-  
-  
-  
+
 _______________________________________________________________________________________________________________
 Refs
 - [Level Triggering and Reconciliation in Kubernetes - James Bowes](https://www.youtube.com/watch?v=tCht7FvIDdY)
   - [Slide](https://docs.google.com/presentation/d/1o9FMsn7KKLBv05w3Z6qbjFSmsq_M-62X3u52KWz0xEA/edit#slide=id.g3a88bbd291_0_39)
+  
+##### Work Queue
+
+  - https://godoc.org/k8s.io/client-go/util/workqueue
+  - https://github.com/kubernetes/client-go/tree/master/util/workqueue
