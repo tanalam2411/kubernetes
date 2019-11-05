@@ -19,6 +19,16 @@
     - Periodic Reconciliation - is often used to make sure that the cluster state and the assumed state cached in memory do no drift`(carried away)` due to bugs or network issues etc.
     
   **Work queues** - Is used by the event handler to handle queuing of state changes and help to implement retries. [Work Queue](#work-queue)
+    - Resources can be requeued in case of errors when updating the world(object)  or writing the status(steps 2 and 3 in the `The Control Loop` above), 
+      - Or just because  we have to consider the resource after some time for other reasons.
+      [`MORE`](static_files/The_Mechanics_of_Kubernetes_-_Dominik_Tornow_-_Medium.pdf)
+  
+  
+  
+  
+  
+  
+  
   
 
 _______________________________________________________________________________________________________________
