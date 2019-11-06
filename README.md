@@ -27,7 +27,7 @@
 - https://github.com/openshift-talks/k8s-go `https://www.katacoda.com/mhausenblas/scenarios/k8s-go`
 - https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/operator.yaml
 - https://github.com/oracle/mysql-operator/tree/master/mysql-operator
-
+- **https://github.com/banzaicloud/kafka-operator**
 
 _______________________________________________________________________________________________
 
