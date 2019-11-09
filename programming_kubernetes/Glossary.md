@@ -10,3 +10,6 @@
 In an imperative system, the user is responsible for knowing how to drive the system to the desired state, 
 whereas in a declarative system, the system is responsible for knowing how to drive itself to the desired state.
 ```
+
+4) **Optimistic Concurrency** - Controller's don't talk to each other directly, there's a potential for race conditions when state is to be changed, e.g. a write to same object from different controllers. It needs to be handled in he application layer(i.e. in each controller logic).
+5) **[Finalizer](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/#finalizers)** - Finalizers allow controllers to implement asynchronous pre-delete hooks. Custom objects support finalizers just like built-in objects.

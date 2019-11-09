@@ -23,13 +23,51 @@
       - Or just because  we have to consider the resource after some time for other reasons.
       [`MORE`](static_files/The_Mechanics_of_Kubernetes_-_Dominik_Tornow_-_Medium.pdf)
   
+_______________________________________________________________________________________________________________
+[`ref`](https://www.youtube.com/watch?v=zCXiXKMqnuE)
+
+An Ideal CONTROLLER should be:
+1. Only do one thing.
+2. HAve an input source.
+3. Have a place to write status.
+4. Have an output location.
+5. Anticipate its own effects on the rest of the system.
+6. Break things exactly a little bit on failure.
+
+**Controller Categories:**
+1. The `CLASSIC` controllers
+2. Standing Query/"Table Join"
+3. In OR Bijection enforcers
+
+<u>**Classic Controller</u>:**
+  1. `POD` garbage collector **:** Get rid of finished pods.
+  2. `Namespace` Lifecycle controller **:** Deletes objects within namespace when namespace goes in deletion phase.
+  3. Actual `Garbage Collector` **:** It frees your regular controllers from having to tear down the structures that they make, 
+  because you setup the parent pointers on your objects and there's a metadata field and the gc collector is just sits there and 
+  watches and when the parent objects go away it'll delete the child objects and free up your whole hierarchy for you.
+  The earlier replica set or deployment code before gc was added, was actually a 
+  significant amount of work to clean up everything correctly. So it is advised to use it in controllers.
+  4. Certificate Signing Request Controller **:** There are 3 controllers works together **:**
   
+    i. CSR Cleaner controller:  Deletes certificates CSRs after they've expired
+    ii. CSR Signing controller: Signs approved CSRs.
+    iii. CSR Approver: Auto approves from nodes.
+    These controllers are good example of do one thing controller.
+  5. Persistent Volume and Persistent Volume Claim Protection (PV and PVC protection)controller
+  6. TTL-After-Finished controller **:** Time based garbage collector
+  7. Replica-set controller
+  8. Deployment controller
+  9. [HorizontalPodAutoScaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) Controller
+  10. [ClusterAutoScaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler)
   
+<u>**Standing Query/Table Join</u>:**
+  - Watches `pods` and `services` and matches them up and writes `endpoints`
+  - Pod disruption(admission plugin) and resource quota
+  - CSR Approver
+  - CLuster Role aggregation
   
-  
-  
-  
-  
+<u>**IN|BI-Jection Enforcer</u>:**
+
 
 _______________________________________________________________________________________________________________
 Refs
