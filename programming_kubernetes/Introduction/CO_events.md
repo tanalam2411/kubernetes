@@ -139,7 +139,9 @@ ________________________________________________________________________________
 > But what happens to our(local) state if a controller crashes as it does not persist state locally?
 
 - Persistency in the controller is not needed. The event-driven design will replay all(appropriate) events when the controller (re)starts, similar to the concept of [`event-sourcing`](https://martinfowler.com/eaaDev/EventSourcing.html).
+- k8s is [`level-triggered`](https://speakerdeck.com/thockin/edge-vs-level-triggered-logic), i.e. if an event gets lost during tranmission(e.g. network issue) or your controller misses events during downtime, the next time there's a (re-)sync it's going to receive the complete desired state for that object from the API server.
 
+- Controller's don't talk to each other directly, there's a potential for race conditions when state is to be changed, e.g. a write to same object from different controllers. This is called **`optimistic concurrency`** and needs to be handled in the application layer(i.e. in each controller logic). Idempotency and compare and set with retries(based on monotonically increasing resource versions) are patterns used to address this. 
 
 
 
