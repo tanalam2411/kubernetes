@@ -13,3 +13,6 @@ TODO
   - https://medium.com/ibm-cloud/kubernetes-initializers-deep-dive-and-tutorial-3bc416e4e13e
   - https://ahmet.im/blog/initializers/
   - https://gist.github.com/dixudx/b047e2aafd9f9393e9622764eed548c7
+- Youtube search - daniel smith kubernetes
+
+Continue from Page 5 - Edge-Versus Level-Driven Triggers

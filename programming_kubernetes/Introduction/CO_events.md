@@ -157,7 +157,6 @@ ________________________________________________________________________________
 
 
 
-
 _____________________________________________________________________________________
 Notes:
 - [Quorum reads](https://github.com/kubernetes/kubernetes/issues/59848) - A quorum is the minimum number of votes that a distributed transaction has to obtain in order to be allowed to perform an operation in a distributed system.
