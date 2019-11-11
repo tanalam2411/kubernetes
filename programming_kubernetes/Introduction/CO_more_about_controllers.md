@@ -24,7 +24,7 @@
       [`MORE`](static_files/The_Mechanics_of_Kubernetes_-_Dominik_Tornow_-_Medium.pdf)
   
 _______________________________________________________________________________________________________________
-[`ref`](https://www.youtube.com/watch?v=zCXiXKMqnuE)
+[`ref`](https://www.youtube.com/watch?v=zCXiXKMqnuE)[`slide`](https://static.sched.com/hosted_files/kccnceu19/c0/control%20plane%20in%20pictures%20final.pdf)
 
 An Ideal CONTROLLER should be:
 1. Only do one thing.
@@ -67,6 +67,17 @@ An Ideal CONTROLLER should be:
   - CLuster Role aggregation
   
 <u>**IN|BI-Jection Enforcer</u>:**
+  - DeamonSet Controller
+  - Service Account Controller
+  - Nodelifecycle controller
+  - Cloud-Node controller
+  - Root-ca-cert-publisher controller
+  - Scheduler
+  - SchedulerJobController
+  - Job controller
+  - Statefulset controller
+  - kublet
+  - 
 
 
 _______________________________________________________________________________________________________________
