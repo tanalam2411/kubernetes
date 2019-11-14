@@ -77,9 +77,9 @@ An Ideal CONTROLLER should be:
   - Job controller
   - Statefulset controller
   - kublet
-  - 
-
-
+  
+  
+**[Native Controllers](https://github.com/kubernetes/kubernetes/tree/master/pkg/controller)**
 _______________________________________________________________________________________________________________
 Refs
 - [Level Triggering and Reconciliation in Kubernetes - James Bowes](https://www.youtube.com/watch?v=tCht7FvIDdY)
