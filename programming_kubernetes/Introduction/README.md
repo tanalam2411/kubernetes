@@ -39,3 +39,5 @@ ________________________________________________________________________________
 - [Introduction](CO_Introduction.md)
 - [More about controllers](CO_more_about_controllers.md)
 - [Events](CO_events.md)
+- [Optimistic Concurrency](CO_optimistic_concurrency.md)
+- [Operators](CO_operators.md)

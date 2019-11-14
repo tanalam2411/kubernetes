@@ -144,7 +144,13 @@ ________________________________________________________________________________
 - Controller's don't talk to each other directly, there's a potential for race conditions when state is to be changed, e.g. a write to same object from different controllers. This is called **`optimistic concurrency`** and needs to be handled in the application layer(i.e. in each controller logic). Idempotency and compare and set with retries(based on monotonically increasing resource versions) are patterns used to address this. 
 
 
+---
+**Edge Versus Level-Driven Triggers**
 
+- **Edge-driven triggers** - At the point in time state change occurs, a handler is triggered - for example, from no pod to pod running.
+- **Level-driven triggers** - The state is checked at regular intervals and if certain conditions are met(for example, pod running), then a handler is triggered.
+
+**[ReplicaSet Controller](https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/replicaset/replica_set.go)** - `replica_set.go`
 
 
 
