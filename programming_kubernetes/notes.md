@@ -15,4 +15,4 @@ TODO
   - https://gist.github.com/dixudx/b047e2aafd9f9393e9622764eed548c7
 - Youtube search - daniel smith kubernetes
 - Read all - https://github.com/kubernetes/community/tree/master/contributors/devel
-Continue from Page 5 - Edge-Versus Level-Driven Triggers
+- https://www.mgasch.com/post/sched-reconcile/
