@@ -28,7 +28,7 @@ ________________________________________________________________________________
 
 An Ideal CONTROLLER should be:
 1. Only do one thing.
-2. HAve an input source.
+2. Have an input source.
 3. Have a place to write status.
 4. Have an output location.
 5. Anticipate its own effects on the rest of the system.
