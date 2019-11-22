@@ -64,7 +64,7 @@ An Ideal CONTROLLER should be:
   - Watches `pods` and `services` and matches them up and writes `endpoints`
   - Pod disruption(admission plugin) and resource quota
   - CSR Approver
-  - CLuster Role aggregation
+  - Cluster Role aggregation
   
 <u>**IN|BI-Jection Enforcer</u>:**
   - DeamonSet Controller

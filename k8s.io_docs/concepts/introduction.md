@@ -22,6 +22,23 @@
 - ReplicaSet
 - Job
 
+**Kubernetes** provides:
+- Service discovery and load balancing 
+  - exposes container using DNS name or using their own IP address.
+  - can load balance and distribute the network traffic so that the deployment is stable.
+- Storage orchestration
+  - can automatically mount a storage system such as local storages, public cloud providers, etc.
+- Automated rollouts and rollbacks
+- Automatic bin packing
+  - Manages your nodes and can fit containers on nodes to make best use of your resources.
+- Self-healing
+- Secret and configuration management
+  - You can store and manage sensitive information, such as passwords, OAuth tokens, and ssh keys.
+    You can deploy and update secrets and application configuration without rebuilding your container images, 
+    and without exposing secrets in your stack configuration.
 
+-----
+
+[Open Service Broker](https://github.com/openservicebrokerapi/servicebroker) - Service brokers manage the lifecycle of services, and platforms interact with service brokers to provision, get access to and manage the services they offer. The Open Service Broker API defines these interactions, and therefore allows software providers to offer their services to anyone, regardless of the technology or infrastructure those software providers wish to utilise.
 
 
