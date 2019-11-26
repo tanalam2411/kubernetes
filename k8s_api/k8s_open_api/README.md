@@ -1,0 +1,2 @@
+- https://www.youtube.com/watch?v=fatglKZYdSQ&t=544s
+  - https://static.sched.com/hosted_files/kccnceu19/48/OpenAPI%20Specs%20-%20Towards%20Native%20User%20Experience%20of%20CRDs.pdf
