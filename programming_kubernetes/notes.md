@@ -16,3 +16,4 @@ TODO
 - Youtube search - daniel smith kubernetes
 - Read all - https://github.com/kubernetes/community/tree/master/contributors/devel
 - https://www.mgasch.com/post/sched-reconcile/
+- https://github.com/kubernetes/code-generator
