@@ -54,7 +54,7 @@ ________________________________________________________________________________
 ______________________________________________________________________________________________
 **Must Read**
 1) [`Handling Client Requests Properly with Kubernetes`](https://freecontent.manning.com/handling-client-requests-properly-with-kubernetes/)
-
+2) Google - kubernetes api constructs
 _______________________________________________________________________________________________
 Blogs
 
