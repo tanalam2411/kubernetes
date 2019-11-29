@@ -14,7 +14,7 @@
   The main loop(in the middle) is continuously running inside of the controller process.
   - This process is usually running inside a pod in the cluster.
   
-  **Informers** - Watches the desired state of resources in a scalable ans sustainable fasion.
+  **Informers** - Watches the desired state of resources in a scalable and sustainable fasion.
     - They also implement a resync mechanism that enforces periodic [`reconciliation`](https://speakerdeck.com/thockin/kubernetes-what-is-reconciliation)`(the action of making one view compatible with another)`.
     - Periodic Reconciliation - is often used to make sure that the cluster state and the assumed state cached in memory do no drift`(carried away)` due to bugs or network issues etc.
     
