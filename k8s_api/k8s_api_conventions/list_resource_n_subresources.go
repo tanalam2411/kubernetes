@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os/exec"
+	"sort"
 	"strings"
 )
 
@@ -47,6 +51,32 @@ func (c Command) Execute() ([]byte, error) {
 }
 
 func main() {
+	http.HandleFunc("/", apiResourceHandler)
+	log.Print("serving at http://127.0.0.1:8000")
+	log.Fatal(http.ListenAndServe("127.0.0.1:8000", nil))
+}
+
+func apiResourceHandler(w http.ResponseWriter, r *http.Request) {
+	resourceDetails, sortedResources := getApiResources()
+
+	var buf bytes.Buffer
+	for _, res := range sortedResources {
+		buf.WriteString(strings.Join([]string{"\n\n####", res, "\n"}, " "))
+		subReses := resourceDetails[res]
+		for _, subRes := range subReses {
+			buf.WriteString(strings.Join([]string{"-", subRes.Name, "\n"}, " "))
+		}
+	}
+
+	_ = ioutil.WriteFile("resources.md", buf.Bytes(), 0644)
+	_, err := buf.WriteTo(w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func getApiResources() (map[string][]*ResourceDetail, []string) {
 	cmd := Command{Name: "kubectl", Arg: []string{"get", "--raw", `/`}}
 	data, err := cmd.Execute()
 	if err != nil {
@@ -58,6 +88,8 @@ func main() {
 
 	filteredPaths := filterSlice(apiRes.Paths, []string{"/api"})
 
+	resources := make(map[string][]*ResourceDetail)
+
 	for _, path := range filteredPaths {
 		newCmd := Command{Name: "kubectl", Arg: []string{"get", "--raw", path}}
 		newData, newErr := newCmd.Execute()
@@ -65,7 +97,6 @@ func main() {
 			log.Fatal(err)
 		} else {
 			if strings.Contains(string(newData), "resources") {
-				fmt.Println("\n=========", path, "==========")
 				var f interface{}
 				err := json.Unmarshal(newData, &f)
 				if err != nil {
@@ -74,16 +105,16 @@ func main() {
 
 				m := f.(map[string]interface{})
 				n := m["resources"].([]interface{})
-				resources := make([]*ResourceDetail, len(n))
 
 				for i := range n {
 					name := n[i].(map[string]interface{})["name"].(string)
-					resources[i] = &ResourceDetail{name}
-					fmt.Println(name)
+					resources[path] = append(resources[path], &ResourceDetail{name})
 				}
 			}
 		}
 	}
+
+	return resources, filteredPaths
 }
 
 func filterSlice(inputSlice []string, filterBy []string) []string {
@@ -95,5 +126,13 @@ func filterSlice(inputSlice []string, filterBy []string) []string {
 			}
 		}
 	}
+
+	sort.Slice(returnSlice, func(i, j int) bool {return len(returnSlice[i]) < len(returnSlice[j])})
 	return returnSlice
 }
+
+
+
+/*
+https://medium.com/code-zen/dynamically-creating-instances-from-key-value-pair-map-and-json-in-go-feef83ab9db2
+*/
