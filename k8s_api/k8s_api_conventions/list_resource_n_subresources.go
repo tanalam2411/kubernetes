@@ -135,4 +135,6 @@ func filterSlice(inputSlice []string, filterBy []string) []string {
 
 /*
 https://medium.com/code-zen/dynamically-creating-instances-from-key-value-pair-map-and-json-in-go-feef83ab9db2
+https://www.jamessturtevant.com/posts/Using-the-Go-Delve-Debugger-from-the-command-line/
+https://medium.com/@tannhauser.sphinx/bash-kubernetes-script-to-list-all-available-resources-subresources-c65a5c2c1173
 */
