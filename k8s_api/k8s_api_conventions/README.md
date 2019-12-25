@@ -213,4 +213,36 @@ const GroupName = "admissionregistration.k8s.io"
      const GroupName = "admissionregistration.k8s.io"
      ```
  - When choosing a group name, its is recommended selecting a subdomain of your organization, such as "windget.xcompany.com"
+ - `Resources` collections should be all lowercase and plural.
+ - `Kinds` are CamelCase and singular.
+ - `Group Names` must be lower case and be a valid DNS subdomains.
+
+-----
+
+##### Types(Kinds)
+1. **Objects** - represent a persistent entity in the system.
+  - An object may have multiple resources that clients can use to perform specific actions such as create, update, delete or get.
+  - All API objects have common metadata.
+    - ```go
+      metav1.TypeMeta `json:",inline"`
+      metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+      ``` 
+    - Examples:
+      - [Pod](https://github.com/kubernetes/kubernetes/blob/c33bbbc40baa26c6fed868638bd9ec7431406144/staging/src/k8s.io/api/core/v1/types.go), `ReplicationController`, `Service`, `Namespace`, `Node`.
+        ```go
+        type Pod struct {
+        	metav1.TypeMeta `json:",inline"`
+        	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+        	Spec PodSpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
+        	Status PodStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+        }
+        ```
+
+2. **Lists** - are collection of `resources` of one or more kinds.
+  - The name of a list kind must end with `List`.
+  - Lists have a limited set of common metadata.
+    - ```go
+      metav1.TypeMeta `json:",inline"`
+      metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`  
+      ```     
      
