@@ -12,7 +12,7 @@
     - Collections - a list of resources of the same type, which may be queryable
     - Elements - an individual resource, addressable via a URL
 
-- **API Group**:
+- **[API Group](https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/types.go#L925)**:
   - a set of resources that are exposed together. 
   - Along with the version is exposed in the "apiVersion" field as "GROUP/VERSION", e.g. "policy.k8s.io/v1".
   
@@ -239,10 +239,28 @@ const GroupName = "admissionregistration.k8s.io"
         ```
 
 2. **Lists** - are collection of `resources` of one or more kinds.
-  - The name of a list kind must end with `List`.
+  - The name of a list kind must end with `List`. [`(ConfigMapList, EndpointsList, EventList etc)`](https://github.com/kubernetes/kubernetes/blob/c33bbbc40baa26c6fed868638bd9ec7431406144/staging/src/k8s.io/api/core/v1/types.go)
   - Lists have a limited set of common metadata.
-    - ```go
-      metav1.TypeMeta `json:",inline"`
-      metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`  
-      ```     
+  - ```go
+    metav1.TypeMeta `json:",inline"`
+    metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`  
+    ```
+  - All lists use the required `items` field to contain the array of objects they return.
+  ```go
+    // NodeList is the whole list of all Nodes which have been registered with master.
+    type NodeList struct {
+    	metav1.TypeMeta `json:",inline"`
+    	// Standard list metadata.
+    	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+    	// +optional
+    	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+    
+    	// List of nodes
+    	Items []Node `json:"items" protobuf:"bytes,2,rep,name=items"`
+    }
+  ```
+  - Any kind that has `items` field must be a list kind.
+  - All lists that return objects with labels should support [label filtering](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and most lists should support [filtering by fields](https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/).
+  - Examples: [`PodLists`, `ServiceLists`, `NodeLists`](https://github.com/kubernetes/api/blob/master/core/v1/types.go).   
+          
      
