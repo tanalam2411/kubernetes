@@ -91,6 +91,7 @@ func getApiResources() (map[string][]*ResourceDetail, []string) {
 	resources := make(map[string][]*ResourceDetail)
 
 	for _, path := range filteredPaths {
+		fmt.Println(strings.Join([]string{"\n\n####", path, "\n"}, " "))
 		newCmd := Command{Name: "kubectl", Arg: []string{"get", "--raw", path}}
 		newData, newErr := newCmd.Execute()
 		if newErr != nil {
@@ -109,6 +110,7 @@ func getApiResources() (map[string][]*ResourceDetail, []string) {
 				for i := range n {
 					name := n[i].(map[string]interface{})["name"].(string)
 					resources[path] = append(resources[path], &ResourceDetail{name})
+					fmt.Println(strings.Join([]string{"-", name}, " "))
 				}
 			}
 		}

@@ -261,6 +261,37 @@ const GroupName = "admissionregistration.k8s.io"
   ```
   - Any kind that has `items` field must be a list kind.
   - All lists that return objects with labels should support [label filtering](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and most lists should support [filtering by fields](https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/).
-  - Examples: [`PodLists`, `ServiceLists`, `NodeLists`](https://github.com/kubernetes/api/blob/master/core/v1/types.go).   
+  - Examples: [`PodLists`, `ServiceLists`, `NodeLists`](https://github.com/kubernetes/api/blob/master/core/v1/types.go).
+  
+3. **Simple** - kinds are used for specific actions on objects and for non-persistent entities.
+  - They have the same set of limited common metadata as `lists`.
+  - For instance, the [`Status`](https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/types.go) kind is returned when errors occur and is not persisted in the system.
+  ```go
+    // Status is a return value for calls that don't return other objects.
+    type Status struct {
+        TypeMeta `json:",inline"`
+        ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
+        Status string `json:"status,omitempty" protobuf:"bytes,2,opt,name=status"`
+        Message string `json:"message,omitempty" protobuf:"bytes,3,opt,name=message"`
+        Reason StatusReason `json:"reason,omitempty" protobuf:"bytes,4,opt,name=reason,casttype=StatusReason"`
+        Details *StatusDetails `json:"details,omitempty" protobuf:"bytes,5,opt,name=details"`
+        Code int32 `json:"code,omitempty" protobuf:"varint,6,opt,name=code"`
+    }
+  ```
+  - Many simple resources are `subresources`, which are rooted at API paths of specific resources.
+  - When resources wish to expose alternative actions or views that are closely coupled to a single resource, then should do so using new [`sub-resources`](resources.md). 
+  ```bash
+  - pods/attach 
+  - pods/binding 
+  - pods/eviction 
+  - pods/exec 
+  - pods/log 
+  - pods/portforward 
+  - pods/proxy 
+  - pods/status
+  ```
+  - Common sub-resources include:
+    - `/binding`: Used to bind a resource representing a user request(e.g. Pod, PersistentVolumeClaim) to a cluster infrastructure resource (e.g. Node, PersistentVolume)      
+    
           
      
