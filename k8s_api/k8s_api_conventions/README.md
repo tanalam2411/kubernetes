@@ -290,6 +290,12 @@ const GroupName = "admissionregistration.k8s.io"
   - pods/proxy 
   - pods/status
   ```
+  For example POD sub-resources could be found here - `https://github.com/kubernetes/kubernetes/tree/master/pkg/registry/core/pod`   
+  
+  - [attach, exec, proforward, proxy](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/rest/subresources.go )
+  - [binding, status](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/storage/storage.go)
+  - [log](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/rest/log.go)
+  - [eviction](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/storage/eviction.go)
   - Common sub-resources include:
     - `/binding`: Used to bind a resource representing a user request(e.g. Pod, PersistentVolumeClaim) to a cluster infrastructure resource (e.g. Node, PersistentVolume)      
     
