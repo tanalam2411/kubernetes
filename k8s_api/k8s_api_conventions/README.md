@@ -297,7 +297,10 @@ const GroupName = "admissionregistration.k8s.io"
   - [log](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/rest/log.go)
   - [eviction](https://github.com/kubernetes/kubernetes/blob/master/pkg/registry/core/pod/storage/eviction.go)
   - Common sub-resources include:
-    - `/binding`: Used to bind a resource representing a user request(e.g. Pod, PersistentVolumeClaim) to a cluster infrastructure resource (e.g. Node, PersistentVolume)      
+    - `/binding`: Used to bind a resource representing a user request(e.g. Pod, PersistentVolumeClaim) to a cluster infrastructure resource (e.g. Node, PersistentVolume).
+    - `/status`: Used to write just the status portion of a resource. For example, the `/pods` endpoint only allows updates to `metdata` and `spec`, since those reflect end-user intent. An automated process should be able to modify status for users to see by sending an updated Pod kind to server to the `pods/<name>/status` endpoint - the alternative endpoint allows different rules to be applied to the update, and access to be appropriately restricted.
+    - `/scale`: Used to read and write the count of a resource in a manner that is independent of the specific resource schema.
+    - The additional subresources, `proxy` and `portforward`, provide access to cluster resources as     
     
           
      
