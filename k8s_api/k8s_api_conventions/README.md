@@ -302,5 +302,5 @@ const GroupName = "admissionregistration.k8s.io"
     - `/scale`: Used to read and write the count of a resource in a manner that is independent of the specific resource schema.
     - The additional subresources, `proxy` and `portforward`, provide access to cluster resources as     
     
-          
+  - A common set of `meta` API objects are used across all API groups and are thus considered part of the API group named `meta.k8s.io`.        
      
