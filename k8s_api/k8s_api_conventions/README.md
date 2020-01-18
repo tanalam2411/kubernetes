@@ -303,4 +303,20 @@ const GroupName = "admissionregistration.k8s.io"
     - The additional subresources, `proxy` and `portforward`, provide access to cluster resources as     
     
   - A common set of `meta` API objects are used across all API groups and are thus considered part of the API group named `meta.k8s.io`.        
+    - API groups (`$ kubectl api-resources`) | 
      
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+ -----
+ [ref](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#types-kinds)    
