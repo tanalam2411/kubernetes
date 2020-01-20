@@ -302,21 +302,56 @@ const GroupName = "admissionregistration.k8s.io"
     - `/scale`: Used to read and write the count of a resource in a manner that is independent of the specific resource schema.
     - The additional subresources, `proxy` and `portforward`, provide access to cluster resources as     
     
-  - A common set of `meta` API objects are used across all API groups and are thus considered part of the API group named `meta.k8s.io`.        
-    - API groups (`$ kubectl api-resources`) | 
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+  - A common set of `meta` API objects are used across all API groups and are thus considered part of the API group named `meta.k8s.io`.
+    - These types may evolve independent of the API group that uses them.
+    - API servers may allow them to be addressed in their generic form.       
+    - API groups (`$ kubectl api-resources`) 
+      - https://github.com/kubernetes/kubernetes/tree/master/pkg/apis
+      - https://github.com/kubernetes/apiextensions-apiserver/tree/master/pkg/apis/apiextensions
+      - https://github.com/kubernetes/kube-aggregator/tree/master/pkg/apis/apiregistration 
+      - List of API Groups:
+        ```
+        admissionregistration.k8s.io
+        apiextensions.k8s.io 
+        apiregistration.k8s.io 
+        apps
+        authentication.k8s.io
+        authorization.k8s.io
+        autoscaling
+        batch
+        certificates.k8s.io
+        coordination.k8s.io
+        events.k8s.io
+        extensions
+        networking.k8s.io
+        node.k8s.io
+        policy
+        rbac.authorization.k8s.io
+        scheduling.k8s.io
+        storage.k8s.io
+        ```
+    - List of `meta` API objects https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/types.go:
+      - ListOptions
+      - DeleteOptions
+      - List
+      - Status
+      - WatchEvent https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/watch.go
+      - Scale https://github.com/kubernetes/kubernetes/blob/master/pkg/apis/autoscaling/types.go
+      
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
  -----
  [ref](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#types-kinds)    
