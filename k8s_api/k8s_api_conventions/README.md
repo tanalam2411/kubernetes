@@ -337,7 +337,28 @@ const GroupName = "admissionregistration.k8s.io"
       - Status
       - WatchEvent https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/watch.go
       - Scale https://github.com/kubernetes/kubernetes/blob/master/pkg/apis/autoscaling/types.go
-      
+  
+  - The term `kind` is reserved for these `top-level` API types.
+  - The term `type` should be used for distinguishing `sub-categories` within `objects` or `subobjects`.
+
+-----
+[Example](pod_example.yaml): POD object in yaml format.
+##### Resources
+All JSON objects returned by API must have following [fields](https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/types.go#L41):
+1. `kind`: string that identifies the schema this object should have. e.g. - `Deployment`, `DaemonSet`, `Job` etc. Look `$kubectl  api-resources`
+2. `apiVersion`: a string that identifies the version of the schema that object should have. `v1alpha`, `v1alpha1`, `v1alpha2`..., `v1beta1`, `v1beta2`..., `v1`, `v2alpha`...
+
+##### Objects
+
+###### Metadata: 
+- Every object kind MUST have following metadata in a nested object field called "metadata".
+  - namespace, name, uid
+- Every object SHOULD have the following metadata in a nested object field called "metadata".
+  - resourceVersion, generation, creationTimestamp, deletionTimestamp, deletionTimestamp, labels, annotations.
+  
+##### Spec and Status
+   
+ 
         
     
     
