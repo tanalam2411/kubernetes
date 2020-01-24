@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2020-01-22T15:14:24Z"
+  generateName: web-7bdd685f58-
+  labels:
+    app: web
+    pod-template-hash: 7bdd685f58
+  name: web-7bdd685f58-24w7j
+  namespace: default
+  ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: web-7bdd685f58
+      uid: af63ca94-81fc-4600-b5d0-966766fe9ff0
+  resourceVersion: "1254"
+  selfLink: /api/v1/namespaces/default/pods/web-7bdd685f58-24w7j
+  uid: ba0dceef-7ca2-4787-b13b-c796564a3dbf
+spec:
+  containers:
+    - image: nginx
+      imagePullPolicy: Always
+      name: web
+      ports:
+        - containerPort: 80
+          protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: default-token-cnfl2
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: kind-control-plane
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+  volumes:
+    - name: default-token-cnfl2
+      secret:
+        defaultMode: 420
+        secretName: default-token-cnfl2
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-01-22T15:14:24Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-01-22T15:18:07Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-01-22T15:18:07Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-01-22T15:14:24Z"
+      status: "True"
+      type: PodScheduled
+  containerStatuses:
+    - containerID: containerd://80e52a76a82c4467865efcdb7acfb3372cdfe17bb4fd976c9eb6a0ef0fbd7309
+      image: docker.io/library/nginx:latest
+      imageID: docker.io/library/nginx@sha256:70821e443be75ea38bdf52a974fd2271babd5875b2b1964f05025981c75a6717
+      lastState: {}
+      name: web
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: "2020-01-22T15:18:07Z"
+  hostIP: 192.168.18.2
+  phase: Running
+  podIP: 10.244.0.4
+  qosClass: BestEffort
+  startTime: "2020-01-22T15:14:24Z"
