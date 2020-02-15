@@ -21,7 +21,7 @@
   
 - **kube-controller-manager**:
   - Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.
-  - [more](../../programming_kubernetes/Introduction/CO_more_about_controllers.md)
+  - [more](../../programming_kubernetes/1.Introduction/CO_more_about_controllers.md)
 
 - **cloud-controller-manager**
   - Interacts with the underlying cloud providers.
