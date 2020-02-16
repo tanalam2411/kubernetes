@@ -84,3 +84,31 @@
       - These subresources usually implement custom protocols instead of REST, for e.g., some kind of streaming connection via WebSockets or imperative APIs.          
       
   
+  - Note:
+    - Resources correspond to HTTP paths.
+    - Kinds are the types of objects returned by and received by these endpoints, as well as persisted in `etcd`.
+    
+  - Resources are always part of an API group and a version, collectively referred as `GroupVersionResource` (GVR).
+  - A GVR uniquely defines an HTTP path.
+  - A concrete path, for example, in the `default` namespace would be `/apis/batch/v1/namespaces/default/jobs`.
+    ![gvr](static_files/gvr.png)   
+    
+  - Resources which are not part of namespace doesn't have `$NAMESPACE` in their path.
+    - e.g., Node GVR might look like `/api/v1/nodes/`, or `/api/v1/namespaces`
+  
+  - API groups:
+    - The core group, often referred to as the `legacy group`, is at the REST path `/api/v1` and uses `apiVersion: v1`. [`ref`](https://github.com/kubernetes/api/tree/master/core/v1)
+    - The named groups are at REST path `/apis/$GROUP_NAME/$VERSION`, and use `apiVersion: $GROUP_NAME/$VERSION` (e.g, apiVersion: batch/v1)
+    
+  - Similarly to GVRs, each kind lives in an API group, is versioned, and is identified via a `GroupVersionKind` (GVK).
+  
+  - COHABITATION: Kinds of same name may coexist not only in different versions, but also in different API groups, simultaneously.
+  - e.g., `Deployment` started as an alpha kind in the extensions group and was eventually promoted to a stable version in its own group, `apps.k8s.io` . This is know as `Cohabitation`.
+    - Ingress, NetworkPolicy in extensions and networking.k8s.io.
+    - Deployment, DaemonSet, ReplicaSet in extensions and apps.
+    - Event in the core group and events.k8s.io.
+    
+  
+  - GVKs are served under HTTP paths identified by GVRs.
+  - The process of mapping a GVK to a GVR is called REST mapping.
+          
