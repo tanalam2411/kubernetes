@@ -98,6 +98,8 @@
   
   - API groups:
     - The core group, often referred to as the `legacy group`, is at the REST path `/api/v1` and uses `apiVersion: v1`. [`ref`](https://github.com/kubernetes/api/tree/master/core/v1)
+      - Note: The core group is located under `/api/v1` and not, as one would be expect, under `/apis/core/v1`, for historic reasons.
+      - The core group existed before the concept of an API group was introduced.
     - The named groups are at REST path `/apis/$GROUP_NAME/$VERSION`, and use `apiVersion: $GROUP_NAME/$VERSION` (e.g, apiVersion: batch/v1)
     
   - Similarly to GVRs, each kind lives in an API group, is versioned, and is identified via a `GroupVersionKind` (GVK).
@@ -110,5 +112,24 @@
     
   
   - GVKs are served under HTTP paths identified by GVRs.
-  - The process of mapping a GVK to a GVR is called REST mapping.
-          
+  - The process of mapping a GVK to a GVR is called REST mapping.[ref](https://github.com/kubernetes/apimachinery/blob/master/pkg/api/meta/interfaces.go#L113)
+  
+  
+  - From a global point of view, the API resource space logically forms a tree with top-level nodes including `/api`, `/apis`, and some nonhierarchical endpoints such as `/healthz` or `/metrics`. 
+  
+  ![API-server-space](static_files/API-server-space.png)
+  
+  - **Kubernetes API Versioning**
+    - For extensibility reasons, kubernetes supports multiple API versions at different API paths, such as `/api/v1`, or `/apis/extensions/v1beta1`.
+    - Different API versions imply different levels of stability and support:
+      - **Alpha level** - (e.g., v1alpha1) is usually disabled by default, support for a feature may be dropped at any time without notice and should be used only in short-lived testing clusters.
+      - **Beta level** - (e.g., v2beta3) is enabled be default, meaning that the code is well tested; however, the semantics(if Syntax is structure. then Semantics is meaning) of objects may change in incompatible ways in a subsequent beta or stable release.
+      - **Stable (generally available, or GA) level** - (e.g., v1) will appear in released software for many subsequent versions.
+      
+      
+  - There is a third type of HTTP paths- once that are not resource aligned- that API server exposes: cluster-wide entities such as `/metrics`, `/logs`, or `/healthz`.
+  - In addition, the API server supports watches; that is rather than polling resources at set interval, you can add a `?watch=true` to certain requests and the API server changes into a [`watch modus`](https://kubernetes.io/docs/reference/using-api/api-concepts/#efficient-detection-of-changes)     
+  
+  
+  - **Declarative State Management** - 
+    - A `specification` or `spec`,    
