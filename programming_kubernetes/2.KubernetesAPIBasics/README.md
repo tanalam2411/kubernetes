@@ -132,4 +132,153 @@
   
   
   - **Declarative State Management** - 
-    - A `specification` or `spec`,    
+    - A `specification` or `spec`, is a complete description of desired state of a resource and is typically persisted in stable storage, such as `etcd`.
+    
+- ##### Using the API from the Command Line
+  - This command proxies kubernetes API to our local machine and also takes care of the authentication and authorization bits.  
+    ```bash
+    $ kubectl proxy --port=8080
+    Starting to serve on 127.0.0.1:8080
+    ```    
+  - It allows to directly issue requests via HTTP and receive JSON payloads in return.
+  - `/apis/batch/v1`
+  ```bash
+  $ curl http://127.0.0.1:8080/apis/batch/v1
+  {
+    "kind": "APIResourceList",
+    "apiVersion": "v1",
+    "groupVersion": "batch/v1",
+    "resources": [
+      {
+        "name": "jobs",
+        "singularName": "",
+        "namespaced": true,
+        "kind": "Job",
+        "verbs": [
+          "create",
+          "delete",
+          "deletecollection",
+          "get",
+          "list",
+          "patch",
+          "update",
+          "watch"
+        ],
+        "categories": [
+          "all"
+        ],
+        "storageVersionHash": "mudhfqk/qZY="
+      },
+      {
+        "name": "jobs/status",
+        "singularName": "",
+        "namespaced": true,
+        "kind": "Job",
+        "verbs": [
+          "get",
+          "patch",
+          "update"
+        ]
+      }
+    ]
+  }
+  ```  
+  
+  - `/apis/batch/v1beta1`
+  ```bash
+  $ curl http://127.0.0.1:8080/apis/batch/v1beta1
+  {
+    "kind": "APIResourceList",
+    "apiVersion": "v1",
+    "groupVersion": "batch/v1beta1",
+    "resources": [
+      {
+        "name": "cronjobs",
+        "singularName": "",
+        "namespaced": true,
+        "kind": "CronJob",
+        "verbs": [
+          "create",
+          "delete",
+          "deletecollection",
+          "get",
+          "list",
+          "patch",
+          "update",
+          "watch"
+        ],
+        "shortNames": [
+          "cj"
+        ],
+        "categories": [
+          "all"
+        ],
+        "storageVersionHash": "h/JlFAZkyyY="
+      },
+      {
+        "name": "cronjobs/status",
+        "singularName": "",
+        "namespaced": true,
+        "kind": "CronJob",
+        "verbs": [
+          "get",
+          "patch",
+          "update"
+        ]
+      }
+    ]
+  }
+  ```
+  
+  - As we can see, the `v1beta1` version also contains the `cronjobs` resource with kind `CronJob`. At this version of k8, the `cron jobs` have not been promoted to `v1`.
+  - Note: We can get HTTP API access to K8s API using `kubectl get --raw /apis/batch/v1`
+  
+
+- ##### How the API Server Processes Requests
+  ![admission-controller-phases.png](static_files/admission-controller-phases.png)
+  Figure: Kubernetes API server request processing overview.
+  
+  Following interactions take place when an HTTP request hits the Kubernetes API:
+  
+  1. The HTTP request is processed by a chain of filters registered in [`DefaultBuildHandlerChain(config.go)`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/config.go#L658)
+    - It applies a series of filter operations on said request.
+    - Either the filter passes and attaches respective information to the context- `ctx.RequestInfo`.
+    - If a request does not pass a filter, it returns an appropriate HTTP response code stating the reason(e.g., 401, user authentication failed.)
+  
+  2. Next, depending on the HTTP path, the multiplexer in [handler.go](https://github.com/kubernetes/apiserver/blob/master/pkg/server/handler.go#L42), routes the HTTP request to the respective handler.
+  
+  3. A handler is registered for each API group([groupversion.go](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/groupversion.go#L97), [installer.go](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/installer.go#L181) for details).
+    - It takes the HTTP request as well as the context (for e.g., user and access rights) and retrieves as well delivers the requested object from `etcd` storage.
+    
+  - Deep dive in chain of filters `DefaultBuildHandlerChain`:
+    ```go
+    func DefaultBuildHandlerChain(apiHandler http.Handler, c *Config) http.Handler {
+    	handler := genericapifilters.WithAuthorization(apiHandler, c.Authorization.Authorizer, c.Serializer)
+    	if c.FlowControl != nil {
+    		handler = genericfilters.WithPriorityAndFairness(handler, c.LongRunningFunc, c.FlowControl)
+    	} else {
+    		handler = genericfilters.WithMaxInFlightLimit(handler, c.MaxRequestsInFlight, c.MaxMutatingRequestsInFlight, c.LongRunningFunc)
+    	}
+    	handler = genericapifilters.WithImpersonation(handler, c.Authorization.Authorizer, c.Serializer)
+    	handler = genericapifilters.WithAudit(handler, c.AuditBackend, c.AuditPolicyChecker, c.LongRunningFunc)
+    	failedHandler := genericapifilters.Unauthorized(c.Serializer, c.Authentication.SupportsBasicAuth)
+    	failedHandler = genericapifilters.WithFailedAuthenticationAudit(failedHandler, c.AuditBackend, c.AuditPolicyChecker)
+    	handler = genericapifilters.WithAuthentication(handler, c.Authentication.Authenticator, failedHandler, c.Authentication.APIAudiences)
+    	handler = genericfilters.WithCORS(handler, c.CorsAllowedOriginList, nil, nil, nil, "true")
+    	handler = genericfilters.WithTimeoutForNonLongRunningRequests(handler, c.LongRunningFunc, c.RequestTimeout)
+    	handler = genericfilters.WithWaitGroup(handler, c.LongRunningFunc, c.HandlerChainWaitGroup)
+    	handler = genericapifilters.WithRequestInfo(handler, c.RequestInfoResolver)
+    	handler = genericfilters.WithPanicRecovery(handler)
+    	return handler
+    }
+    ```
+    
+    - [`WithPanicRecovery`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/filters/wrap.go#L29): Takes care of recovery and log panics.
+    - [`WithRequestInfo`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/requestinfo.go#L28): Attaches a [RequestInfo](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/request/requestinfo.go#L42) to the context. 
+    - [`WithWaitGroup`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/filters/waitgroup.go#L34): Adds all non-long-running requests to wait group; used for graceful shutdown.`
+    - [`WithTimeoutForNonLongRunningRequests`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/filters/timeout.go#L39): Times out non-long-running requests(like most GET, PUT, POST, and DELETE requests), in contrast to long-running requests such as watches and proxy requests.
+    - [`WithCORS`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/filters/cors.go#L36): Provides a CORS implementation. 
+      - CORS, short for cross-origin resource sharing, is mechanism that allows JavaScript embedded in an HTML page to make XMLHttpRequests to a domain different from the one that the JavaScript originated in.
+    - [`WithAuthentication`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/authentication.go#L90): Attempts to authenticate the given request as a human or machine user and stores the user info in the provided context. 
+      - On success, the Authorization HTTP header is removed from the request. If the authentication fails, it returns an HTTP 401 status code.
+    - [`WithAudit`]()  
