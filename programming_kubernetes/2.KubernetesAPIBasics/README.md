@@ -294,4 +294,19 @@
   
   - Requests for `/`, `/version`, `/apis`, `/healthz`, and other nonRESTful APIs are directly handled.
   - Requests for RESTful resources go into the requests pipeline consisting of:
-    - Incoming objects go through an admission chain.
+    - `admission`:
+      - Incoming objects go through an admission chain.
+      - This chain has more than 20 different admission [`plugins`](https://github.com/kubernetes/kubernetes/tree/master/plugin/pkg/admission).
+      - Each plugin can be part of the mutating phase(3rd block - Mutating Admission), part of the validating phase(4th block - Object Schema Validation), or both.
+    
+      - In the mutating phase, the incoming request payload can be changed; for example, the image pull policy is set to `Always`, `IfNotPresent`, or `Never` depending on the admission configuration.
+    
+      - The second admission is purely for validation; for example, security settings in pods are verified, or the existence of a namespace is verified before creating objects in that namespace.
+    
+    - `validation`: 
+      - Incoming objects are checked against a large validation logic, which exists for each object type in the system.
+      - e.g., string formats are checked to verify that only valid DNS-compatible characters are used in service names, or that all container names in a pod are unique.
+      
+    - `etcd-backed CRUD logic`:
+      - Different verbs `create`, `get`, `list`, `update`, `delete`, `patch` are implemented here.
+      - e.g., the update logic reads the object from `etcd`, checks that no other user has modified the object in the sense of [`Optimistic Concurrency`](../1.Introduction/CO_optimistic_concurrency.md), and, if not, writes the request object to `etcd`.
