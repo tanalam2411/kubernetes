@@ -281,4 +281,17 @@
       - CORS, short for cross-origin resource sharing, is mechanism that allows JavaScript embedded in an HTML page to make XMLHttpRequests to a domain different from the one that the JavaScript originated in.
     - [`WithAuthentication`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/authentication.go#L90): Attempts to authenticate the given request as a human or machine user and stores the user info in the provided context. 
       - On success, the Authorization HTTP header is removed from the request. If the authentication fails, it returns an HTTP 401 status code.
-    - [`WithAudit`]()  
+    - [`WithAudit`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/audit.go#L41): Decorates the handler with audit logging information for all incoming requests.
+      - The audit log entries contain information such as the source IP of the request, user invoking the operation, and namespace of the request.
+    - [`WithImpersonation`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/impersonation.go#L41): Handles user impersonation by checking requests that attempt to change the user(similar to sudo).
+      - Is a filter that will inspect and check requests that attempt to change the user.Info for their requests
+    - [`WithMaxInFlightLimit`](https://github.com/kubernetes/apiserver/blob/master/pkg/server/filters/maxinflight.go#L97): Limits the number of in-flight requests.
+    - [`WithAuthorization`](https://github.com/kubernetes/apiserver/blob/master/pkg/endpoints/filters/authorization.go#L45): Checks permissions by invoking authorization modules and passes all authorized requests to a multiplexer, which dispatches the request to the right handler.
+      - If the user doesn't have sufficient rights, it returns an HTTP 403 status code. 
+      - K8s uses role-based access control(RBAC).
+    
+  - After this generic handler chain is passed, the actual request processing starts.
+  
+  - Requests for `/`, `/version`, `/apis`, `/healthz`, and other nonRESTful APIs are directly handled.
+  - Requests for RESTful resources go into the requests pipeline consisting of:
+    - Incoming objects go through an admission chain.
