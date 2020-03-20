@@ -22,7 +22,13 @@ ______________________ Index ___________________________
 - Bootstrapping the etcd Cluster
 
 13. [What is etcd?](13.what_is_etcd%3F.md) 
+14. [Creating the etcd Cluster](14.creating_the_etcd_cluster.md)
 
+- Bootstrapping the kubernetes Control Plane
+
+15. [What is the Kubernetes Control Plane](15.what_is_k8s_control_plane.md)
+16. [Installing Kubernetes Control Plane Binaries](16.installing_kubernetes_control_plane_binaries.md)
+17. [Setting up the Kubernetes API Server](17.setting_up_the_k8s_api_server.md)
 
 
 
