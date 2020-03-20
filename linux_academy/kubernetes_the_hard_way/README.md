@@ -29,8 +29,22 @@ ______________________ Index ___________________________
 15. [What is the Kubernetes Control Plane](15.what_is_k8s_control_plane.md)
 16. [Installing Kubernetes Control Plane Binaries](16.installing_kubernetes_control_plane_binaries.md)
 17. [Setting up the Kubernetes API Server](17.setting_up_the_k8s_api_server.md)
+18. [Setting up the Kubernetes Controller Manager](18.setting_up_the_k8s_controller_manager.md)
+19. [Setting up the Kubernetes Scheduler](19.setting_up_the_k8s_scheduler.md)
+20. [Enable HTTP Health Checks](20.enable_http_health_checks.md)
+21. [Set up RBAC for Kublet Authorization](21.setup_rbac_for_kublet_authorization.md)
+22. [Setting up a kube API Frontend Load Balancer](22.setting_up_kube_api_frontend_load_balancer.md)
 
+- Bootstrapping the kubernetes Worker Nodes
 
+23. [What are the kubernetes Worker Nodes?](23.what_are_k8s_worker_nodes.md)
+24. [Installing Worker nodes Binaries](24.installing_worker_node_binaries.md)
+25. [Configuring Kubelet](25.configuring_kubelet.md)
+26. [Configuring kube-Proxy](26.configuring_kube_proxy.md)
+
+- Configuring Kubectl for Remote Access
+
+27. [Kubernetes Remote Access and Kubectl](27.k8s_remote_access_and_kubectl.md)
 
 
 
