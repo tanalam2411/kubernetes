@@ -50,13 +50,37 @@ ______________________ Index ___________________________
 
 28. [The Kubernetes networking model](28.k8s_networking_model.md)
 29. [Cluster Network Architecture](29.cluster_network_architecture.md)
-30. [Installing Weave Net]()
+30. [Installing Weave Net](30.installing_weave_net.md)
+
+- Deploying the DNS cluster Add-on
+
+31. [DNS in a Kubernetes Pod Network](31.dns_in_a_k8s_pod_network.md)
+32. [Deploying Kube-dns to the Cluster](32.deploying_kube_dns_to_the_cluster.md)
+
+- Smoke Test
+
+33. [Smoke Test]()
 
 
 
 
+---
 
+- Kubernetes the Easy Way
 
+ - Kubeadm
+ - Minikube
+ - Google, AWS, and Azure all provided hosted kubernetes solutions
+
+- https://kubernetes.io/docs/setup/
+- https://v1-13.docs.kubernetes.io/docs/setup/pick-right-solution/
+
+---
+
+- Next Steps:
+  - CKA
+  - Implementing a Full CI/CD Pipeline
+  - LPI DevOps Tools Engineer Certification
 
 
 
