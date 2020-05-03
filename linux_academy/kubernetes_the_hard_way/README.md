@@ -66,6 +66,18 @@ ______________________ Index ___________________________
 
 ---
 
+Kubernetes Remote Access and Kubectl
+
+kubectl is the k8s command line tool. It allows us to interact with k8s clusters from the command line.
+In a separate shell, open up an ssh tunnel to port 6443 on your Kubernetes API load balancer:
+
+```bash
+$ ssh -L 6443:localhost:6443 user@<your Load balancer cloud server public IP>
+```
+
+
+---
+
 - Kubernetes the Easy Way
 
  - Kubeadm
