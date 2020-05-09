@@ -21,21 +21,5 @@ spec:
       - image: nginx
         name: nginx
         resources: {}
-status: {}
-apiVersion: v1
-kind: Pod
-metadata:
-  creationTimestamp: null
-  labels:
-    run: nginx
-  name: nginx
-spec:
-  containers:
-  - image: nginx
-    name: nginx
-    resources: {}
-    ports:
-      
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
-status: {}
+        ports: 
+        - containerPort: 80
