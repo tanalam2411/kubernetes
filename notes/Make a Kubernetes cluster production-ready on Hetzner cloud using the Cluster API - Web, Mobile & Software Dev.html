@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<!-- saved from url=(0125)https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/ -->
+<html lang="en" class="featureDetectInputDate"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+                <meta name="robots" content="noodp,nodir,noydir">
+        <meta name="keywords" content="Offshore outsourcing, Freelancers, India, Russia, Ukraine, php Programmers, Coders, Developers, Writers, Web Designers, Website Design, Technical Writers">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <style data-styles="">base-styles,docs-card,test-app,test-app-dropdowns,test-app-dropdowns-search,test-app-modals,test-app-sliders,ugc-cookie-banner,ugc-cookie-banner-internal,up-c-alert,up-c-auto-scroll,up-c-avatar,up-c-bottom-sheet,up-c-bottom-sheet-header,up-c-btn,up-c-card,up-c-card-footer,up-c-card-header,up-c-card-section,up-c-close-icon,up-c-container,up-c-dialog,up-c-dropdown,up-c-dropdown-item,up-c-dropdown-search,up-c-dropdown-toggle,up-c-error-page,up-c-file-picker,up-c-file-picker-dropbox,up-c-form-group,up-c-fullscreen,up-c-fullscreen-placeholder,up-c-fullscreen-styles,up-c-header,up-c-icon,up-c-icon-demo-page,up-c-illustration,up-c-img,up-c-img-progressive,up-c-infinite-scroll,up-c-input-clear,up-c-intersection-observer,up-c-intl-phone-number,up-c-job-success-score,up-c-line-clamp,up-c-load-button,up-c-load-svg,up-c-logo,up-c-media-object,up-c-modal,up-c-on-click-outside,up-c-on-drop-outside,up-c-on-media-change,up-c-pagination,up-c-prevent-body-scroll,up-c-prevent-body-scroll-styles,up-c-progress-bar,up-c-progress-loader-bar,up-c-relative-time,up-c-row,up-c-select,up-c-select-option,up-c-skip-link,up-c-slider,up-c-sortable,up-c-sticky-footer,up-c-table,up-c-toaster,up-c-toaster-container,up-c-toggle,up-c-toggler,up-c-transition,up-docs-illustration-page,up-footer,up-footer-copyright,up-footer-feedback-form,up-footer-feedback-link,up-footer-feedback-modal,up-footer-links-section,up-footer-skinny,up-footer-social-links,up-footer-visitor,up-footer-visitor-accordion,up-footer-visitor-accordion-item,up-header-offcanvas-toggle,up-header-on-body-scrolled-change,up-header-search,up-header-search-menu,up-header-visitor-dropdown-menu-subnav,up-header-visitor-primary-nav,up-track{visibility:hidden}.hydrated{visibility:inherit}</style><style>up-c-img img{max-width:100%;width:var(--width,100%);height:var(--height,auto)}up-c-img img:not([src]){visibility:hidden}</style>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    
+    <meta name="Description" content="Hetzner cloud production-ready cluster
+
+We are looking for offers from people who know both Kubernetes and Go (Golang) very well. Knowledge of Linux and networking is also required.We want to build a highly available Kubernetes cluster on Hetzner cloud servers. For this we need the Cluster API (https://github.com/kubernetes-sigs/cluster-api). There are several examples for the Cluster API in action, e.g. for AWS (https://github.com/kubernetes-sigs/cluster-api-provider-aws), Azure (https://github.com/kubernetes-sigs/cluster-api-provider-azure) and Packet (https://github.com/packethost/cluster-api-provider-packet). They are all build using the very well documented framework of the Cluster API (https://cluster-api.sigs.k8s.io/).Much of your work has already been done (https://github.com/cornelius-keller/cluster-api-provider-hetznercloud). Basically, the existing provider integration followed 3.6.3 and 3.6.4 of the Cluster API book (https://cluster-api.sigs.k8s.io/).
+
+What we need, is to make the Cluster API for Hetzner cloud servers production ready, as well as other features which allow for a production-ready Kubernetes cluster.
+
+From you, we expect to know Kubernetes and Go very well. We can help you out on several of the below-mentioned tasks, but it would also be great if you are able to do all of them. 
+
+In the following, we describe our project plan:.
+
+private Network
+
+implementation of the web hooks in the provider integration
+
+HA Floating IP for the control planes IPv4/IPv6, but Kubernetes without Dual Stack because private network is only IPv4.
+
+Custom load balancer. We are using Floating IPs, MetalLB, Calico and can use this controller as basis for assigning the IPs to the nodes: https://github.com/cbeneke/hcloud-fip-controller. Here we have to implement to version of the controller one for the kubeapiserver and one for the load balancing with MetalLB, the challenge is to follow MetalLB election process.
+
+IPv6 to IPv4 translation for all Floating IPs; gobetween for example
+
+Bastion Host in HA mode https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html
+
+Implementation of the upcoming version v0.3.x (June-July). E2E test plan, Machine Health Checks, auto-scaler, etc. https://cluster-api.sigs.k8s.io/roadmap.html
+
+OS configurations: Firewall, SELinux, Appamor, CRI and other security precautions; you will work together with our team on this feature. We follow the CIS Guidelines. The provider integration can not follow the best practices of the Cluster API with the use of images, because the provider Hetzner does not allow the use of own images. All configuration is made by scripts https://github.com/cornelius-keller/cluster-api-provider-hetznercloud/blob/master/controllers/templates.go and the use of PreKubeAdm of the CABPK (https://github.com/kubernetes-sigs/cluster-api/tree/master/bootstrap/kubeadm). Furthermore we have to implement here the things we defined on the Provider integration and in the template, like the private network and therefore the deactivating of the external IP address. On several points we have to adjust both the provider integration and the OS Configuration. To cover several templates and machineDeployments we have to find first the best structure to modularize and reuse the scripts or making use of PreKubeAdm and PostKubeAdm.
+
+Cluster API Security; Management Cluster access control and preventing of deleting nodes accidentally, backups of etcd
+
+Kubernetes Security and Cluster API Provider Development. We want to make the use of E2E Test for testing out the Provider Integration, the Kubernetes Conformance, the Cluster Security (several Test suites like CIS Kubernetes Benchmark).
+
+Cluster API upgrades (Provider related, K8s Version, OS configuration) We think the best approach is to versionize with the Kubernetes Version and to separate all configuration of the Kubernetes and OS related config in directories. This way we have backward compatibility and can develop an upgrade path.
+
+Template for creating control planes in all three data center, and one for creating control planes in only one data center. For testing reason to find out if we need Federation for multi cloud.1.For your information: We will also make use of the CCM https://github.com/hetznercloud/hcloud-cloud-controller-manager and CSI https://github.com/hetznercloud/csi-driver. The latter should be consumed by Rook.Useful links, just for your information:Cluster API:https://cluster-api.sigs.k8s.io/https://github.com/kubernetes-sigs/cluster-apiHetzner API:https://robot.your-server.de/doc/webservice/en.html#prefaceHetzner Floating IP Controller:https://github.com/cbeneke/hcloud-fip-controllerHetzner Cloud Controller Manager:https://github.com/hetznercloud/hcloud-cloud-controller-managerTools to build the API:https://book.kubebuilder.io/https://github.com/kubernetes-sigs/cluster-api-provider-docker/Image builder:https://image-builder.sigs.k8s.io/https://wiki.hetzner.de/index.php/Installimage/en">
+    <title>Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev</title>
+
+    <script type="text/javascript" async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/analytics.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/qevents.js.download"></script><script type="text/javascript" async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/insight.min.js.download"></script><script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/1596555607284453" async=""></script><script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/816554411748126" async=""></script><script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/identity.js.download" async=""></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/fbevents.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/6wbLCwJ51XyBMi45LjA.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/UP4R77Y9Z.js.download"></script><script type="text/javascript" async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/analytics.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/mejord-gear.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/init.js.download"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/gtm.js.download"></script><script type="text/javascript">
+  function create_mark(name) {
+    window.performance && window.performance.mark && window.performance.mark(name);
+  }
+
+  function remove_mark(name) {
+    window.performance && window.performance.clearMarks && window.performance.clearMarks(name);
+  }
+
+  function create_measure(name, startMark, endMark) {
+    window.performance && window.performance.measure && window.performance.measure(name, startMark, endMark);
+  }
+
+  function remove_measure(name) {
+    window.performance && window.performance.clearMeasures && window.performance.clearMeasures(name);
+  }
+</script>
+                              <link rel="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/air2.global.responsive.12.11.0.min.css" onload="remove_mark(&#39;navCompRenderEnd&#39;);remove_measure(&#39;navCompRendered&#39;);create_mark(&#39;navCompRenderEnd&#39;);create_measure(&#39;navCompRendered&#39;, &#39;navigationStart&#39;, &#39;navCompRenderEnd&#39;);">
+                    <link rel="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/fonts.air2-icons.2.4.0.css" onload="remove_mark(&#39;navCompRenderEnd&#39;);remove_measure(&#39;navCompRendered&#39;);create_mark(&#39;navCompRenderEnd&#39;);create_measure(&#39;navCompRendered&#39;, &#39;navigationStart&#39;, &#39;navCompRenderEnd&#39;);">
+                    <link rel="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/fonts.gotham.2.4.0.css" onload="remove_mark(&#39;navCompRenderEnd&#39;);remove_measure(&#39;navCompRendered&#39;);create_mark(&#39;navCompRenderEnd&#39;);create_measure(&#39;navCompRendered&#39;, &#39;navigationStart&#39;, &#39;navCompRenderEnd&#39;);">
+            
+              <link rel="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/top-nav-user.bundle.iife.css">
+            <link rel="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/layout.css">
+      
+    <link rel="stylesheet" property="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/user.vendor-01ec98294f56404bd584.css">
+    <link rel="stylesheet" property="stylesheet" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/user-b840859aab3576621caf.css">
+            <link rel="icon" type="image/x-icon" href="https://www.upwork.com/favicon.ico">
+    
+              
+    
+      <link rel="preload" as="image" href="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ" media="(min-width: 992px)">
+  
+                    <script type="text/javascript">!function(a){var b=function(b,c,d){function j(a){return e.body?a():void setTimeout(function(){j(a)})}function l(){f.addEventListener&&f.removeEventListener("load",l),f.media=d||"all"}var g,e=a.document,f=e.createElement("link");if(c)g=c;else{var h=(e.body||e.getElementsByTagName("head")[0]).childNodes;g=h[h.length-1]}var i=e.styleSheets;f.rel="stylesheet",f.href=b,f.media="only x",j(function(){g.parentNode.insertBefore(f,c?g:g.nextSibling)});var k=function(a){for(var b=f.href,c=i.length;c--;)if(i[c].href===b)return a();setTimeout(function(){k(a)})};return f.addEventListener&&f.addEventListener("load",l),f.onloadcssdefined=k,k(l),f};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);</script>
+        <script type="text/javascript">!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);</script>
+    
+                    <script type="text/javascript">
+                        // global Applet object
+var Applet = new function() {
+    var basePath = "\/job-details";
+    var phpVars = {"event_data":{"location":"jobdetails"},"featureFlags":{"CFE7109JobFeedbackCommandsMigration":true,"CFE9548UidsToFeedbacksAPI":true},"XOdeskReferrer":"desktop","NotificationASIntegration":true,"ClientSideStatsDMetrics":true,"disputesASIntegration":true,"pageSpeedMetrics":false,"smfAjax":true,"wcFooter":false,"CI7646GraphqlSmf":false,"clientStatsDMetrics":true,"csrfTokenCookieName":"XSRF-TOKEN","csrfTokenHeaderName":"X-Odesk-Csrf-Token","runtime_id":"5a8d7d090ac9df3a-BOM","ccstCookieName":"oauth2_global_js_token","eventLoggingExt":"\/ab\/job-details\/event-logging\/front\/redirect","bpa_ui_base_url":"\/ab\/payments","bpa_ctx":{"base_path":"\/ab\/payments","device_type":"desktop"},"domesticMarketConfig":{"isEnabled":false,"isCountrySupported":false,"country":{"code":null,"name":null,"abbr":null,"hasUnion":false},"locale":"en_US"},"pageId":"JobDetailsUser","psmetricsTrafficRate":0,"CsrfUserSiteToken":"15002b5fae4d8f73530fbb249d83a367"};
+    var angularCache = [];
+    var assetsVersion = "9cf6e4a";
+    var assetsBaseUri = "https:\/\/assets.static-upwork.com\/assets\/JobDetails";
+    var instanceEnv = "prod";
+
+    var buildBundlePath = function(path) {
+        var bundleRegex = /^@([^\/]*)Bundle\/(.*)$/;
+        var matches = bundleRegex.exec(path);
+
+        if (matches != null) {
+            return '/bundles/' + matches[1].toLowerCase() + '/' + matches[2];
+        }
+        return path;
+    };
+
+    this.getBasePath = function() {
+        return basePath;
+    };
+
+    this.buildInternalAssetPath = function(path) {
+        // CDN assets
+        if (assetsBaseUri) {
+            return assetsBaseUri + '/' + assetsVersion + buildBundlePath(path);
+        }
+
+        // Local assets
+        var url = basePath + buildBundlePath(path);
+        if (assetsVersion) {
+            if (url.indexOf('?') < 0) {
+                return url + '?' + assetsVersion;
+            } else {
+                return url + '&' + assetsVersion;
+            }
+        }
+        return url;
+    };
+
+    var visitorId = null;
+        visitorId = "103.226.241.61.1549883177846881";
+    
+    this.getVisitorId = function() {
+        return visitorId;
+    };
+
+    var visitorApiKey = null;
+        visitorApiKey = "cbbf3af75e6998cc0ec5d416feb6934d";
+        this.getVisitorApiKey = function() {
+        return visitorApiKey;
+    };
+
+    var User = null;
+        User = new function() {
+        this.getUid = function() { return "708255808774389760"; };
+        this.getRid = function() { return "10911134"; };
+        this.getNid = function() { return "tan_alam2411"; };
+    };
+    
+    this.getUser = function() {
+        return User;
+    };
+
+        var Organization = null;
+                Organization = new function() {
+        this.getUid = function() { return "708255808791166977"; };
+        this.getRid = function() { return null; };
+        this.isSoleProprietor = function() { return true; };
+        this.isBusiness = function() { return false; };
+        this.isClient = function() { return false; };
+        this.isVendor = function() { return true; };
+        this.getTypeTitle = function() { return "Freelancer"; };
+    };
+    
+    this.getOrganization = function() {
+        return Organization;
+    };
+    
+    this.getVar = function(key) {
+        return phpVars[key];
+    };
+
+    this.getAngularCache = function() {
+        return angularCache;
+    };
+
+    this.getInstanceEnv = function() {
+        return instanceEnv;
+    };
+};
+        </script>
+    
+                <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/ugc.m4om6fqt.js.download" type="module" crossorigin="true" data-resources-url="https://assets.static-upwork.com/ui-packages/@upwork/global-components/1.28.3/ugc/" data-namespace="ugc"></script><script async="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/ktag.js.download"></script><template></template><template></template><iframe src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/saved_resource.html"></iframe><style type="text/css" id="nmgStyle"></style><script type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/LUP4R77Y9Z.json" async=""></script><script type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/js" async=""></script><script async="true" type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/roundtrip.js.download"></script><script id="adroll_scr_exp" onerror="window.adroll_exp_list = [];" type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/index.js.download"></script><script type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/index.js(1).download"></script><script type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/PHNABX2CBBCZFESWFER7IX"></script><script async="true" type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/C64OMWDHZNG2NHHTRROLNR"></script><a tabindex="-1" aria-hidden="true" href="https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/?_pxhc=1593075524942" rel="nofollow" target="_blank" style="width: 0px; height: 0px; font-size: 0px; line-height: 0;"></a><div style="width: 1px; height: 1px; display: inline; position: absolute;"><img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out"><img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(1)"><img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(2)"></div><script type="text/javascript" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/sendrolling.js.download"></script><div style="width: 1px; height: 1px; display: inline; position: absolute;"><img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(3)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(4)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(5)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(6)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/out(7)">
+</div></head>
+<body data-ng-app="jobDetails" data-ng-strict-di="" class="ng-scope">
+                            
+                    <script>
+                dataLayer = [{"site":{"application":"JobDetails","version":"9cf6e4a","environment":"prod"},"user":{"visitor_id":"103.226.241.61.1549883177846881","recognized":true,"internal":false,"loggedIn":true,"user_id":"708255808774389760","primary-type":"freelancer"},"isNamogooEnabled":true}];
+            </script>
+        
+                    <!-- Google Tag Manager -->
+            <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-K9RTCGW&amp;site.application=JobDetails&amp;site.version=9cf6e4a&amp;site.environment=prod&amp;user.visitor_id=103.226.241.61.1549883177846881&amp;user.recognized=1&amp;user.internal=&amp;user.loggedIn=1&amp;user.user_id=708255808774389760&amp;user.primary-type=freelancer&amp;isNamogooEnabled=1" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K9RTCGW');</script>
+            <!-- End Google Tag Manager -->
+                <script type="text/javascript">
+    (function(){
+        window._pxAppId = "PXSs13U803";
+        window._pxParam1 = "708255808774389760";
+		var p = document.getElementsByTagName('script')[0],
+			s = document.createElement('script');
+        s.async = 1;
+        s.src = '/Ss13U803/init.js';
+        p.parentNode.insertBefore(s,p);
+    }());
+</script>
+<noscript>
+	<div style="position:fixed; top:0; left:0; display:none" width="1" height="1">
+		<img src="/Ss13U803/xhr/api/v1/collector/noScript.gif?appId=PXSs13U803" alt="PxPixel">
+	</div>
+</noscript>        <script type="text/javascript">remove_mark('navCompRenderEnd');remove_measure('navCompRendered');create_mark('navCompRenderEnd');create_measure('navCompRendered', 'navigationStart', 'navCompRenderEnd');</script>
+                        <div data-o-smf="" data-o-smf-location="very_top" class="ng-isolate-scope"><!-- ngRepeat: message in messages --> </div>
+                    <div class="layout-container">
+                <up-c-skip-link class="sr-only hydrated" href="#main" dest-selector="#main"><a href="https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/#main">Skip to main content</a></up-c-skip-link>
+            <div id="layout" class="layout">
+                      
+
+  
+
+<script type="text/javascript">
+  var instanceEnv = window.Applet.getInstanceEnv();
+  if (instanceEnv === 'local') {
+    instanceEnv = 'dev';
+  }
+  window.__INITIAL_STATE__ = {
+    navigation: {"items":[{"label":"Find Work","link":"\/ab\/find-work\/","active":true,"items":[{"label":"Find Work","link":"\/ab\/find-work\/","active":true,"item_id":"find"},{"label":"Saved Jobs","link":"\/ab\/jobs\/search\/saved\/","active":false,"item_id":"savedJobs"},{"label":"Proposals","link":"\/ab\/proposals\/","active":false,"item_id":"applications"},{"label":"Profile","link":"\/freelancers\/~014215fb8efa4ebbaf","active":false,"item_id":"userProfile"},{"label":"My Stats","link":"\/my-stats\/","active":false,"item_id":"myStats"},{"label":"Upwork Readiness Test","link":"\/freelancers\/settings\/readiness-test\/","active":false,"item_id":"upworkReadinessTestNuxt"}],"item_id":"findWorkHome"},{"label":"My Jobs","link":"\/ab\/f\/home\/","active":false,"items":[{"label":"My Jobs","link":"\/ab\/f\/home\/","active":false,"item_id":"myJobsHome"},{"label":"All Contracts","link":"\/ab\/f\/contracts\/","active":false,"item_id":"freelancerContracts"},{"label":"Work Diary","link":"\/ab\/workdiary\/freelancer\/","active":false,"item_id":"myworkdiary"}],"item_id":"myjobsProvider"},{"label":"Reports","link":"\/ab\/reports\/in-progress","active":false,"items":[{"label":"Overview","link":"\/ab\/reports\/in-progress","active":false,"item_id":"overview"},{"label":"My Reports","link":"\/ab\/reports\/freelancer","active":false,"item_id":"myReports"},{"label":"Earnings by Client","link":"\/reports\/earnings","active":false,"item_id":"earningsByClient"},{"label":"Lifetime Billings by Client","link":"\/ab\/payments\/reports\/relationship-values","active":false,"item_id":"lifetimeBillingsByClient"},{"label":"Connects History","link":"\/ab\/plans\/membership\/connects-history","active":false,"item_id":"connectsHistory"},{"label":"Transaction History","link":"\/earnings-history","active":false,"item_id":"transactionHistory"},{"label":"Certificate of Earnings","link":"\/ab\/payments\/reports\/certificate-of-earnings.pdf","active":false,"item_id":"certificateOfEarnings"}],"item_id":"independentFreelancerReports"},{"label":"Messages","link":"\/messages\/","active":false,"items":[],"badge":{"channel":"dash","port":"708255808791166977"},"item_id":"dash"}],"special_items":[{"label":"Upwork","link":"\/home\/","active":false,"items":[],"item_id":"home"},{"label":"Notifications","link":"\/notifications","active":false,"items":[],"item_id":"notifications"},{"label":"Settings","link":"\/freelancers\/settings\/contactInfo","active":false,"items":[],"item_id":"settings"},{"label":"Help & Community","link":"https:\/\/support.upwork.com\/login","active":false,"items":[{"label":"Help and Support","link":"https:\/\/support.upwork.com\/login","active":false,"item_id":"center"},{"label":"Community and Forums","link":"http:\/\/community.upwork.com","active":false,"item_id":"community"},{"label":"Disputes","link":"\/ab\/disputes","active":false,"item_id":"disputes"}],"item_id":"help"},{"label":"Direct Contracts","link":"\/ab\/flservices\/contracts\/","active":false,"items":[],"item_id":"directContracts"}],"special_items_object":{"home":{"label":"Upwork","link":"\/home\/","active":false,"items":[]},"notifications":{"label":"Notifications","link":"\/notifications","active":false,"items":[]},"settings":{"label":"Settings","link":"\/freelancers\/settings\/contactInfo","active":false,"items":[]},"help":{"label":"Help & Community","link":"https:\/\/support.upwork.com\/login","active":false,"items":{"center":{"label":"Help and Support","link":"https:\/\/support.upwork.com\/login","active":false},"community":{"label":"Community and Forums","link":"http:\/\/community.upwork.com","active":false},"disputes":{"label":"Disputes","link":"\/ab\/disputes","active":false}}},"directContracts":{"label":"Direct Contracts","link":"\/ab\/flservices\/contracts\/","active":false,"items":[]}}},
+    organizations: {"items":[{"label":"Tanveer Alam","photo_url":"https:\/\/www.upwork.com\/profile-portraits\/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ","uid":"708255808791166977","type_title":"Freelancer","id":"d10911134","link":"\/signup\/home?companyReference=d10911134","is_active":true}],"activeItem":{"label":"Tanveer Alam","photo_url":"https:\/\/www.upwork.com\/profile-portraits\/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ","uid":"708255808791166977","type_title":"Freelancer","id":"d10911134","link":"\/signup\/home?companyReference=d10911134","is_active":true}}
+  };
+
+  window.__INITIAL_PARAMS__ = {
+    isNewReportsMenu: true,
+    env:  instanceEnv,
+    userUid: window.Applet.getUser().getUid(),
+    brandType: "standard",
+    defaultSearchItem: "jobs",
+  };
+
+  window.__INITIAL_ACTIONS__ = [
+    {
+      action: 'searchv2/searchSetItemAction',
+      payload: { id: 'freelancers', url: '/ab/profiles/search/'},
+    },
+    {
+      action: 'searchv2/searchSetItemAction',
+      payload: { id: 'jobs', url: '/ab/jobs/search/'},
+    },
+  ];
+</script>
+<nav id="up-s-top-nav-container"><nav aria-label="Navigation bar" data-cy="nav" class="nav-v2"><div class="container"><div data-cy="header" class="nav-header d-flex align-items-center justify-space-between"><button data-cy="hamburger-trigger" type="button" aria-label="Menu" aria-controls="nav-main" class="nav-toggle d-lg-none "><span class="sr-only">Close navigation false false</span> <div class="nav-toggle-box"><div class="nav-toggle-inner"></div></div> <!----></button> <a aria-label="Upwork standard home" target="_self" href="https://www.upwork.com/home/" data-cy="brand" class="d-flex"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 102.4 30" width="106" height="30" role="img" aria-hidden="true"><path fill="#494949" d="M65.4 6.9c-4.5 0-8.1 3.6-8.1 8.1s3.6 8.1 8.1 8.1 8.1-3.6 8.1-8.1-3.6-8.1-8.1-8.1zm0 12.9c-2.6 0-4.8-2.1-4.8-4.8s2.1-4.8 4.8-4.8c2.6 0 4.8 2.1 4.8 4.7 0 2.7-2.1 4.9-4.8 4.9zM83.4 10.8c-2.3 0-4.2 1.9-4.2 4.2v7.7h-3.5V7.4h3.5v2.4c1-1.5 2.7-2.4 4.5-2.4h1.1v3.4h-1.4zM48.2 7.4L50.8 18l2.9-10.6h3.4l-4.4 15.3h-3.5L46.5 12l-2.7 10.7h-3.5L35.9 7.4h3.4L42.2 18l2.7-10.6zM95 14.4c2.6-1.4 4.1-4.1 4.1-7.1h-3.4c0 2.6-2.1 4.6-4.6 4.6h-.5V0h-3.5v22.7h3.5v-7.2h.4c.4 0 .8.2 1 .5l4.9 6.7h4.2L95 14.4z"></path> <path fill="#6fda44" d="M27.6 6.9c-3.8 0-6.7 2.5-7.9 6.5-1.8-2.7-3.1-5.7-4-8.8h-4.1v10.6c0 2.1-1.7 3.8-3.8 3.8S4 17.3 4 15.2V4.7H0v10.6c0 4.3 3.5 7.9 7.9 7.9s7.9-3.5 7.9-7.9v-1.8c.8 1.7 1.8 3.3 2.9 4.8L16.2 30h4.2l1.8-8.5c1.6 1.1 3.5 1.7 5.5 1.7 4.5 0 8.1-3.6 8.1-8.1-.1-4.5-3.7-8.2-8.2-8.2zm0 12.2c-1.7-.1-3.3-.7-4.6-1.8l.3-1.6v-.1c.3-1.7 1.3-4.6 4.2-4.6 2.2-.1 4 1.7 4.1 3.9.1 2.2-1.7 4-3.9 4.1l-.1.1z"></path></svg></a> <div data-cy="search" class="d-lg-none search-wrapper search-header search-collapsed"><form action="https://www.upwork.com/ab/jobs/search/" method="GET" role="search"><div class="nav-dropdown nav-search-btns d-flex align-items-center"><button type="submit" tabindex="0" aria-label="Search" class="btn-icon"><span icon-name="search" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M13.65 12L10.4 8.75A5.64 5.64 0 0 0 5.66 0a5.67 5.67 0 1 0 3.1 10.4L12 13.66a1.15 1.15 0 0 0 1.64 0 1.16 1.16 0 0 0 0-1.65zM5.66 9.55a3.89 3.89 0 1 1 .01-7.78 3.89 3.89 0 0 1 0 7.78z"></path></svg></span></button> <button type="button" tabindex="0" data-cy="search-switch-button" aria-label="Switch search source" class="btn-icon px-5"><span icon-name="arrow-expand" size="xs" aria-hidden="true" class="up-s-nav-icon nav-caret nav-caret-sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></button> <button type="button" tabindex="0" data-cy="search-close" class="btn-icon nav-search-close align-items-center d-lg-none"><span class="sr-only">Close</span> <span class="nav-close-icon"></span></button> <ul role="menu" class="nav-dropdown-menu nav-dropdown-search d-none"><li role="none" class=""><a href="javascript:" tabindex="-1" role="menuitem">Freelancers &amp; Agencies</a></li><li role="none" class="active"><a href="javascript:" tabindex="-1" role="menuitem">Jobs</a></li></ul></div> <input type="hidden" name="nbs" value="1" autocomplete="off"> <input type="search" name="q" data-cy="search-input" tabindex="0" placeholder="Find Jobs" aria-label="Find Jobs" class="nav-form-control"></form> <a href="javascript:" tabindex="getTabIndex()" data-cy="search-expand-button" aria-haspopup="true" aria-label="Submit" aria-expanded="" class="search-expand-button d-lg-none"><span icon-name="search" size="md" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M13.65 12L10.4 8.75A5.64 5.64 0 0 0 5.66 0a5.67 5.67 0 1 0 3.1 10.4L12 13.66a1.15 1.15 0 0 0 1.64 0 1.16 1.16 0 0 0 0-1.65zM5.66 9.55a3.89 3.89 0 1 1 .01-7.78 3.89 3.89 0 0 1 0 7.78z"></path></svg></span></a></div></div> <div id="nav-main" data-cy="collapse" class="nav-collapse d-lg-flex d-none flex-1"><div data-cy="nav-left" role="menubar" class="nav-left nav-align d-flex flex-1 align-items-center"><div data-cy="search" class="search-wrapper nav-search search-collapsed"><form action="https://www.upwork.com/ab/jobs/search/" method="GET" role="search"><div class="nav-dropdown nav-search-btns d-flex align-items-center"><button type="submit" tabindex="0" aria-label="Search" class="btn-icon"><span icon-name="search" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M13.65 12L10.4 8.75A5.64 5.64 0 0 0 5.66 0a5.67 5.67 0 1 0 3.1 10.4L12 13.66a1.15 1.15 0 0 0 1.64 0 1.16 1.16 0 0 0 0-1.65zM5.66 9.55a3.89 3.89 0 1 1 .01-7.78 3.89 3.89 0 0 1 0 7.78z"></path></svg></span></button> <button type="button" tabindex="0" data-cy="search-switch-button" aria-label="Switch search source" class="btn-icon px-5"><span icon-name="arrow-expand" size="xs" aria-hidden="true" class="up-s-nav-icon nav-caret nav-caret-sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></button> <button type="button" tabindex="0" data-cy="search-close" class="btn-icon nav-search-close align-items-center d-lg-none"><span class="sr-only">Close</span> <span class="nav-close-icon"></span></button> <ul role="menu" class="nav-dropdown-menu nav-dropdown-search d-none"><li role="none" class=""><a href="javascript:" tabindex="-1" role="menuitem">Freelancers &amp; Agencies</a></li><li role="none" class="active"><a href="javascript:" tabindex="-1" role="menuitem">Jobs</a></li></ul></div> <input type="hidden" name="nbs" value="1" autocomplete="off"> <input type="search" name="q" data-cy="search-input" tabindex="0" placeholder="Find Jobs" aria-label="Find Jobs" class="nav-form-control"></form> <a href="javascript:" tabindex="getTabIndex()" data-cy="search-expand-button" aria-haspopup="true" aria-label="Submit" aria-expanded="" class="search-expand-button d-lg-none"><span icon-name="search" size="md" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M13.65 12L10.4 8.75A5.64 5.64 0 0 0 5.66 0a5.67 5.67 0 1 0 3.1 10.4L12 13.66a1.15 1.15 0 0 0 1.64 0 1.16 1.16 0 0 0 0-1.65zM5.66 9.55a3.89 3.89 0 1 1 .01-7.78 3.89 3.89 0 0 1 0 7.78z"></path></svg></span></a></div></div> <ul data-cy="nav-right" role="menubar" class="nav-right nav-align d-flex align-items-center" id="nav-right"><li data-cy="menu" role="none" class="nav-dropdown active"><a target="_self" href="https://www.upwork.com/ab/find-work/" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><span tabindex="-1" class="nav-item-label">Find Work</span> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu mw-240"> <li role="none" class="active"><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/find-work/" role="menuitem" class="">
+                Find Work
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/jobs/search/saved/" role="menuitem" class="">
+                Saved Jobs
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/proposals/" role="menuitem" class="">
+                Proposals
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/freelancers/~014215fb8efa4ebbaf" role="menuitem" class="">
+                Profile
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/my-stats/" role="menuitem" class="">
+                My Stats
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/freelancers/settings/readiness-test/" role="menuitem" class="">
+                Upwork Readiness Test
+              </a></li></ul></li><li data-cy="menu" role="none" class="nav-dropdown "><a target="_self" href="https://www.upwork.com/ab/f/home/" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><span tabindex="-1" class="nav-item-label">My Jobs</span> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu mw-240"> <li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/f/home/" role="menuitem" class="">
+                My Jobs
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/f/contracts/" role="menuitem" class="">
+                All Contracts
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/workdiary/freelancer/" role="menuitem" class="">
+                Work Diary
+              </a></li></ul></li><li data-cy="menu" role="none" class="nav-dropdown "><a target="_self" href="https://www.upwork.com/ab/reports/in-progress" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><span tabindex="-1" class="nav-item-label">Reports</span> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu mw-240"> <li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/reports/in-progress" role="menuitem" class="">
+                Overview
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/reports/freelancer" role="menuitem" class="">
+                My Reports
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/reports/earnings" role="menuitem" class="">
+                Earnings by Client
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/payments/reports/relationship-values" role="menuitem" class="">
+                Lifetime Billings by Client
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/plans/membership/connects-history" role="menuitem" class="">
+                Connects History
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/earnings-history" role="menuitem" class="">
+                Transaction History
+              </a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/payments/reports/certificate-of-earnings.pdf" role="menuitem" class="">
+                Certificate of Earnings
+              </a></li></ul></li><li role="none" class="nav-messages" data-cy="messages"><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/messages/" role="menuitem" class="nav-item"><span tabindex="-1" class="nav-item-label">
+            Messages
+            <span style="display: inline-block; width: 20px;"></span></span></a></li> <li data-cy="help-menu" role="none" class="nav-dropdown nav-arrow-end"><a target="_self" href="https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/#" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><span tabindex="-1" data-cy="help-menu-label" aria-labelledby="nav-help-label" class="nav-item-label"><span id="nav-help-label" class="d-lg-none">Help</span> <span icon-name="question" size="md" aria-hidden="true" class="up-s-nav-icon nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 14" width="12" height="14" role="img"><path d="M4.98 11.96h2.04V14H4.98zm5.17-9.69a3.5 3.5 0 0 0-.9-1.2A4.29 4.29 0 0 0 7.85.3 5.57 5.57 0 0 0 6.02 0C5.39 0 4.8.1 4.28.29a3.93 3.93 0 0 0-2.32 2.08A4.52 4.52 0 0 0 1.55 4l-.01.07h1.93v-.06C3.75 2.32 4.59 1.5 6.04 1.5a2.43 2.43 0 0 1 2.3 1.43 2.34 2.34 0 0 1 .1 1.65 1.72 1.72 0 0 1-.31.54c-.14.17-.3.34-.5.52a15.73 15.73 0 0 0-.71.65c-.4.39-.7.7-.93.97a3.43 3.43 0 0 0-.85 1.88c-.06.37-.09.4-.09.99v.07h1.78v-.07c0-.47.01-.4.04-.67.03-.29.1-.53.2-.75.1-.21.27-.43.48-.64.21-.21.51-.48.91-.82.39-.34.7-.65.97-.93a4.52 4.52 0 0 0 .62-.83 3.16 3.16 0 0 0 .41-1.72 3.54 3.54 0 0 0-.31-1.5z"></path></svg></span> <!----></span> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  d-none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu "> <li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://support.upwork.com/login" role="menuitem" class=""><span>
+      Help and Support
+    </span></a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="http://community.upwork.com/" role="menuitem" class=""><span>
+      Community and Forums
+    </span></a></li><li role="none" class=""><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/disputes" role="menuitem" class=""><span class="d-flex justify-space-between align-items-center">
+      Disputes
+      <span data-cy="disputes"><!----></span></span></a></li></ul></li> <li data-cy="notifications-menu" role="none" class="nav-notifications nav-dropdown nav-arrow-end"><a target="_self" href="https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/#" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><span aria-labelledby="nav-notifications-label" tabindex="-1" class="nav-item-label"><span id="nav-notifications-label" class="d-lg-none">Notifications</span> <span icon-name="notification" size="md" aria-hidden="true" class="up-s-nav-icon nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M12.91 11.05h-.51v-5.7a5.71 5.71 0 0 0-1.65-3.97A5.42 5.42 0 0 0 9.29.4c-.07-.02-.12-.06-.2-.09L8.9.25a4.54 4.54 0 0 0-.84-.2A10.07 10.07 0 0 0 6.96 0c-.42 0-.8.03-1.04.06a4.53 4.53 0 0 0-.88.2l-.02.02c-.17.05-.33.14-.5.22L4.1.73l-.2.14a5.5 5.5 0 0 0-.5.4 6.03 6.03 0 0 0-.39.38l-.18.2A5.56 5.56 0 0 0 1.6 5.34v5.71h-.51a.59.59 0 0 0-.58.59v.61c0 .32.26.59.58.59H5.3a1.82 1.82 0 0 0 3.4 0h4.21c.32 0 .58-.27.58-.59v-.61a.58.58 0 0 0-.58-.59zm-2.17 0H3.25v-5.7c0-1.86 1.25-3.43 2.9-3.65a8.73 8.73 0 0 1 1.7 0c1.82.2 2.9 2.02 2.9 3.64v5.72z"></path></svg></span> <!----></span> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  d-none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu mw-350"> <div data-cy="notifications-list" class="nav-notifications-list nav-dropdown-scroll"> <li role="none" class="d-none"><a target="_self" data-cy="menu-item-trigger" href="javascript:" role="menuitem" class="icon-item"><span icon-name="loading" size="md" aria-hidden="true" class="up-s-nav-icon"><svg data-v-199a166f="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" width="45" height="45" role="img"><circle data-v-199a166f="" cx="22" cy="22" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="1,200" stroke-linecap="round"></circle></svg></span> <span data-cy="notifications-loading">Loading...</span></a></li> <li role="none" class="d-none"><a target="_self" data-cy="menu-item-trigger" href="javascript:" role="menuitem" class="icon-item"><span icon-name="exclamation-circle" size="md" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M8 8v1H6V2h2v6zm-1 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM7 0a7 7 0 0 0-7 7 7 7 0 0 0 7 7 7 7 0 0 0 7-7 7 7 0 0 0-7-7z"></path></svg></span> <span data-cy="notifications-error">Error loading notifications: </span></a></li> <li role="none" class="active"><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/ab/notifications" role="menuitem" class=""><strong>See All Notifications</strong></a></li></div></ul></li> <li role="none"><a href="https://www.upwork.com/ab/flservices/contracts/" aria-labelledby="nav-direct-contracts" target="_self" role="menuitem" class="nav-item"><span class="nav-item-label"><span id="nav-direct-contracts" class="d-lg-none">Direct Contracts</span> <span icon-name="direct-contracts" size="md" aria-hidden="true" class="up-s-nav-icon nav-icon"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="14px" viewBox="-1 0 14 14" xml:space="preserve"><path d="M12.661,6.79L-0.067,0.072C-0.071,0.07-0.075,0.069-0.079,0.067c-0.013-0.006-0.026-0.008-0.039-0.014 c-0.052-0.022-0.105-0.037-0.16-0.044C-0.299,0.006-0.319,0.005-0.34,0.004c-0.051-0.001-0.101,0.003-0.15,0.014 C-0.51,0.021-0.529,0.022-0.547,0.028C-0.61,0.047-0.67,0.072-0.725,0.111C-0.728,0.113-0.73,0.115-0.733,0.118 C-0.735,0.12-0.74,0.12-0.743,0.122C-0.755,0.13-0.76,0.144-0.771,0.152C-0.813,0.187-0.849,0.226-0.88,0.27 c-0.013,0.019-0.025,0.038-0.036,0.057c-0.024,0.044-0.043,0.091-0.056,0.14C-0.978,0.485-0.984,0.501-0.988,0.52 C-1,0.583-1.003,0.646-0.995,0.711l0.002,0.019c0,0.001,0,0.003,0,0.003l1.548,12.704c0.024,0.208,0.152,0.391,0.338,0.487 c0.093,0.048,0.192,0.071,0.293,0.071c0.104,0,0.208-0.025,0.302-0.075l4.022-2.163l2.069,2.054 c0.123,0.121,0.284,0.185,0.449,0.185c0.082,0,0.165-0.016,0.244-0.049c0.236-0.099,0.392-0.331,0.392-0.587v-3.298l4.001-2.149 C12.873,7.802,13.001,7.585,13,7.351C13,7.115,12.869,6.9,12.661,6.79z M0.644,3.643l4.102,7.083l-3.04,1.633L0.644,3.643z M7.392,11.831l-1.258-1.248L3.038,5.237l4.354,4.694V11.831z M8.16,8.889L2.643,2.941l8.368,4.417L8.16,8.889z"></path></svg></span></span></a></li> <!----> <li data-cy="user-menu" role="none" class="nav-dropdown nav-dropdown-account nav-arrow-end"><a target="_self" href="https://www.upwork.com/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92/#" role="menuitem" aria-haspopup="true" aria-expanded="false" data-cy="menu-trigger" class="nav-item"><div aria-label="Account Settings" tabindex="-1" class="nav-item-label"><img alt="Tanveer Alam" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ" class="nav-user-avatar nav-avatar"> <div class="d-flex flex-1 align-items-center"><div class="account-info flex-1 d-lg-none"><div class="account-name ellipsis">
+          Tanveer Alam
+        </div></div> <!----></div></div> <span icon-name="arrow-expand" size="" aria-hidden="true" class="up-s-nav-icon nav-caret d-lg-none  "><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 12l7-7.4L12.5 3 7 8.9 1.5 3 0 4.6z"></path></svg></span></a> <ul role="menu" class="nav-dropdown-menu mw-350"> <li role="none" class="nav-status d-flex"><button type="button" aria-label="Appear online to other users" data-cy="user-menu-visible-trigger" class="active">
+      Online
+    </button> <button type="button" aria-label="Appear offline to other users" data-cy="user-menu-invisible-trigger" class="">
+      Invisible
+    </button></li> <li role="none"><ul role="menu" class="nav-dropdown-list nav-dropdown-scroll"><li role="none" class="active" data-cy="organization-d10911134"><a target="_self" data-cy="menu-item-trigger" href="javascript:" role="menuitem" class=""><div tabindex="-1" class="d-flex"><up-c-img alt="Tanveer Alam" src="https://www.upwork.com/profile-portraits/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ" class="nav-avatar hydrated"><up-c-intersection-observer class="hydrated"><img src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/c1V3q6QpFlYn_5YF411Pgu2k3ax5YvO1THrLn-0olf2Zvn8JMJ4fBh0wIVt35B9HcJ" alt="Tanveer Alam"></up-c-intersection-observer></up-c-img> <div class="d-flex flex-1 align-items-center"><div class="flex-1"><div class="ellipsis">
+                Tanveer Alam
+              </div> <div class="org-type ellipsis">
+                Freelancer
+              </div></div> <!----></div></div></a></li></ul></li> <li role="none" class="nav-option d-none d-lg-flex"><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/freelancers/settings/contactInfo" role="menuitem" class="flex-1"><span icon-name="settings" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 9.45A2.49 2.49 0 0 1 4.48 7 2.49 2.49 0 0 1 7 4.55c1.39 0 2.52 1.1 2.52 2.45A2.49 2.49 0 0 1 7 9.45zm5.35-1.76a5.24 5.24 0 0 0 0-1.38l1.52-1.15c.13-.1.17-.3.08-.45L12.51 2.3c-.08-.16-.28-.21-.44-.16l-1.79.7a5.27 5.27 0 0 0-1.21-.68L8.79.29A.35.35 0 0 0 8.44 0H5.56a.35.35 0 0 0-.35.3l-.27 1.85c-.44.17-.85.41-1.22.68l-1.8-.7a.36.36 0 0 0-.43.16L.05 4.71c-.1.16-.05.34.09.45l1.52 1.15a5.32 5.32 0 0 0 0 1.38L.14 8.84c-.14.1-.18.3-.09.45l1.44 2.42c.09.16.28.21.44.16l1.79-.7c.37.28.78.5 1.22.68l.27 1.86c.02.16.17.29.35.29h2.88c.18 0 .33-.13.35-.3l.28-1.85c.44-.17.84-.41 1.21-.68l1.8.7c.16.06.35 0 .43-.16l1.44-2.42a.35.35 0 0 0-.08-.45L12.35 7.7z"></path></svg></span>Settings
+  </a></li> <li role="none" class="nav-option d-none d-lg-flex"><a href="javascript:" role="menuitem" data-cy="logout-trigger" class="link-logout flex-1"><form method="post" action="https://www.upwork.com/ab/account-security/logout"></form> <span icon-name="remove" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M6 12H2V2h4V0H0v14h6v-2z"></path> <path d="M14 7L9.4 1.5 7.9 2.8 10.6 6H3v2h7.6l-2.7 3.2 1.5 1.3L14 7z"></path></svg></span> <span>Log out</span></a></li></ul></li> <li role="none" class="nav-option d-lg-none"><a target="_self" data-cy="menu-item-trigger" href="https://www.upwork.com/freelancers/settings/contactInfo" role="menuitem" class="nav-item"><span icon-name="settings" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path fill-rule="evenodd" d="M7 9.45A2.49 2.49 0 0 1 4.48 7 2.49 2.49 0 0 1 7 4.55c1.39 0 2.52 1.1 2.52 2.45A2.49 2.49 0 0 1 7 9.45zm5.35-1.76a5.24 5.24 0 0 0 0-1.38l1.52-1.15c.13-.1.17-.3.08-.45L12.51 2.3c-.08-.16-.28-.21-.44-.16l-1.79.7a5.27 5.27 0 0 0-1.21-.68L8.79.29A.35.35 0 0 0 8.44 0H5.56a.35.35 0 0 0-.35.3l-.27 1.85c-.44.17-.85.41-1.22.68l-1.8-.7a.36.36 0 0 0-.43.16L.05 4.71c-.1.16-.05.34.09.45l1.52 1.15a5.32 5.32 0 0 0 0 1.38L.14 8.84c-.14.1-.18.3-.09.45l1.44 2.42c.09.16.28.21.44.16l1.79-.7c.37.28.78.5 1.22.68l.27 1.86c.02.16.17.29.35.29h2.88c.18 0 .33-.13.35-.3l.28-1.85c.44-.17.84-.41 1.21-.68l1.8.7c.16.06.35 0 .43-.16l1.44-2.42a.35.35 0 0 0-.08-.45L12.35 7.7z"></path></svg></span>
+        Settings
+      </a></li> <li role="none" class="nav-option d-lg-none" data-cy="logout-trigger-mobile"><a target="_self" data-cy="menu-item-trigger" href="javascript:" role="menuitem" class="link-logout nav-item"><form id="nav-logout-mobile" method="post" action="https://www.upwork.com/ab/account-security/logout" class="d-none"></form> <span icon-name="remove" size="" aria-hidden="true" class="up-s-nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14" role="img"><path d="M6 12H2V2h4V0H0v14h6v-2z"></path> <path d="M14 7L9.4 1.5 7.9 2.8 10.6 6H3v2h7.6l-2.7 3.2 1.5 1.3L14 7z"></path></svg></span>Log out
+      </a></li></ul></div></div></nav></nav>
+<div data-ng-controller="headerController" class="ng-scope">
+<div id="up-s-top-nav-proxy" data-server-rendered="true" data-eo-channel-proxy="NavAppEoChannelProxyCallback" data-eo-channel-proxy-element-id="up-s-top-nav-container" data-eo-channel-proxy-channels="channels.badges.dash,channels.dash.ooo,channels.dash.visibility" data-eo-channel-proxy-ready-event="store-is-ready" data-eo-channel-proxy-ready-flag="emitAction" class="ng-isolate-scope"></div>
+</div>                                                                              <div class="layout-page-content">
+                    
+
+
+
+
+
+
+
+
+
+<job-details class="d-block jd-container standalone container ng-isolate-scope"><ng-transclude class="d-block">
+    <h1 class="d-none d-lg-block ng-scope">Job details</h1>
+
+    <div class="pre-card-blocks ng-scope">
+            <div data-o-smf="" class="ng-isolate-scope"><!-- ngRepeat: message in messages --> </div>
+
+
+    
+    
+                                    </div>
+
+            
+
+
+
+
+
+
+
+
+
+
+
+        <div class="jd-card air-card p-0-top-bottom m-0-top-bottom ng-scope">
+        <div class="row">
+            <div class="content col-lg-9">
+                            <header>
+                    <h2 class="m-0-bottom" data-ng-non-bindable="">Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API</h2>
+                </header>
+            
+                <section class="air-card-divider-sm">
+                
+                    
+
+            <ol class="breadcrumb sands-category m-xs-right m-0-top-bottom d-inline-block">
+                            <li class="m-0-bottom">
+                            <a href="https://www.upwork.com/ab/jobs/search/?occupation_uid=1110580748673863680" class="specialization">
+            Back-End Development
+        </a>
+    
+            </li>
+                </ol>
+                    
+                                    <div class="nowrap text-muted">
+                        Posted
+                        <span class="no-close-lg" data-eo-popover-html-unsafe="&lt;div class=&#39;text-center&#39;&gt;June 16, 2020&lt;/div&gt;" data-eo-popover-trigger="mouseenter" data-eo-popover-size="sm" data-eo-popover-placement="bottom" eo-popover-id="6">
+    8 days ago
+</span>                    </div>
+                
+                
+                
+                                    <div class="m-md-top visible-xxs visible-xs visible-sm">
+                    <div class="no-close-lg connects eo-popover-helper justify-xs-md text-muted">
+                        <span class="primary">
+                            6 required Connects
+                (14 available)
+                        </span>
+            <a class="no-close-lg" data-eo-popover="!connects/connects-popover.html" data-eo-popover-trigger="mouseenter" data-eo-popover-placement="top" data-eo-popover-hoverable="true" eo-popover-id="7"><span aria-hidden="true" class="text-success glyphicon air-icon-question-circle m-0"></span></a>
+            </div>
+                    </div>
+                                </section>
+
+                <section class="air-card-divider-sm">
+                    
+
+<div class="job-description break">
+    <div data-ng-non-bindable="">
+        Hetzner cloud production-ready cluster<br>
+<br>
+We are looking for offers from people who know both Kubernetes and Go (Golang) very well. Knowledge of Linux and networking is also required.We want to build a highly available Kubernetes cluster on Hetzner cloud servers. For this we need the Cluster API (https://github.com/kubernetes-sigs/cluster-api). There are several examples for the Cluster API in action, e.g. for AWS (https://github.com/kubernetes-sigs/cluster-api-provider-aws), Azure (https://github.com/kubernetes-sigs/cluster-api-provider-azure) and Packet (https://github.com/packethost/cluster-api-provider-packet). They are all build using the very well documented framework of the Cluster API (https://cluster-api.sigs.k8s.io/).Much of your work has already been done (https://github.com/cornelius-keller/cluster-api-provider-hetznercloud). Basically, the existing provider integration followed 3.6.3 and 3.6.4 of the Cluster API book (https://cluster-api.sigs.k8s.io/).<br>
+<br>
+What we need, is to make the Cluster API for Hetzner cloud servers production ready, as well as other features which allow for a production-ready Kubernetes cluster.<br>
+<br>
+From you, we expect to know Kubernetes and Go very well. We can help you out on several of the below-mentioned tasks, but it would also be great if you are able to do all of them. <br>
+<br>
+In the following, we describe our project plan:.<br>
+<br>
+private Network<br>
+<br>
+implementation of the web hooks in the provider integration<br>
+<br>
+HA Floating IP for the control planes IPv4/IPv6, but Kubernetes without Dual Stack because private network is only IPv4.<br>
+<br>
+Custom load balancer. We are using Floating IPs, MetalLB, Calico and can use this controller as basis for assigning the IPs to the nodes:&nbsp;https://github.com/cbeneke/hcloud-fip-controller. Here we have to implement to version of the controller one for the kubeapiserver and one for the load balancing with MetalLB, the challenge is to follow MetalLB election process.<br>
+<br>
+IPv6 to IPv4 translation for all Floating IPs; gobetween for example<br>
+<br>
+Bastion Host in HA mode&nbsp;https://docs.aws.amazon.com/quickstart/latest/linux-bastion/architecture.html<br>
+<br>
+Implementation of the upcoming version v0.3.x (June-July). E2E test plan, Machine Health Checks, auto-scaler, etc.&nbsp;https://cluster-api.sigs.k8s.io/roadmap.html<br>
+<br>
+OS configurations: Firewall, SELinux, Appamor, CRI and other security precautions; you will work together with our team on this feature. We follow the CIS Guidelines. The provider integration can not follow the best practices of the Cluster API with the use of images, because the provider Hetzner does not allow the use of own images. All configuration is made by scripts&nbsp;https://github.com/cornelius-keller/cluster-api-provider-hetznercloud/blob/master/controllers/templates.go&nbsp;and the use of PreKubeAdm of the CABPK (https://github.com/kubernetes-sigs/cluster-api/tree/master/bootstrap/kubeadm). Furthermore we have to implement here the things we defined on the Provider integration and in the template, like the private network and therefore the deactivating of the external IP address. On several points we have to adjust both the provider integration and the OS Configuration. To cover several templates and machineDeployments we have to find first the best structure to modularize and reuse the scripts or making use of PreKubeAdm and PostKubeAdm.<br>
+<br>
+Cluster API Security; Management Cluster access control and preventing of deleting nodes accidentally, backups of etcd<br>
+<br>
+Kubernetes Security and Cluster API Provider Development. We want to make the use of E2E Test for testing out the Provider Integration, the Kubernetes Conformance, the Cluster Security (several Test suites like CIS Kubernetes Benchmark).<br>
+<br>
+Cluster API upgrades (Provider related, K8s Version, OS configuration) We think the best approach is to versionize with the Kubernetes Version and to separate all configuration of the Kubernetes and OS related config in directories. This way we have backward compatibility and can develop an upgrade path.<br>
+<br>
+Template for creating control planes in all three data center, and one for creating control planes in only one data center. For testing reason to find out if we need Federation for multi cloud.1.For your information: We will also make use of the CCM&nbsp;https://github.com/hetznercloud/hcloud-cloud-controller-manager&nbsp;and CSI&nbsp;https://github.com/hetznercloud/csi-driver. The latter should be consumed by Rook.Useful links, just for your information:Cluster API:https://cluster-api.sigs.k8s.io/https://github.com/kubernetes-sigs/cluster-apiHetzner API:https://robot.your-server.de/doc/webservice/en.html#prefaceHetzner Floating IP Controller:https://github.com/cbeneke/hcloud-fip-controllerHetzner Cloud Controller Manager:https://github.com/hetznercloud/hcloud-cloud-controller-managerTools to build the API:https://book.kubebuilder.io/https://github.com/kubernetes-sigs/cluster-api-provider-docker/Image builder:https://image-builder.sigs.k8s.io/https://wiki.hetzner.de/index.php/Installimage/en
+    </div>
+</div>                </section>
+
+                <section class="air-card-divider-sm">
+                    
+
+
+
+<ul class="job-features p-0">
+
+
+    <li>
+        <i class="glyphicon air-icon-fixed-price jobdetails-tier-level-icon"></i>
+        <strong>$1,800</strong>
+        <small class="text-muted">Fixed-price</small>
+    </li>
+
+    
+    <li>
+                    <i class="jobdetails-tier-level-icon">$$</i>
+            <strong>
+                <span class="d-none d-lg-inline">Intermediate level</span>
+                <span class="d-lg-none">$$</span>
+            </strong>
+            <small class="text-muted">
+                <span class="d-none d-lg-inline">
+                    I am looking for a mix of experience and value
+                </span>
+                <span class="d-lg-none">Intermediate level</span>
+            </small>
+            </li>
+
+
+</ul>
+                </section>
+
+                
+                
+                                    <section class="air-card-divider-sm p-0-top">
+                    
+                                            <ul class="list-unstyled m-md-top m-0-bottom">
+                                                        <li class="justify-xs-md">
+        <strong class="m-sm-right primary">Project Type:</strong><span data-ng-non-bindable="">One-time project</span>
+    </li><input type="hidden" id="form__token" name="form[_token]" value="aqFK2KM72Xjt5T4VRnOwJKQhmUVNGmdgFMKHNQMCk3M" autocomplete="off">
+                        </ul>
+                    
+                    
+                                            <div class="m-md-top">
+                            <p class="m-sm-bottom"><strong>
+        You will be asked to answer the following questions when submitting a proposal:
+    </strong></p>
+    <ol class="break">
+            <li data-ng-non-bindable="">Do you have any questions about the job description?</li>
+            <li data-ng-non-bindable="">Do you have suggestions to make this project run successfully?</li>
+            <li data-ng-non-bindable="">What challenging part of this job are you most experienced in?</li>
+            <li data-ng-non-bindable="">What past project or job have you had that is most like this one and why?</li>
+            <li data-ng-non-bindable="">Why do you think you are a good fit for this particular project?</li>
+        </ol>
+                        </div>
+                                        </section>
+                
+                                    <section class="air-card-divider-sm">
+                        
+
+<h4>Skills and expertise</h4>
+    <div class="sands-groups">
+        <div class="row">
+                    <div class="col-sm-6 m-md-bottom">
+                <div class="m-xs-bottom"><strong>Back-End Development Deliverables</strong></div>
+                                                    <a class="o-tag m-0-left m-0-top m-xs-bottom" href="https://www.upwork.com/ab/jobs/search/?ontology_skill_uid=1110580482322976768" target="_self">API</a>
+    
+                            </div>
+                    <div class="col-sm-6 m-md-bottom">
+                <div class="m-xs-bottom"><strong>Back-End Programming Languages</strong></div>
+                                                    <a class="o-tag m-0-left m-0-top m-xs-bottom" href="https://www.upwork.com/ab/jobs/search/?ontology_skill_uid=1031626741679374336" target="_self">Golang</a>
+    
+                            </div>
+                    <div class="col-sm-6 m-md-bottom">
+                <div class="m-xs-bottom"><strong>Back-End Development Skills</strong></div>
+                                                    <a class="o-tag m-0-left m-0-top m-xs-bottom" href="https://www.upwork.com/ab/jobs/search/?ontology_skill_uid=1031626753024966656" target="_self">Kubernetes</a>
+    
+                            </div>
+                            <div class="col-sm-6 m-md-bottom">
+                <div class="m-xs-bottom"><strong>Other</strong></div>
+                                                    <a class="o-tag m-0-left m-0-top m-xs-bottom" href="https://www.upwork.com/ab/jobs/search/?ontology_skill_uid=1031626762369875968" target="_self">Network Design</a>
+    
+                                                    <a class="o-tag m-0-left m-0-top m-xs-bottom" href="https://www.upwork.com/ab/jobs/search/?ontology_skill_uid=1031626754568470528" target="_self">Linux</a>
+    
+                                            <skills data-skills="[]" data-job-search-base-path="/ab/jobs/search" data-visitor-skill-base-path="/freelance-jobs/" data-is-visitor-mode="false" class="ng-isolate-scope"><!-- ngRepeat: skill in $ctrl.skills --></skills>
+    
+            </div>
+                </div>
+    </div>
+                    </section>
+                
+                <section class="row air-card-divider-sm">
+                                    <div class="col-lg-6">
+                        
+
+
+<h4>Preferred qualifications</h4>
+
+<ul class="list-unstyled">
+
+
+
+
+    <li class="justify-xs-md">
+        <span class="primary text-muted">Job Success Score:</span>
+        At least
+        90%<span aria-hidden="true" class="text-danger glyphicon air-icon-exclamation-circle m-0-right" title="You do not meet this qualification"></span></li>
+
+        <li class="justify-xs-md">
+        <span class="primary text-muted">Include Rising Talent:</span>
+        Yes<span aria-hidden="true" class="text-danger glyphicon air-icon-exclamation-circle m-0-right" title="You do not meet this qualification"></span></li>
+
+
+
+
+
+
+
+    
+
+</ul>
+                    </div>
+                                    <div class="col-lg-6">
+                        <h4>Activity on this job</h4>
+
+<ul class="list-unstyled">
+            <li class="justify-xs-md">
+        <span class="text-muted primary">
+            Proposals:
+            <a data-eo-popover-html-unsafe="This range includes relevant proposals, but does not include
+                    proposals that are withdrawn, declined, or archived. Please note that all
+                    proposals are accessible to clients on their applicants page." data-eo-popover-trigger="mouseenter" class="no-close-lg" eo-popover-id="9"><span aria-hidden="true" class="text-success glyphicon air-icon-question-circle m-0-left"></span></a>
+        </span>
+        Less than 5    </li>
+    <li class="justify-xs-md">
+        <span class="text-muted primary">
+            Last viewed by client:
+            <a class="help-icon no-close-lg" data-eo-popover-html-unsafe="This is when the client last reviewed or interacted with the applicants for this job." data-eo-popover-trigger="mouseenter" eo-popover-id="10"><span aria-hidden="true" class="text-success glyphicon air-icon-question-circle m-0-left"></span></a>
+        </span>
+        6 days ago</li>
+
+
+    <li class="justify-xs-md">
+        <span class="primary text-muted">Interviewing:</span>
+        4
+    </li>
+
+    <li class="justify-xs-md">
+        <span class="primary text-muted">Invites sent:</span>
+        9
+    </li>
+    <li class="justify-xs-md">
+        <span class="primary text-muted">Unanswered invites:</span>
+        1
+    </li>
+
+</ul>                    </div>
+                    <bids data-ciphertext="~01c7a329c10e645c92" data-enough-applicants-for-upgrade-hint="true" data-bid-range-visible="false" data-is-owner="false" data-is-client="false" data-opening-uid="1272918648462626816" class="col-lg-12 ng-isolate-scope"><!-- ngIf: $ctrl.showBidsBlock --><div data-ng-if="$ctrl.showBidsBlock" class="ng-scope" style=""> <h3 class="m-0-bottom" data-ng-show="$ctrl.showUpgradeHint"> <div class="bid-range"> <strong>Upgrade your membership to see the bid range</strong> <a aria-hidden="true" data-eo-popover="!bids/bid-range-popover.html" data-eo-popover-size="lg" data-eo-popover-placement="top" data-eo-popover-animation="false" data-eo-popover-popup-delay="200" data-eo-popover-trigger="mouseenter" data-eo-popover-hoverable="true" eo-popover-id="55"><span aria-hidden="true" class="text-success glyphicon air-icon-question-circle m-0"></span></a> </div> </h3> <h3 class="m-0-bottom ng-hide" data-ng-show="$ctrl.showBids"> Bid range - <strong class="ng-binding"> High $ | Avg $ | Low $ </strong> </h3> </div><!-- end ngIf: $ctrl.showBidsBlock --></bids>
+                </section>
+
+                        </div><!-- /.content -->
+            <script type="text/javascript">
+                create_mark('mainContentRenderedEnd');
+                create_measure('mainContentRendered', 'navigationStart', 'mainContentRenderedEnd');
+            </script>
+
+                    <aside class="sidebar-actions col-lg-3">
+                <div class="sidebar m-0-top p-0-top-bottom">
+                    <section class="p-0-bottom">
+                                                                    <div class="cta cta-desktop d-none d-md-block m-md-bottom">
+                            <div class="jobsProviderAction">
+    <div class="row buttons">
+        <div class="primary col-lg-12 col-sm-6 col-xs-6">
+        
+
+
+    <cta-apply data-verification="{&quot;preventApply&quot;:false,&quot;messageType&quot;:&quot;&quot;,&quot;messageString&quot;:&quot;&quot;}" data-is-eligible-for-idv-limited-admission="false" class="ng-isolate-scope">
+        <a class="btn btn-primary btn-block" rel="nofollow" href="https://www.upwork.com/ab/proposals/job/~01c7a329c10e645c92/apply/" data-ng-click="$ctrl.clickApplyButton($event, false)" data-ng-class="{
+            disabled: $ctrl.applyInProgress
+        }">Submit a Proposal
+        <span aria-hidden="true" class="glyphicon air-icon-loading vertical-align-middle ng-hide" data-ng-show="$ctrl.applyInProgress"></span>
+    </a>
+
+</cta-apply>
+
+<script type="text/ng-template" id="!cta-apply.component.html">
+        <a
+        class="btn btn-primary btn-block"
+        rel="nofollow"
+        href="/ab/proposals/job/~01c7a329c10e645c92/apply/"
+                data-ng-click="$ctrl.clickApplyButton($event, false)"
+        data-ng-class="{
+            disabled: $ctrl.applyInProgress
+        }"
+        >Submit a Proposal
+        <span
+            aria-hidden="true"
+            class="glyphicon air-icon-loading vertical-align-middle"
+            data-ng-cloak
+            data-ng-show="$ctrl.applyInProgress"
+        ></span>
+    </a>
+
+</script>
+        </div>
+        <script type="text/ng-template" id="!save-job.component.html">
+    <button
+        class="btn btn-default btn-circle visible-xxs"
+        aria-label="{{$ctrl.isSaved ? 'Unsave' : 'Save' }} this job"
+        data-ng-class="{ disabled: $ctrl.isInProgress }"
+        data-ng-click="$ctrl.saveJobClick()"
+    >
+        <span
+            aria-hidden="true"
+
+                        class="glyphicon air-icon-favorite-activated"
+
+            data-ng-class="{
+                'air-icon-favorite-deactivated' : !$ctrl.isSaved,
+                'air-icon-favorite-activated' : $ctrl.isSaved
+            }"
+        ></span>
+    </button>
+    <button
+        class="btn btn-default btn-block hidden-xxs"
+        aria-label="{{$ctrl.isSaved ? 'Unsave' : 'Save' }} this job"
+        data-ng-class="{ disabled: $ctrl.isInProgress }"
+        data-ng-click="$ctrl.saveJobClick()"
+
+    ><span
+            class="glyphicon m-0-left air-icon-favorite-activated"
+            aria-hidden="true"
+            data-ng-class="{
+                'air-icon-favorite-deactivated' : !$ctrl.isSaved,
+                'air-icon-favorite-activated' : $ctrl.isSaved
+            }"
+        ></span><span
+            data-ng-bind="$ctrl.isSaved ? 'Saved' : 'Save Job'"
+        >Saved</span></button>
+</script>
+
+<save-job class="secondary saveJobLinkContainer col-lg-12 col-sm-6 col-xs-6 ng-isolate-scope" data-is-saved-init="true">
+    <button class="btn btn-default btn-circle visible-xxs" aria-label="Unsave this job" data-ng-class="{ disabled: $ctrl.isInProgress }" data-ng-click="$ctrl.saveJobClick()">
+        <span aria-hidden="true" class="glyphicon air-icon-favorite-activated" data-ng-class="{
+                &#39;air-icon-favorite-deactivated&#39; : !$ctrl.isSaved,
+                &#39;air-icon-favorite-activated&#39; : $ctrl.isSaved
+            }"></span>
+    </button>
+    <button class="btn btn-default btn-block hidden-xxs" aria-label="Unsave this job" data-ng-class="{ disabled: $ctrl.isInProgress }" data-ng-click="$ctrl.saveJobClick()"><span class="glyphicon m-0-left air-icon-favorite-activated" aria-hidden="true" data-ng-class="{
+                &#39;air-icon-favorite-deactivated&#39; : !$ctrl.isSaved,
+                &#39;air-icon-favorite-activated&#39; : $ctrl.isSaved
+            }"></span><span data-ng-bind="$ctrl.isSaved ? &#39;Saved&#39; : &#39;Save Job&#39;" class="ng-binding">Saved</span></button>
+</save-job>    </div>
+</div>
+                        </div>
+
+                                                                            <job-flagging class="m-md-top-bottom d-none d-lg-block ng-isolate-scope"><div class="flagging-popover-wrapper" data-ng-show="!$ctrl.success"> <a href="javascript:" class="pull-left m-0-top" id="jsFlagJobLink" data-ng-show="!$ctrl.success" data-ng-click="!$ctrl.isSubmitting &amp;&amp; $ctrl.showModal()"><span data-ng-show="$ctrl.isSubmitting" aria-hidden="true" class="glyphicon air-icon-loading vertical-align-middle ng-hide"></span><span data-ng-show="!$ctrl.isSubmitting" aria-hidden="true" class="glyphicon air-icon-flag m-0-left"></span><span>Flag as inappropriate</span></a> <div class="clearfix"></div> </div></job-flagging>
+                        
+                                                                            <div class="m-md-top-bottom d-none d-lg-block">
+                            <div class="no-close-lg connects eo-popover-helper">
+                        <span class="primary">
+                            Required Connects to&nbsp;submit a&nbsp;proposal:
+                6            </span>
+            <a class="no-close-lg" data-eo-popover="!connects/connects-popover.html" data-eo-popover-trigger="mouseenter" data-eo-popover-placement="top" data-eo-popover-hoverable="true" eo-popover-id="13"><span aria-hidden="true" class="text-success glyphicon air-icon-question-circle m-0"></span></a>
+            </div>
+    <div class="m-sm-top">
+        Available Connects: 14
+    </div>
+                            </div>
+                                                                </section>
+                </div>
+            </aside>
+        
+                    <aside class="sidebar-extra col-lg-3">
+                <div class="sidebar m-0-top p-0-top">
+                                    
+
+
+
+
+
+
+
+
+
+
+
+                
+                    <section class="air-card-divider-sm">
+                        
+<h4>About the client</h4>
+
+
+    <div class="m-md-bottom">
+            <span class="text-muted">Payment method not verified</span>
+        <a class="no-close-lg" data-eo-popover="!aboutbuyer/not-verified.html" data-eo-popover-trigger="mouseenter" data-eo-popover-placement="top" data-eo-popover-hoverable="true" eo-popover-id="14"><span class="text-success glyphicon m-0 air-icon-question-circle" aria-hidden="true"></span></a>
+        <script type="text/ng-template" id="!aboutbuyer/not-verified.html">
+            <div>
+                This client does not have a verified payment method with Upwork.
+                <a href="https://support.upwork.com/entries/23116462">Learn how this affects your payment protection.</a>
+            </div>
+        </script>
+        </div>
+
+    <ng-transclude data-opening-ciphertext="~01c7a329c10e645c92" data-qa="about-buyer-client-name" class="ng-isolate-scope">
+        <h4 ng-show="clientName" class="ng-binding ng-scope ng-hide" style="">false</h4>
+    </ng-transclude>
+
+
+<ul class="list-unstyled m-0-bottom">
+    <li class="justify-xs-md" data-qa="client-location">
+        <strong class="primary">Germany</strong>
+        <div class="text-muted">
+            <span class="nowrap"></span>
+            <span class="nowrap">10:58 am</span>
+        </div>
+    </li>
+
+            <li class="justify-xs-md" data-qa="client-job-posting-stats">
+        <strong class="primary">
+            2
+            jobs posted
+        </strong>
+        <div class="text-muted">
+            0% hire rate,
+            2 open jobs
+        </div>
+    </li>
+
+
+    <li class="m-0-bottom" data-qa="client-contract-date">
+        <small class="text-muted">
+            Member since Jun 13, 2020
+        </small>
+    </li>
+</ul>
+                    </section>
+
+                                    <section class="air-card-divider-sm">
+                        <job-details-copy-link data-cipher-text="~01c7a329c10e645c92" class="ng-isolate-scope">
+            <div>
+                <h4>Job link</h4>
+                <div class="m-xs-top">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" data-ng-model="$ctrl.jobDetailsUrl" readonly="">
+                </div>
+                <div class="m-sm-top">
+                    <button data-ng-click="$ctrl.copyJobLink()" class="btn btn-link p-0 m-0-bottom">Copy link</button>
+                </div>
+            </div>
+        </job-details-copy-link></section>
+                                </div>
+            </aside>
+                </div>
+    </div>
+
+    
+            <div class="air-card m-0-bottom p-0-top-bottom ng-scope">
+            <header>
+                <h2 class="m-0-bottom">Other open jobs by this Client (1)</h2>
+            </header>
+            <other-jobs data-jobs="[{&quot;type&quot;:1,&quot;title&quot;:&quot;Golang and Kubernetes developer needed for Cluster API provider integration&quot;,&quot;ciphertext&quot;:&quot;~0102fc3cffd848dd0e&quot;,&quot;access&quot;:1,&quot;recno&quot;:219915276,&quot;createdOn&quot;:null,&quot;isPtcJob&quot;:false,&quot;isPtcPrivate&quot;:false,&quot;isStaffAugmentation&quot;:false,&quot;uid&quot;:null,&quot;isStaffAugmentationDuplicate&quot;:false,&quot;premium&quot;:false,&quot;hideBudget&quot;:false,&quot;notSureFreelancersToHire&quot;:false,&quot;notSureProjectDuration&quot;:false,&quot;notSureExperienceLevel&quot;:false,&quot;notSureLocationPreference&quot;:false,&quot;weeklyRetainerBudget&quot;:{&quot;currencyCode&quot;:&quot;USD&quot;,&quot;amount&quot;:0} }]" data-is-client="false" data-base-uri="/jobs/" class="ng-isolate-scope"><section class="other-jobs"> <ul class="list-unstyled m-0-bottom" id="otherOpenJobs"> <!-- ngRepeat: job in $ctrl.shownJobs --><li data-ng-repeat="job in $ctrl.shownJobs" class="ng-scope"> <!-- ngIf: !job.isPtcPrivate --><strong data-ng-if="!job.isPtcPrivate" class="ng-scope"> <a href="https://www.upwork.com/jobs/Golang-and-Kubernetes-developer-needed-for-Cluster-API-provider-integration_~0102fc3cffd848dd0e/" data-ng-href="/jobs/Golang-and-Kubernetes-developer-needed-for-Cluster-API-provider-integration_~0102fc3cffd848dd0e/" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" data-ng-click="$ctrl.logShastaEvent(job.uid)" class="ng-binding" target="_self">Golang and Kubernetes developer needed for Cluster API provider integration</a> </strong><!-- end ngIf: !job.isPtcPrivate --> <!-- ngIf: job.isPtcPrivate --> <span class="type text-muted d-block d-md-inline ng-binding">Fixed-price</span> </li><!-- end ngRepeat: job in $ctrl.shownJobs --> </ul> <!-- ngIf: $ctrl.shownJobs.length < $ctrl.jobs.length --> </section></other-jobs>
+        </div>
+    
+            <div class="air-card m-0-bottom p-0-top-bottom ng-scope">
+            <similar-jobs data-jobs="[{&quot;ciphertext&quot;:&quot;~01e3ac978dedef3eac&quot;,&quot;title&quot;:&quot;Supplement Product - Ready to Drink&quot;,&quot;snippet&quot;:&quot;Hi there\n\nWe are looking at rolling out a ready to drink protein shake (Low carbs).\nWe need advice on \n1. How to get started\n2. Who to engage to manufacture \n3. How to formulate \n\nThanks&quot;,&quot;uid&quot;:&quot;1270771151975043072&quot;},{&quot;ciphertext&quot;:&quot;~01c3b9dd8b399e8a21&quot;,&quot;title&quot;:&quot;Are you ready 1&quot;,&quot;snippet&quot;:&quot;A company or individual that can do corrections in grammar, spelling, word checks, sentence and paragraph formation, etc without changing the meaning.  Also one that can work with me.&quot;,&quot;uid&quot;:&quot;1273238279253352448&quot;},{&quot;ciphertext&quot;:&quot;~019054c6cb8120a9df&quot;,&quot;title&quot;:&quot;Build list of email and phone number leads that are interested and ready to buy my product.&quot;,&quot;snippet&quot;:&quot;I need a list of leads In the next couple of weeks that are interested in my make money online product and are ready to buy.  I need emails and phone numbers.&quot;,&quot;uid&quot;:&quot;1274465128931393536&quot;},{&quot;ciphertext&quot;:&quot;~01357ba478358473b3&quot;,&quot;title&quot;:&quot;Full-Stack Developer for Cloud based AI software product&quot;,&quot;snippet&quot;:&quot;We are looking for a part-time full-stack developer to help us in improving our core software product. Top job duties include:\n\n- Add new features and improve post-processing through rules based string searches including regular expressions and fuzzy matching \n- Create a database to cache results \n- Deploy changes to cloud using docker and Kubernetes as necessary \n- Add unit &amp; request tests to ensure safe deployments\n\nRequired skills:\n- 2+ years working in software development\n- Strong problem solving skills and ability to work independently\n- Strong Python programming skills\n- Experience with creating and CRUD operations for SQL databases\n- Proficiency working with Javascript\n- Proficiency writing regular expressions and performing string manipulation\n- Experience working in cloud environments such as AWS, Google Cloud Platform, Azure\n- Experience writing unit &amp; request tests\n\nPreferred skills:\n- Experience using docker \/ kubernetes\n- Knowledge of Machine Learning \/ AI\n- Experience with Angular \/ React.js\n- Experience with one or more of the following: natural language processing, computer vision, deep learning, GPU acceleration\n- Experience working in google cloud platform\n\nNice to have:\nFront end experience, implementing professional UI\/UX for professional website creation&quot;,&quot;uid&quot;:&quot;1273418421053382656&quot;},{&quot;ciphertext&quot;:&quot;~0141dd93f63f710d40&quot;,&quot;title&quot;:&quot;Cloud Based SaaS Product Launch in Chinese Market with Customer Sales &amp; Services&quot;,&quot;snippet&quot;:&quot;We are a startup company Jainam Software (Refer our channel - https:\/\/www.youtube.com\/channel\/UCJJ417AXt1dm0wV9i9VqKJQ), a cloud based product for specially designed for MicroFinanciers worldwide. We are looking for a Chinese company \/ Individual who can help us in launching our product in Chinese Market. We need below help.\n\n1. Social Media Presence in China\n2. Prepare Youku Videos for Software Demo. We have YouTube videos to explain our product. We want at least 10 of such videos to upload in Chinese\n3. Find an agency who can be Customer Representative to handle customer calls and provide demo\n4.  Give quotation to customer and follow up to complete the deals\n\nFew product videos are given here\n\n1. Jainam Software Company Profile\n https:\/\/www.youtube.com\/watch?v=-agFead-gSg&amp;t=6s\n\n2. How to start - company, group, employee setup\nhttps:\/\/www.youtube.com\/watch?v=cw7stIhlUUI\n\n3. Daily Collection \nhttps:\/\/www.youtube.com\/watch?v=6jjrqxvfLBg\n\n4. Interest Calculation\nhttps:\/\/www.youtube.com\/watch?v=kw1EZhCzT6s&quot;,&quot;uid&quot;:&quot;1274243849540337664&quot;}]" data-is-client="false" data-is-visitor="false" data-opening-uid="1272918648462626816" data-base-uri="/jobs/" class="ng-isolate-scope"><header> <h2 class="m-0-bottom">Similar Jobs on Upwork</h2> </header> <section> <ul class="list-unstyled eoTruncateList" id="jobsSimilarList"> <!-- ngRepeat: job in $ctrl.jobs --><li class="ellipsis ng-binding ng-scope" data-ng-repeat="job in $ctrl.jobs"> <strong class="m-xs-bottom m-0-top"> <a href="https://www.upwork.com/jobs/Supplement-Product-Ready-Drink_~01e3ac978dedef3eac/" data-ng-click="$ctrl.logOpeningClick($event, job.uid)" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" class="ng-binding" target="_self">Supplement Product - Ready to Drink</a> </strong> Hi there
+
+We are looking at rolling out a ready to drink protein shake (Low carbs).
+We need advice on 
+1. How to get started
+2. Who to engage to manufacture 
+3. How to formulate 
+
+Thanks </li><!-- end ngRepeat: job in $ctrl.jobs --><li class="ellipsis ng-binding ng-scope" data-ng-repeat="job in $ctrl.jobs"> <strong class="m-xs-bottom m-0-top"> <a href="https://www.upwork.com/jobs/Are-you-ready_~01c3b9dd8b399e8a21/" data-ng-click="$ctrl.logOpeningClick($event, job.uid)" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" class="ng-binding" target="_self">Are you ready 1</a> </strong> A company or individual that can do corrections in grammar, spelling, word checks, sentence and paragraph formation, etc without changing the meaning.  Also one that can work with me. </li><!-- end ngRepeat: job in $ctrl.jobs --><li class="ellipsis ng-binding ng-scope" data-ng-repeat="job in $ctrl.jobs"> <strong class="m-xs-bottom m-0-top"> <a href="https://www.upwork.com/jobs/Build-list-email-and-phone-number-leads-that-are-interested-and-ready-buy-product_~019054c6cb8120a9df/" data-ng-click="$ctrl.logOpeningClick($event, job.uid)" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" class="ng-binding" target="_self">Build list of email and phone number leads that are interested and ready to buy my product.</a> </strong> I need a list of leads In the next couple of weeks that are interested in my make money online product and are ready to buy.  I need emails and phone numbers. </li><!-- end ngRepeat: job in $ctrl.jobs --><li class="ellipsis ng-binding ng-scope" data-ng-repeat="job in $ctrl.jobs"> <strong class="m-xs-bottom m-0-top"> <a href="https://www.upwork.com/jobs/Full-Stack-Developer-for-Cloud-based-software-product_~01357ba478358473b3/" data-ng-click="$ctrl.logOpeningClick($event, job.uid)" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" class="ng-binding" target="_self">Full-Stack Developer for Cloud based AI software product</a> </strong> We are looking for a part-time full-stack developer to help us in improving our core software product. Top job duties include:
+
+- Add new features and improve post-processing through rules based string searches including regular expressions and fuzzy matching 
+- Create a database to cache results 
+- Deploy changes to cloud using docker and Kubernetes as necessary 
+- Add unit &amp; request tests to ensure safe deployments
+
+Required skills:
+- 2+ years working in software development
+- Strong problem solving skills and ability to work independently
+- Strong Python programming skills
+- Experience with creating and CRUD operations for SQL databases
+- Proficiency working with Javascript
+- Proficiency writing regular expressions and performing string manipulation
+- Experience working in cloud environments such as AWS, Google Cloud Platform, Azure
+- Experience writing unit &amp; request tests
+
+Preferred skills:
+- Experience using docker / kubernetes
+- Knowledge of Machine Learning / AI
+- Experience with Angular / React.js
+- Experience with one or more of the following: natural language processing, computer vision, deep learning, GPU acceleration
+- Experience working in google cloud platform
+
+Nice to have:
+Front end experience, implementing professional UI/UX for professional website creation </li><!-- end ngRepeat: job in $ctrl.jobs --><li class="ellipsis ng-binding ng-scope" data-ng-repeat="job in $ctrl.jobs"> <strong class="m-xs-bottom m-0-top"> <a href="https://www.upwork.com/jobs/Cloud-Based-SaaS-Product-Launch-Chinese-Market-with-Customer-Sales-Services_~0141dd93f63f710d40/" data-ng-click="$ctrl.logOpeningClick($event, job.uid)" data-ng-attr-target="{{ $ctrl.openLinksInNewWindow ? &#39;_blank&#39; : &#39;_self&#39; }}" class="ng-binding" target="_self">Cloud Based SaaS Product Launch in Chinese Market with Customer Sales &amp; Services</a> </strong> We are a startup company Jainam Software (Refer our channel - https://www.youtube.com/channel/UCJJ417AXt1dm0wV9i9VqKJQ), a cloud based product for specially designed for MicroFinanciers worldwide. We are looking for a Chinese company / Individual who can help us in launching our product in Chinese Market. We need below help.
+
+1. Social Media Presence in China
+2. Prepare Youku Videos for Software Demo. We have YouTube videos to explain our product. We want at least 10 of such videos to upload in Chinese
+3. Find an agency who can be Customer Representative to handle customer calls and provide demo
+4.  Give quotation to customer and follow up to complete the deals
+
+Few product videos are given here
+
+1. Jainam Software Company Profile
+ https://www.youtube.com/watch?v=-agFead-gSg&amp;t=6s
+
+2. How to start - company, group, employee setup
+https://www.youtube.com/watch?v=cw7stIhlUUI
+
+3. Daily Collection 
+https://www.youtube.com/watch?v=6jjrqxvfLBg
+
+4. Interest Calculation
+https://www.youtube.com/watch?v=kw1EZhCzT6s </li><!-- end ngRepeat: job in $ctrl.jobs --> </ul> </section> </similar-jobs>
+        </div>
+    
+    <job-flagging class="d-block m-lg-top d-lg-none ng-scope ng-isolate-scope"><div class="flagging-popover-wrapper" data-ng-show="!$ctrl.success"> <a href="javascript:" class="pull-left m-0-top" id="jsFlagJobLink" data-ng-show="!$ctrl.success" data-ng-click="!$ctrl.isSubmitting &amp;&amp; $ctrl.showModal()"><span data-ng-show="$ctrl.isSubmitting" aria-hidden="true" class="glyphicon air-icon-loading vertical-align-middle ng-hide"></span><span data-ng-show="!$ctrl.isSubmitting" aria-hidden="true" class="glyphicon air-icon-flag m-0-left"></span><span>Flag as inappropriate</span></a> <div class="clearfix"></div> </div></job-flagging>
+
+        <up-c-sticky-footer class="m-md-top d-md-none cta ng-scope hydrated">
+            <div class="jobsProviderAction">
+    <div class="row buttons">
+        <div class="primary col-lg-12 col-sm-6 col-xs-6">
+        
+
+
+    <cta-apply data-verification="{&quot;preventApply&quot;:false,&quot;messageType&quot;:&quot;&quot;,&quot;messageString&quot;:&quot;&quot;}" data-is-eligible-for-idv-limited-admission="false" class="ng-isolate-scope">
+        <a class="btn btn-primary btn-block" rel="nofollow" href="https://www.upwork.com/ab/proposals/job/~01c7a329c10e645c92/apply/" data-ng-click="$ctrl.clickApplyButton($event, false)" data-ng-class="{
+            disabled: $ctrl.applyInProgress
+        }">Submit a Proposal
+        <span aria-hidden="true" class="glyphicon air-icon-loading vertical-align-middle ng-hide" data-ng-show="$ctrl.applyInProgress"></span>
+    </a>
+
+</cta-apply>
+
+<script type="text/ng-template" id="!cta-apply.component.html">
+        <a
+        class="btn btn-primary btn-block"
+        rel="nofollow"
+        href="/ab/proposals/job/~01c7a329c10e645c92/apply/"
+                data-ng-click="$ctrl.clickApplyButton($event, false)"
+        data-ng-class="{
+            disabled: $ctrl.applyInProgress
+        }"
+        >Submit a Proposal
+        <span
+            aria-hidden="true"
+            class="glyphicon air-icon-loading vertical-align-middle"
+            data-ng-cloak
+            data-ng-show="$ctrl.applyInProgress"
+        ></span>
+    </a>
+
+</script>
+        </div>
+        <script type="text/ng-template" id="!save-job.component.html">
+    <button
+        class="btn btn-default btn-circle visible-xxs"
+        aria-label="{{$ctrl.isSaved ? 'Unsave' : 'Save' }} this job"
+        data-ng-class="{ disabled: $ctrl.isInProgress }"
+        data-ng-click="$ctrl.saveJobClick()"
+    >
+        <span
+            aria-hidden="true"
+
+                        class="glyphicon air-icon-favorite-activated"
+
+            data-ng-class="{
+                'air-icon-favorite-deactivated' : !$ctrl.isSaved,
+                'air-icon-favorite-activated' : $ctrl.isSaved
+            }"
+        ></span>
+    </button>
+    <button
+        class="btn btn-default btn-block hidden-xxs"
+        aria-label="{{$ctrl.isSaved ? 'Unsave' : 'Save' }} this job"
+        data-ng-class="{ disabled: $ctrl.isInProgress }"
+        data-ng-click="$ctrl.saveJobClick()"
+
+    ><span
+            class="glyphicon m-0-left air-icon-favorite-activated"
+            aria-hidden="true"
+            data-ng-class="{
+                'air-icon-favorite-deactivated' : !$ctrl.isSaved,
+                'air-icon-favorite-activated' : $ctrl.isSaved
+            }"
+        ></span><span
+            data-ng-bind="$ctrl.isSaved ? 'Saved' : 'Save Job'"
+        >Saved</span></button>
+</script>
+
+<save-job class="secondary saveJobLinkContainer col-lg-12 col-sm-6 col-xs-6 ng-isolate-scope" data-is-saved-init="true">
+    <button class="btn btn-default btn-circle visible-xxs" aria-label="Unsave this job" data-ng-class="{ disabled: $ctrl.isInProgress }" data-ng-click="$ctrl.saveJobClick()">
+        <span aria-hidden="true" class="glyphicon air-icon-favorite-activated" data-ng-class="{
+                &#39;air-icon-favorite-deactivated&#39; : !$ctrl.isSaved,
+                &#39;air-icon-favorite-activated&#39; : $ctrl.isSaved
+            }"></span>
+    </button>
+    <button class="btn btn-default btn-block hidden-xxs" aria-label="Unsave this job" data-ng-class="{ disabled: $ctrl.isInProgress }" data-ng-click="$ctrl.saveJobClick()"><span class="glyphicon m-0-left air-icon-favorite-activated" aria-hidden="true" data-ng-class="{
+                &#39;air-icon-favorite-deactivated&#39; : !$ctrl.isSaved,
+                &#39;air-icon-favorite-activated&#39; : $ctrl.isSaved
+            }"></span><span data-ng-bind="$ctrl.isSaved ? &#39;Saved&#39; : &#39;Save Job&#39;" class="ng-binding">Saved</span></button>
+</save-job>    </div>
+</div>
+        </up-c-sticky-footer>
+</ng-transclude></job-details>
+
+<script type="text/ng-template" id="!connects/connects-popover.html">
+    <div>
+        This is the number of Connects required to submit a proposal for this job.
+        <a target="_blank" href='https://support.upwork.com/entries/61069964' class="d-none-mobile-app">Learn More</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="!connects/connects-refund-popover.html">
+    <h4 class="display-inline-block">Connects refund</h4>
+    <span class="doc-card">
+        <div class="up-badge-feature">
+        BETA
+        </div>
+    </span>
+    <p>Connects for this job will be refunded if the client closes the job or it expires without anyone being hired.</p>
+    <button type="button" class="btn btn-primary btn-sm m-0" ng-click="close()">Close</button>
+</script>            </div>
+        </div>
+                  <footer class="footer-navbar-wrapper footer-default ng-scope" role="contentinfo" data-ng-controller="footerController">
+          
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row links-section">
+                                <div class="col-md-3">
+                    <ul class="list-unstyled m-lg-bottom">
+                                                                        <li><a href="https://www.upwork.com/about/" target="_self">About Us</a></li>
+                                                                                                <li data-ng-click="feedback()"><a href="javascript:">Feedback</a></li>
+                                                                                                <li><a href="http://community.upwork.com/" target="_self">Community</a></li>
+                                                                </ul>
+                </div>
+                                <div class="col-md-3">
+                    <ul class="list-unstyled m-lg-bottom">
+                                                                        <li><a href="https://www.upwork.com/i/trust-safety-mission/" target="_self">Trust &amp; Safety</a></li>
+                                                                                                <li><a href="https://support.upwork.com/login" target="_self">Help &amp; Support</a></li>
+                                                                                                <li><a href="https://www.upwork.com/ppc/foundation/" target="_self">Upwork Foundation</a></li>
+                                                                </ul>
+                </div>
+                                <div class="col-md-3">
+                    <ul class="list-unstyled m-lg-bottom">
+                                                                        <li><a href="https://www.upwork.com/legal#terms" target="_self">Terms of Service</a></li>
+                                                                                                <li><a href="https://www.upwork.com/legal#privacy" target="_self">Privacy Policy</a></li>
+                                                                                                <li><a href="https://www.upwork.com/legal#accessibility" target="_self">Accessibility</a></li>
+                                                                </ul>
+                </div>
+                                <div class="col-md-3">
+                    <ul class="list-unstyled m-lg-bottom">
+                                                                        <li><a href="https://www.upwork.com/downloads?source=Footer" target="_self">Desktop App</a></li>
+                                                                                                <li><a href="https://www.upwork.com/legal#cookie-policy" target="_self">Cookie Policy</a></li>
+                                                                                                <li><a href="https://www.upwork.com/enterprise" target="_self">Enterprise Solutions</a></li>
+                                                                                                <li><a href="https://www.upwork.com/i/mobile/" target="_self">Mobile</a></li>
+                                                                </ul>
+                </div>
+                            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="social-icons-wrapper text-center">
+                                    <a href="https://twitter.com/Upwork" target="_self"><span class="glyphicon glyphicon-md air-icon-social-twitter"></span></a>
+                                    <a href="https://www.facebook.com/upwork" target="_self"><span class="glyphicon glyphicon-md air-icon-social-facebook"></span></a>
+                                    <a href="https://www.linkedin.com/company/upwork" target="_self"><span class="glyphicon glyphicon-md air-icon-social-linkedin"></span></a>
+                            </div>
+            <p class="text-center copyright">
+              © 2015 - 2020 Upwork® Global Inc.            </p>
+        </div>
+    </div>
+</div>
+      </footer>
+        </div>
+                              <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/core.12.11.0.air2.min.js.download"></script>
+                    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/angular-select.12.11.0.min.js.download"></script>
+                    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/uploading.12.11.0.min.js.download"></script>
+                    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/ugc.js.download"></script>
+                    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/vue.2.6.10.min.js.download"></script>
+                    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/vuex.3.1.0.min.js.download"></script>
+            
+              <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/top-nav-user.bundle.iife.js.download" async="true"></script>
+      
+    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/runtime-af3d3183d28319a798a9.js.download"></script>
+    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/user.vendor-b73f2e0e3cc99a4fc2ac.js.download"></script>
+    <script src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/user-93e5b1504961f70fa602.js.download"></script>
+
+    <script>
+        (function(angular){
+            var app = angular.module('jobDetails');
+                            app.value('openingId', '219948947');
+                app.value('openingCiphertext', '~01c7a329c10e645c92');
+                app.value('openingUrl', '/jobs/Make-Kubernetes-cluster-production-ready-Hetzner-cloud-using-the-Cluster-API_~01c7a329c10e645c92');
+                app.value('openingTeamId', 'pgdzoecbtxipobhea9uohw');
+                app.value('openingUid', '1272918648462626816');
+                app.value('enoughApplicantsForUpgradeHint', true);
+                    })(angular);
+    </script>
+
+    
+
+<div></div><script type="text/javascript" id="">!function(a,d,f,b,c,e){a.mejord||(b=a.mejord=function(){b.tq.push(arguments)},a._mejord||(a._mejord=b),b.tq=[],b.version="2.0.0-1",a="script",(c=d.createElement(a)).async=!0,c.src=f,(e=d.getElementsByTagName(a)[0]).parentNode.insertBefore(c,e))}(window,document,"//tag.measured.com/10014/5bqhstj/mejord-gear.js");</script>
+<script type="text/javascript" id="">!function(c,d,g,e,a,f,b){c.ktag||(a=function(){a.sendEvent?a.sendEvent(arguments):a.ktq.push(arguments)},a.ktq=[],c.ktag=a,f=d.getElementsByTagName(e)[0],b=d.createElement(e),b.async=!0,b.src=g,f.parentNode.appendChild(b))}(window,document,"//resources.xg4ken.com/js/v2/ktag.js?tid\x3dKT-N3486-3EB","script");ktag("setup","KT-N3486-3EB",google_tag_manager["GTM-K9RTCGW"].macro(3));</script>
+<noscript>
+	<img src="https://events.xg4ken.com/pixel/v2?tid=KT-N3486-3EB&amp;noscript=1" width="1" height="1" style="display:none">
+</noscript>
+<script type="text/javascript" id="">(function(c,d,a,b){a=c.createElement(d);a.async=1;a.src="https://fyrsbckgi-c.global.ssl.fastly.net/UP4R77Y9Z.js";b=c.getElementsByTagName(d)[0];b.parentNode.insertBefore(a,b)})(document,"script");</script><script type="text/javascript" id="">mejord("init","10014/5bqhstj");</script><script type="text/javascript" id="">(function(){_mejord.helper={getEventParams:function(){return{products:void 0,product:{},customerId:google_tag_manager["GTM-K9RTCGW"].macro(4),pageCategory:google_tag_manager["GTM-K9RTCGW"].macro(5),pageType:"",isOrderCustomerNew:!1,orderId:"",revenue:0,value:google_tag_manager["GTM-K9RTCGW"].macro(7),currency:"USD",custom:{youtube:{dimensionCohortIndex:109}}}}}})();</script>
+<script type="text/javascript" id="">(function(){function g(a){a=h[a]?h[a]():[];for(var d=0;d<a.length;d++){var b=a[d];window.dataLayer=window.dataLayer||[];var c=_mejord.helper.getEventParams(),g="mejord."+b;if("addtowishlist"===b){c.eventName="FJP";var e=google_tag_manager["GTM-K9RTCGW"].macro(8),f=google_tag_manager["GTM-K9RTCGW"].macro(18),k=google_tag_manager["GTM-K9RTCGW"].macro(27);1>=e&&(c.custom={linkedin:{ewConversionId:803297}},"Small Business"===k?c.product.price=99:"Small Business"===f?c.product.price=100:"Large Business"===f?c.product.price=1E3:"Mid Market"===f?c.product.price=500:
+"VSB"===f&&(c.product.price=10))}else"initiatecheckout"===b?(c.eventName="FJP",c.product.price=2,c.custom={linkedin:{ewConversionId:815929}}):"checkout"===b&&(c.eventName="Registration");e={};e.event=g;e["mejord.eventparams."+b]=c;window.dataLayer.push(e)}}var h={"client-job-post":function(){var a=google_tag_manager["GTM-K9RTCGW"].macro(28),d=google_tag_manager["GTM-K9RTCGW"].macro(29),b=["addtowishlist"];!1===a&&1>=d&&b.push("initiatecheckout");return b},"user-segmentation-success":function(){var a=google_tag_manager["GTM-K9RTCGW"].macro(30),d=google_tag_manager["GTM-K9RTCGW"].macro(31),
+b=[];"client"===a&&"stage.upwork.com"!==d&&b.push("checkout");return b},"user-signup-success":function(){var a=google_tag_manager["GTM-K9RTCGW"].macro(32),d=google_tag_manager["GTM-K9RTCGW"].macro(33),b=[];"client"===a&&"stage.upwork.com"!==d&&b.push("checkout");return b},"gtm.js":function(){var a=["pageview"];!0===google_tag_manager["GTM-K9RTCGW"].macro(34)&&1>=google_tag_manager["GTM-K9RTCGW"].macro(35)&&"stage.upwork.com"!=google_tag_manager["GTM-K9RTCGW"].macro(36)&&-1==google_tag_manager["GTM-K9RTCGW"].macro(37).indexOf(".odesk.com")&&a.push("addtowishlist");return a}};g(google_tag_manager["GTM-K9RTCGW"].macro(38))})();</script><script type="text/javascript" id="">(function(a,c,f,g,b,d,e){a[b]||(a.GlobalSnowplowNamespace=a.GlobalSnowplowNamespace||[],a.GlobalSnowplowNamespace.push(b),a[b]=function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].q=a[b].q||[],d=c.createElement(f),e=c.getElementsByTagName(f)[0],d.async=1,d.src=g,e.parentNode.insertBefore(d,e))})(window,document,"script","//d1x0kujlhuud9p.cloudfront.net/6wbLCwJ51XyBMi45LjA.js","snowplow");
+(function(){var a={appId:"suit",stateStorageStrategy:"cookieAndLocalStorage",userFingerprint:!1,encodeBase64:!1,pageUnloadTimer:500,post:!0,forceSecureTracker:!0,contexts:{webPage:!0}},c=google_tag_manager["GTM-K9RTCGW"].macro(44);window.snowplow("newTracker","suit-gtm",c.collectorEndpoint,a)})();</script><script type="text/javascript" id="">window.snowplow("trackSelfDescribingEvent:suit-gtm",{schema:"iglu:com.upwork.client_experience\/ui_event\/jsonschema\/2-0-19",data:function(){function d(b,c){for(var a in c)c.hasOwnProperty(a)&&(b[a]=c[a]);return b}function e(b){return Object.keys(b).reduce(function(c,a){null!==b[a]&&(c[a]=b[a]);return c},{})}return e(d(google_tag_manager["GTM-K9RTCGW"].macro(63),google_tag_manager["GTM-K9RTCGW"].macro(71)))}()});</script><script type="text/javascript" id="">window.snowplow("trackSelfDescribingEvent:suit-gtm",{schema:"iglu:com.upwork.client_experience\/ui_event\/jsonschema\/2-0-19",data:function(){function d(b,c){for(var a in c)c.hasOwnProperty(a)&&(b[a]=c[a]);return b}function e(b){return Object.keys(b).reduce(function(c,a){null!==b[a]&&(c[a]=b[a]);return c},{})}return e(d(google_tag_manager["GTM-K9RTCGW"].macro(91),google_tag_manager["GTM-K9RTCGW"].macro(99)))}()});</script><script type="text/javascript" id="">window.snowplow("trackSelfDescribingEvent:suit-gtm",{schema:"iglu:com.upwork.client_experience\/ui_event\/jsonschema\/2-0-19",data:function(){function d(b,c){for(var a in c)c.hasOwnProperty(a)&&(b[a]=c[a]);return b}function e(b){return Object.keys(b).reduce(function(c,a){null!==b[a]&&(c[a]=b[a]);return c},{})}return e(d(google_tag_manager["GTM-K9RTCGW"].macro(119),google_tag_manager["GTM-K9RTCGW"].macro(127)))}()});</script><script type="text/javascript" id="">window.snowplow("trackSelfDescribingEvent:suit-gtm",{schema:"iglu:com.upwork.client_experience\/ui_event\/jsonschema\/2-0-19",data:function(){function d(b,c){for(var a in c)c.hasOwnProperty(a)&&(b[a]=c[a]);return b}function e(b){return Object.keys(b).reduce(function(c,a){null!==b[a]&&(c[a]=b[a]);return c},{})}return e(d(google_tag_manager["GTM-K9RTCGW"].macro(147),google_tag_manager["GTM-K9RTCGW"].macro(155)))}()});</script><script type="text/javascript" id="">var eventParams=google_tag_manager["GTM-K9RTCGW"].macro(157);mejord("track","pageview",eventParams);</script><iframe role="presentation" tabindex="-1" title="empty" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/nrse.html" style="position: absolute; width: 1px; height: 1px; left: 0px; top: -1px; border: 0px;"></iframe><script type="text/javascript" id="">window.snowplow("trackSelfDescribingEvent:suit-gtm",{schema:"iglu:com.upwork.client_experience\/ui_event\/jsonschema\/2-0-19",data:function(){function d(b,c){for(var a in c)c.hasOwnProperty(a)&&(b[a]=c[a]);return b}function e(b){return Object.keys(b).reduce(function(c,a){null!==b[a]&&(c[a]=b[a]);return c},{})}return e(d(google_tag_manager["GTM-K9RTCGW"].macro(179),google_tag_manager["GTM-K9RTCGW"].macro(187)))}()});</script><iframe src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/html.html" style="height: 0px; width: 0px; display: none;"></iframe><script type="text/javascript" id="">!function(){var a;-1===(a=window.navigator.userAgent).indexOf("MSIE")&&-1===a.indexOf("Trident")||document.getElementById("ie-banner")||(a=document.createElement("script"),a.id="ie-banner",a.src="https://assets.static-upwork.com/ui-packages/@upwork/ie-banner/0.1.2/ie-banner.min.js",document.body.appendChild(a))}();</script><script type="text/javascript" id="" src="./Make a Kubernetes cluster production-ready on Hetzner cloud using the Cluster API - Web, Mobile &amp; Software Dev_files/gtm-snippet.min.js.download"></script><script type="text/javascript" id="">window.snowplow("trackPageView:suit-gtm");</script></body></html>
