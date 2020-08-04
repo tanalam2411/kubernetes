@@ -4,6 +4,8 @@
 - Shortcuts
 
 ```bash
+
+
 printf "\nalias k='kubectl'\n\
 alias kgn='k get no'\n\
 alias kgp='k get po'\n\
@@ -68,6 +70,11 @@ $ kgd nginx -o yaml | grep -A 2 anno
 
 ```
 
+---
+
+```bash
+
+```
 
 
 
