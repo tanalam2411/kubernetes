@@ -27,3 +27,8 @@
 ---
 ##### Tools
 - [vi cheatsheet](https://www.thegeekdiary.com/basic-vi-commands-cheat-sheet/)
+
+
+---
+##### TODO:
+- Enabling or disabling API groups - https://kubernetes.io/docs/concepts/overview/kubernetes-api/#enabling-or-disabling-api-groups
