@@ -71,7 +71,15 @@ $ kgd nginx -o yaml | grep -A 2 anno
 ```
 
 ---
+- Deleting all pods within a given namespace
 
+```bash
+$ kubectl get pods -n default --no-headers=true | awk '{print $1}'| xargs  kubectl delete -n default pod
+```
+
+---
+
+- Enabling or disabling API groups
 ```bash
 
 ```
