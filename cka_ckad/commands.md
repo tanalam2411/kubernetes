@@ -78,13 +78,17 @@ $ kubectl get pods -n default --no-headers=true | awk '{print $1}'| xargs  kubec
 ```
 
 ---
+- Delete everything from the current namespace 
 
-- Enabling or disabling API groups
 ```bash
-
+kubectl delete all --all -n {namespace}
+```
+or Delete the namespace - This will delete all resources within ns
+```bash
+kubectl delete all --all -n {namespace}
 ```
 
-
+---
 
 
 
