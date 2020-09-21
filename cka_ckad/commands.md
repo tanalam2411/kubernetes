@@ -90,7 +90,22 @@ kubectl delete all --all -n {namespace}
 
 ---
 
+- Create new namespace
+```
+$ kubectl create ns <name>
+```
 
+- Set default namespace
+```
+$ kubectl config set-context --current --namespace=<name>
+```
+
+- Check current namespace
+```
+$ kubectl config view --minity=true
+```
+
+---
 
 
 
