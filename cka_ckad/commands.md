@@ -412,6 +412,137 @@ v1
 ```
 
 
+13. Security Context - Pod, Container
+  - Set UserID to POD or Container
+  - Set Linux capabilities 
+  - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container
+  
+  
+  
+14. Service Accounts
+  - Two types of accounts:
+    - User - for humans
+    - Service - for services
+  ```bash
+  $ k create serviceaccount dashboard-sa
+  serviceaccount/dashboard-sa created
+  $ k get sa
+  NAME           SECRETS   AGE
+  dashboard-sa   1         5s
+  default        1         2d22h
+  $ 
+  $ kd sa dashboard-sa
+  Name:                dashboard-sa
+  Namespace:           default
+  Labels:              <none>
+  Annotations:         <none>
+  Image pull secrets:  <none>
+  Mountable secrets:   dashboard-sa-token-s5h9q
+  Tokens:              dashboard-sa-token-s5h9q
+  Events:              <none>
+  $ 
+  $ k get secrets dashboard-sa-token-s5h9q -o jsonpath='{.data}'
+  {"ca.crt":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tL==", "namespace":"ZGVmYXVsdA==","token":"ZXlKaGJHY2lPaUpTVX=="}
+  ```
+  
+  - Default service account
+  ```bash
+  $ k get po busybox -o yaml | grep -i service
+          f:enableServiceLinks: {}
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+    enableServiceLinks: true
+    serviceAccount: default
+    serviceAccountName: default
+
+
+  $ k exec -it busybox -- ls /var/run/secrets/kubernetes.io/serviceaccount
+  ca.crt     namespace  token
+  $ 
+  $ k exec -it busybox -- cat /var/run/secrets/kubernetes.io/serviceaccount/token
+  eyJhbGciOiJSUzI1NiIsImtpZCI6IlgzQVM2MU9qR2xKNFVCbVNhSWNTaEs5c3FjY254X3lEXzdCeGhi
+  ```
+
+  - Add ServiceAccount name in spec for Pod and Deployment
+  - For pod, delete and recreate to reflect SA.
+  ```yaml
+  spec:
+    serviceAccount: dashboard-sa
+  ```
+  ```bash
+  $ kubectl create role pod-reader --verb="get" --resource=pods --dry-run=server -o yaml
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2020-12-06T11:43:07Z"
+    managedFields:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:rules: {}
+      manager: kubectl-create
+      operation: Update
+      time: "2020-12-06T11:43:07Z"
+    name: pod-reader
+    namespace: default
+    selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/roles/pod-reader
+    uid: 5a0c2860-3821-4262-895b-45ffc53a99cb
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - pods
+    verbs:
+    - get
+
+  $ kubectl create role pod-reader --verb="get" --resource=pods 
+  role.rbac.authorization.k8s.io/pod-reader created
+  $ k get roles
+  NAME         CREATED AT
+  pod-reader   2020-12-06T11:44:49Z
+
+  $ kubectl create rolebinding pod-reader-rb --role=pod-reader --serviceaccount=default:dashboard-sa --dry-run=server -o yaml
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    creationTimestamp: "2020-12-06T11:48:31Z"
+    managedFields:
+    - apiVersion: rbac.authorization.k8s.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:roleRef:
+          f:apiGroup: {}
+          f:kind: {}
+          f:name: {}
+        f:subjects: {}
+      manager: kubectl-create
+      operation: Update
+      time: "2020-12-06T11:48:31Z"
+    name: pod-reader-rb
+    namespace: default
+    selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/rolebindings/pod-reader-rb
+    uid: b9c2f5ac-db59-42a6-b8fc-aab580babf45
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: pod-reader
+  subjects:
+  - kind: ServiceAccount
+    name: dashboard-sa
+    namespace: default
+
+
+    $ k get sa
+    NAME           SECRETS   AGE
+    dashboard-sa   1         113m
+    default        1         3d
+    $ k get role
+    NAME         CREATED AT
+    pod-reader   2020-12-06T11:44:49Z
+    $ k get rolebindings
+    NAME            ROLE              AGE
+    pod-reader-rb   Role/pod-reader   82s
+  ```
+
 
 
 
