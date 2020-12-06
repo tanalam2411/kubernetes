@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  index.html: |
+    <p>Hello Green</p>
+  yellow.html: |
+    <p>Hello Yellow</p>
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: green-cm

@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  yellow.html: |
+    <p>Hello Yellow</p>
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: yellow-cm
