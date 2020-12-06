@@ -546,7 +546,33 @@ v1
 
 
 
+15. Resource Requests and Limits
+- https://kubernetes.io/docs/tasks/configure-pod-container/
+- https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/
 
+
+16. Taints And Tolerations
+  - Taints are set on node.
+  ```bash
+  $ k get no
+  NAME                 STATUS   ROLES    AGE    VERSION
+  kind-control-plane   Ready    master   3d4h   v1.19.1
+  kind-worker          Ready    <none>   3d4h   v1.19.1
+  kind-worker2         Ready    <none>   3d4h   v1.19.1
+  $ 
+  $ k taint node kind-worker2 key=value:NoSchedule
+  node/kind-worker2 tainted
+
+  $ kd no kind-worker2 | grep -i Taint
+  Taints:             key=value:NoSchedule
+  ```
+  - Taints are of 3 types:
+    - `NoSchedule` - POD will be not scheduled on this Node
+    - `PerferNoSchedule` - Scheduler will try not to create POD on this not but not guaranteed
+    - `NoExecute` - New PODs will not be scheduled on this node and existing PODs on the node, if any, will be evicted if they do not tolerate the taint.
+     
+  - Tolerations are set on Pod
+    
 
 
 
