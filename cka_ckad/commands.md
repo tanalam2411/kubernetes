@@ -572,6 +572,17 @@ v1
     - `NoExecute` - New PODs will not be scheduled on this node and existing PODs on the node, if any, will be evicted if they do not tolerate the taint.
      
   - Tolerations are set on Pod
+  ```yaml
+  spec:
+    containers:
+      ...
+    tolerations:
+    - key: "key"
+      operator: "Equal"
+      value: "value"
+      effect: "NoSchedule"
+
+  ```
     
 
 
@@ -581,7 +592,7 @@ v1
 
 
 
-
+- liveness probe - https://stackoverflow.com/questions/55423405/k8s-livenessprobe-vs-readinessprobe
 
 
 
