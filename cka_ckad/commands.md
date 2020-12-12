@@ -585,16 +585,80 @@ v1
   ```
     
 
+17. Node Selectors
+  - Add labels to a node: `kubectl label nodes <node_name> <label-key>=<label-value>`
+
+```bash
+$ kd no kind-worker | grep -i "label" -A5
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=kind-worker
+                    kubernetes.io/os=linux
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: unix:///run/containerd/containerd.sock
+$ 
+$ k label nodes kind-worker size=large
+node/kind-worker labeled
+$ kd no kind-worker | grep -i "label" -A5
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=kind-worker
+                    kubernetes.io/os=linux
+                    size=large
+
+```
+```yaml
+spec:
+  containers:
+  ...
+  nodeSelector:
+    size=large
+```
+
+18. Node Affinity:
+  - https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+  - https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+  
+
+19. Labels:
+```bash
+$ k get po --show-labels
+NAME   READY   STATUS    RESTARTS   AGE   LABELS
+pod1   1/1     Running   0          36h   run2=pod1q,run=pod1
+$ 
+$ 
+$ k get po -l run=pod1
+NAME   READY   STATUS    RESTARTS   AGE
+pod1   1/1     Running   0          36h
+$ 
+$ 
+$ k get po -l run=pod1,run2=pod1q
+NAME   READY   STATUS    RESTARTS   AGE
+pod1   1/1     Running   0          36h
+$ 
+$ k get po -l run=pod1,run2=pod1q,run3=xyz
+No resources found in default namespace.
+
+```
 
 
+20. Rolling Updates and Rollbacks in deployment and versioning
+```bash
+$ k create deploy dep1 --image=nginx -r=3
+$ k rollout status deploy dep1
+$ k rollout history deploy dep1
+$ k set image deploy dep1 nginx=nginx:perl --record=true 
+$ k rollout undo deploy dep1
+$ k rollout undo deploy dep1 --to-revision=1
+```
 
-
-
-
-
-- liveness probe - https://stackoverflow.com/questions/55423405/k8s-livenessprobe-vs-readinessprobe
-
-
+21. Jobs and CronJob
+```yaml
+spec:
+  completions: 3
+  parallelism: 3
+```
 
 
 
