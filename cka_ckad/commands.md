@@ -660,9 +660,63 @@ spec:
   parallelism: 3
 ```
 
+```bash
+kubectl create cronjob date-job --image=busybox --schedule="*/1 * * * *" -- bin/sh -c "date; echo Hello from kubernetes cluster"
+```
+
+
+--- CKA
+
+22. Get metrics of a POD
+```bash
+$ k top pod <podname> --containers
+```
+
+23. Set autoscaling to a deployment:
+```bash
+$ k autoscale deploy dep1 --min=10 --max=20 --cpu-percent=85
+horizontalpodautoscaler.autoscaling/dep1 autoscaled
+$ k get hpa
+NAME   REFERENCE         TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+dep1   Deployment/dep1   <unknown>/85%   10        20        0          11s
+
+```
+
+
+24. etcd
+```bash
+cat /etc/kubernetes/manifests/etcd.yaml
+
+ETCDCTL_API=3 etcdctl --endpoints=https://[172.17.0.10]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+     --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key \
+     snapshot save /tmp/snapshot-pre-boot2.db
+
+
+ETCDCTL_API=3 etcdctl --endpoints=https://[172.17.0.10]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+     --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key \
+     --write-out=table snapshot status /tmp/snapshot-pre-boot.db
 
 
 
+ETCDCTL_API=3 etcdctl --endpoints=https://[172.17.0.10]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+     --name=controlplane \
+     --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key \
+     --data-dir /var/lib/etcd \
+     --initial-cluster=controlplane=https://172.17.0.10:2380 \
+     --initial-cluster-token etcd-cluster-11 \
+     --initial-advertise-peer-urls=https://172.17.0.10:2380 \
+     snapshot restore /tmp/snapshot-pre-boot.db
+```
+
+25. Sort by time stamp
+```bash
+k get pods --sort-by='{.metadata.creationTimeStamp}'
+```
+
+26. sleep 3600
+```bash
+k run busybox --image=busybox --restart=Never --dry-run=client -o yaml -- /bin/sh -c "sleep 3600"
+```
 
 
 ---
