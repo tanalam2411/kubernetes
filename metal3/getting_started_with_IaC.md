@@ -17,4 +17,5 @@
 
 - Features:
   - Power control
-  - Adjust boot order  
+  - Adjust boot orderi virtuualization
+  lscpu | grep Virtualization  
