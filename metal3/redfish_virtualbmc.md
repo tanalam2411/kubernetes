@@ -332,3 +332,6 @@ alias rf='source /home/rscloud/ws/py3-venv/bin/activate && cd /home/rscloud/ws/s
 
 - https://www.cyberciti.biz/faq/how-to-install-kvm-on-centos-7-rhel-7-headless-server/
 - https://docs.openstack.org/sushy-tools/latest/install/index.html
+- https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html
+- https://docs.openstack.org/sushy-tools/latest/contributor/index.html
+- https://phoenixnap.com/kb/ubuntu-install-kvm (ubuntu)
