@@ -28,4 +28,20 @@
   - https://kubernetes.io/docs/tasks/run-application/configure-pdb/
   - https://banzaicloud.com/blog/drain/
         
+- Github
+  - https://github.com/openshift/kubernetes-drain
+  - https://github.com/openshift/cluster-machine-approver
+  - https://github.com/openshift/machine-config-operator
+  - https://github.com/openshift/node-problem-detector
+  - https://github.com/openshift/node-problem-detector-operator  
+  - https://github.com/kubernetes/node-problem-detector
+  - https://github.com/openshift/machine-api-operator
+  - https://github.com/openshift/api
+  - https://github.com/openshift/cluster-api-provider-libvirt
+  - https://github.com/openshift/cluster-autoscaler-operator
+  
+
+- Blog
+  - https://www.airshipit.org/blog/cluster-api-development-environment/
+  - https://networkop.co.uk/post/2020-05-cluster-api-intro/
   
