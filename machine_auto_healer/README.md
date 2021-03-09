@@ -18,6 +18,9 @@
    
    
    
+- Cluster API
+  - ManagementCluster vs Bootstrap cluster
+  
    
    
 ---
