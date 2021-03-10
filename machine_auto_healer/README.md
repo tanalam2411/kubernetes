@@ -1,50 +1,51 @@
+#### Machine Auto Healer
+
+##### Overview
+
+- To provide a solution that can observe, detect, resolve node issues and try to keep the node in healthy and running state.
+
+- `Node`: a VM or physical machine, to run k8s workload(pods)
+  - A `k8s` cluster can have multiple nodes. [max nodes](https://kubernetes.io/docs/setup/best-practices/cluster-large/)
+  - Node has following components:
+    - `kubelet` - Agent that runs on each node. Creats `Pods` using `PodSpecs`
+    - `Container runtime` - Application that are responsible for running containers(Docker, containerd, podman)
+    - `kube-proxy` - network proxy for k8s service  
+  
+- NodeSpec:
+  - [`Unschedulable`](https://github.com/kubernetes/api/blob/master/core/v1/types.go#L4595) - Mark it true to make node unschedulable
+  - [`Taints`](https://github.com/kubernetes/api/blob/master/core/v1/types.go#L4598) - Repel node from a set of pods
+    - [`Taint based Evictions`](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-based-evictions): In case a node is 
+      to be evicted, the node controller or kubelet adds relevant taints with `NoExecute` effect.
+      - If the fault condition returns to normal then the taints can be removed.
+      - If there is a chance of fault condition to be recovered, `tolerations` can be added with certain `tolerationSeconds` to avoid pod eviction
+      - Note:
+        - Kubernetes automatically adds a toleration for `node.kubernetes.io/not-ready` and `node.kubernetes.io/unreachable` with `tolerationSeconds=300`, 
+          unless you, or a controller, set those tolerations explicitly.
+        - These automatically-added tolerations mean that Pods remain bound to Nodes for 5 minutes after one of these problems is detected.
+    - [`Taint Nodes by Condition`](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#taint-nodes-by-condition) - Scheduler does not
+      check for Node [conditions](https://github.com/kubernetes/api/blob/master/core/v1/types.go#L4766); instead the scheduler checks for taints with `NoSchedule` effect.
+      - [ref](https://github.com/kubernetes/community/blob/8bdeb0a4d6e7a3fc9afdb874aa2cefa2ba88bc9c/contributors/design-proposals/scheduling/taint-node-by-condition.md)
+      - 
+        | ConditionType      | Condition Status   |Effect        | Key      |
+        | ------------------ | ------------------ | ------------ | -------- |
+        |Ready               |True                | -            | |
+        |                    |False               | NoExecute    | node.kubernetes.io/not-ready           |
+        |                    |Unknown             | NoExecute    | node.kubernetes.io/unreachable         |
+        |OutOfDisk           |True                | NoSchedule   | node.kubernetes.io/out-of-disk         |
+        |                    |False               | -            | |
+        |                    |Unknown             | -            | |
+        |MemoryPressure      |True                | NoSchedule   | node.kubernetes.io/memory-pressure     |
+        |                    |False               | -            | |
+        |                    |Unknown             | -            | |
+        |DiskPressure        |True                | NoSchedule   | node.kubernetes.io/disk-pressure       |
+        |                    |False               | -            | |
+        |                    |Unknown             | -            | |
+        |NetworkUnavailable  |True                | NoSchedule   | node.kubernetes.io/network-unavailable |
+        |                    |False               | -            | |
+        |                    |Unknown             | -            | |
+        |PIDPressure         |True                | NoSchedule   | node.kubernetes.io/pid-pressure        |
+        |                    |False               | -            | |
+        |                    |Unknown             | -            | |
 
 
-- Node Controller: 
-  - Monitors hear-beats from the nodes
-  - every 10sec kubelet posts back to api-server on the node api object that I'm alive
-  - node controller monitors the api-server for node objects and looks when the last keep alive was 
-  - if it wsa more thn 5mins, it declares that node as dead and evicts the pod on it
-  - So the node controller deletes all the pods that where present on that node
-  - Node controller doesn't tell the node(which is dying) to delete the pods, it itself deletes the pod objects
-  - Then the replicaset controller will notice that current state doesn't match the desired number of pods, so it will create pod objects
-  - But these pods would be unshceduled
-  - then the scheduler controller will try to figure out which node satisfies the pod specifications and it will update the pod object with the node details.
-  - Then the kubelet on the target node will see a new request for a pod and will make it running
-  
-- What happens to the node:
- - If the node gets disconnected from network and can't reach the api-server, it will still keep running those pods
-   and as soon it connects back to api-server it will notice that these pods object are deleted so it will stop all those existing pods
-   
-   
-   
-- Cluster API
-  - ManagementCluster vs Bootstrap cluster
-  
-   
-   
----
-- Ref
-  - https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
-  - https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#drain
-  - https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
-  - https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-  - https://banzaicloud.com/blog/drain/
-        
-- Github
-  - https://github.com/openshift/kubernetes-drain
-  - https://github.com/openshift/cluster-machine-approver
-  - https://github.com/openshift/machine-config-operator
-  - https://github.com/openshift/node-problem-detector
-  - https://github.com/openshift/node-problem-detector-operator  
-  - https://github.com/kubernetes/node-problem-detector
-  - https://github.com/openshift/machine-api-operator
-  - https://github.com/openshift/api
-  - https://github.com/openshift/cluster-api-provider-libvirt
-  - https://github.com/openshift/cluster-autoscaler-operator
-  
-
-- Blog
-  - https://www.airshipit.org/blog/cluster-api-development-environment/
-  - https://networkop.co.uk/post/2020-05-cluster-api-intro/
-  
+ 
