@@ -67,9 +67,13 @@
     - Here, at this situation we will be deleting the `Machine` resource, which will delete the underlying node and hence API server will delete that node and recreate Pods on other Ready node.
      
   
+- Node Problem Detector
+  - We can use [Node Problem Detector](https://github.com/kubernetes/node-problem-detector), which has multiple problem daemons which detects node level problems and sends `condition` to upstream Node object.
+  - We can also implement new Problem detector and send Node's condition
+  - `TaintNodesByCondition` feature gate must be enabled or else Taint must be added against that node explicitly.
+  - [ProblemClient](https://github.com/kubernetes/node-problem-detector/blob/master/pkg/exporters/k8sexporter/problemclient/problem_client.go)
   
-  
-  
-TODO - use below statement  
-- Marking a node as unschedulable prevents the scheduler from placing new pods onto that Node, but does not affect existing Pods on the Node.
-  - > :warning: **If you are using mobile browser**: Be very careful here!  
+
+
+---
+- Plugin any backup and restore application(such as [Velero](https://github.com/vmware-tanzu/velero))  
