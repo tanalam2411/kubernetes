@@ -1,4 +1,4 @@
-
+- Ironic dev env - https://docs.openstack.org/ironic/latest/contributor/dev-quickstart.html
 ```bash
 _ironic$ sudo apt-get install build-essential python3-dev libssl-dev python3-pip libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev git git-review libffi-dev gettext ipmitool psmisc graphviz libjpeg-dev
 #_ironic$ sudo apt-get install python3-venv
