@@ -5,7 +5,7 @@ metadata:
 spec:
   steps:
     - name: mvn-test
-      image: on2411/testcontainers
+      image: on2411/testcontainers:latest
       command:
         - /opt/apache-maven-3.8.1/bin/mvn
       args: ['test', '-Dspring-boot.run.profiles=test']
