@@ -1,5 +1,8 @@
 FROM ubuntu:focal
 
+ENV TESTCONTAINERS_RYUK_DISABLED=true
+ENV DOCKER_HOST=unix:///var/run/docker.sock
+
 RUN apt update --fix-missing -y
 
 RUN apt install default-jdk -y
@@ -16,7 +19,9 @@ COPY ./maven.sh /etc/profile.d/
 
 RUN apt install git -y
 
-RUN git clone --single-branch --branch feature/testcontainers https://github.com/mydeveloperplanet/myliquibaseplanet.git
+RUN mkdir /myliquibaseplanet
+
+COPY ./myliquibaseplanet /myliquibaseplanet
 
 WORKDIR /myliquibaseplanet
 
@@ -29,4 +34,4 @@ CMD ["/opt/apache-maven-3.8.1/bin/mvn", "test", "-Dspring-boot.run.profiles=test
 
 
 # https://mydeveloperplanet.com/2020/05/05/easy-integration-testing-with-testcontainers/
-# docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock testcontainers /opt/apache-maven-3.8.1/bin/mvn test -Dspring-boot.run.profiles=test
+# docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock on2411/testcontainers /opt/apache-maven-3.8.1/bin/mvn test -Dspring-boot.run.profiles=test
