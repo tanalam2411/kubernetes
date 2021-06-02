@@ -35,3 +35,4 @@ CMD ["/opt/apache-maven-3.8.1/bin/mvn", "test", "-Dspring-boot.run.profiles=test
 
 # https://mydeveloperplanet.com/2020/05/05/easy-integration-testing-with-testcontainers/
 # docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock on2411/testcontainers /opt/apache-maven-3.8.1/bin/mvn test -Dspring-boot.run.profiles=test
+# sudo DOCKER_HOST=unix:///var/run/user/1000/podman/podman.sock /opt/apache-maven-3.8.1/bin/mvn -e -X dependency:go-offline test -Dspring-boot.run.profiles=test
