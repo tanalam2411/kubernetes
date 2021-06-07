@@ -11,3 +11,12 @@
 - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using-the-container-tools-api_using-the-container-tools-cli
 - http://crunchtools.com/a-first-look-at-the-podman-2-0-api/
 - https://github.com/containers/podman/blob/master/docs/tutorials/remote_client.md
+- http://docs.podman.io/en/latest/Reference.html
+
+---
+#### Maven
+- centos: https://linuxize.com/post/how-to-install-apache-maven-on-centos-8/
+
+---
+##### Minikube
+- https://www.atlantic.net/vps-hosting/how-to-install-kubernetes-with-minikube-on-centos-8/

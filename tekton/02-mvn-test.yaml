@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: run-test
+spec:
+  steps:
+    - name: mvn-test
+      image: on2411/testcontainer-podman
+      imagePullPolicy: Always
+      command:
+        - /opt/apache-maven-3.8.1/bin/mvn
+      args: ['-e', '-X', 'test', '-Dspring-boot.run.profiles=test']
+      volumeMounts:
+        - name: docker-sock
+          mountPath: "/var/run"
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run
+        type: Directory
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: task-run-test
+  namespace: default
+spec:
+  taskRef:
+    name: run-test
+  podTemplate:
+    hostNetwork: true
