@@ -1,0 +1,23 @@
+FROM centos:8
+
+ENV TESTCONTAINERS_RYUK_DISABLED=true
+ENV DOCKER_HOST=unix:///var/run/docker.sock
+
+RUN dnf install java-11-openjdk-devel -y
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+RUN dnf install wget -y
+RUN wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+RUN tar xf apache-maven-3.8.1-bin.tar.gz -C /opt
+RUN ln -s /opt/apache-maven-3.8.1 /opt/maven
+RUN printf 'export M2_HOME=/opt/maven\nexport MAVEN_HOME=/opt/maven\nexport PATH=${M2_HOME}/bin:${PATH}' > maven.sh
+RUN mv maven.sh /etc/profile.d
+RUN source /etc/profile.d/maven.sh
+
+RUN dnf install git -y
+RUN git clone https://github.com/mydeveloperplanet/myliquibaseplanet.git
+WORKDIR myliquibaseplanet
+RUN git checkout feature/testcontainers
+
+VOLUME ["/var/run/docker.sock"]
+
+CMD ["/opt/apache-maven-3.8.1/bin/mvn", "-e", "-X", "test", "-Dspring-boot.run.profiles=test"]
