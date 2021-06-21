@@ -1,7 +1,7 @@
 FROM centos:8
 
 ENV TESTCONTAINERS_RYUK_DISABLED=true
-ENV DOCKER_HOST=unix:///var/run/docker.sock
+ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 RUN dnf install java-11-openjdk-devel -y
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
