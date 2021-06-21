@@ -1,4 +1,4 @@
-##### Capturing Packets inside running pod 
+##### Capturing Packets within running Pod 
 
 
 1. Installing ksniff plugin
@@ -68,13 +68,14 @@ $ kubectl sniff -p nginx-6799fc88d8-gd8nx -n default -f "port 80" -o /tmp/myexam
 ```
 
 - Note: 
-- If there are more than one containers running inside the pod, you can pass the preference using `-c container_name`
+- If there are more than one containers running inside the pod, you can pass the container's name using `-c container_name` of which you're interested to capture the traffic.
 
 
 
 
 ---
 Ref:
+
 - ksniff: https://github.com/eldadru/ksniff
 - Installing krew: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 - Installing wireshark on ubuntu: https://linuxhint.com/install_configure_wireshark_ubuntu/
