@@ -67,7 +67,8 @@ We can dump the tcpdump data into a pcap file and later view it using wireshark
 $ kubectl sniff -p nginx-6799fc88d8-gd8nx -n default -f "port 80" -o /tmp/myexample-k8s.pcap
 ```
 
-- Note: 
+Note:
+ 
 - If there are more than one containers running inside the pod, you can pass the container's name using `-c container_name` of which you're interested to capture the traffic.
 
 
