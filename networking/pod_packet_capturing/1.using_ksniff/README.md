@@ -80,4 +80,9 @@ Ref:
 - ksniff: https://github.com/eldadru/ksniff
 - Installing krew: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 - Installing wireshark on ubuntu: https://linuxhint.com/install_configure_wireshark_ubuntu/
+  - Latest installation of wireshark: https://itsfoss.com/install-wireshark-ubuntu/
 - ksniff blog: https://kubesandclouds.com/index.php/2021/01/20/ksniff/
+- https://github.com/janakiramm/Kubernetes-multi-container-pod
+Issue:
+
+- https://www.gitmemory.com/issue/eldadru/ksniff/100/789357805
