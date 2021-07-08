@@ -11,3 +11,4 @@
 - https://www.openshift.com/blog/tag/operators
 - * https://www.openshift.com/blog/kubernetes-operators-best-practices
 - https://developers.redhat.com/blog/2020/08/21/hello-world-tutorial-with-kubernetes-operators/
+- Filter resource by selector for controller to reconcile CR with filter - https://github.com/kubernetes-sigs/controller-runtime/pull/1435
