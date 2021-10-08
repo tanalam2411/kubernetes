@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "ec2-instance-1" {
   ami           = "ami-43242fsd"
   instance_type = "t2.micro"
-  key_name = data.aws_instance.ec2_data.key_name
+  key_name      = data.aws_instance.ec2_data.key_name
   tags = {
     Name = "tan-ec2-instance-1"
   }
