@@ -109,6 +109,10 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
+<<<<<<< HEAD
 # End of https://www.gitignore.io/api/go,jetbrains+all
 
 *terraform-provider-aws
+=======
+# End of https://www.gitignore.io/api/go,jetbrains+all
+>>>>>>> b57947fe25dc0ba7f5826dc5a2b9681f1f4242e8
