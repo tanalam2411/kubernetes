@@ -92,7 +92,7 @@ _______________________________________________________________________________
 
 _____________________________________________________________________________________
 
-**[Events - The DNA of Kubernetes](https://www.mgasch.com/post/k8sevents/)**
+**[Events - The DNA of Kubernetes](https://www.mgasch.com/2018/08/k8sevents/)**
 
 > "Autonomous process reacting to events from the API server"
 
@@ -101,7 +101,7 @@ ________________________________________________________________________________
 
 ______________________________________________________________________________________
 
-**[How Kubernetes Works](https://www.mgasch.com/post/k8sevents/)**
+**[How Kubernetes Works](https://www.mgasch.com/2018/08/k8sevents/)**
 
 - Think of API server as a broker with multiple immutable(replicated) logs (or queues), representing a stream of events.
 - Events are facts that can be causally related(happened before) or not related at all(happened concurrently).
