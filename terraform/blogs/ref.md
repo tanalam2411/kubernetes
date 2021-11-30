@@ -1,0 +1,1 @@
+- Module Parameter Defaults with the Terraform Object Type : https://binx.io/blog/2020/01/02/module-parameter-defaults-with-the-terraform-object-type/
