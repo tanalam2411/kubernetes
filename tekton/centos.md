@@ -1,3 +1,5 @@
+# centos
+
 ```bash
 [root@localhost ~]# useradd tan
 [root@localhost ~]# passwd tan
@@ -18,7 +20,6 @@ uid=1000(tan) gid=1000(tan) groups=1000(tan),10(wheel)
 
 [tan@localhost ~]$ mkdir -p .config/systemd/user
 [tan@localhost ~]$ touch .config/systemd/user/podman.socket
-
 ```
 
 ```bash
@@ -291,10 +292,9 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.11.0.9-0.el8_3.x86_64
 export PATH=$PATH:$JAVA_HOME/bin
 
 
-
 ```
 
----
+***
 
 ```bash
     1  podman-remote info
@@ -365,11 +365,9 @@ export PATH=$PATH:$JAVA_HOME/bin
    66  podman ps -a
    67  pwd
    68  sudo su
-
 ```
 
-
----
+***
 
 ```bash
     1  sestatus
@@ -418,12 +416,11 @@ export PATH=$PATH:$JAVA_HOME/bin
    20  git clone https://github.com/rieckpil/blog-tutorials.git
    21  cd blog-tutorials/testcontainers-youtube-series/
    22  mvn verify
-
 ```
 
----
+***
 
----
+***
 
 ```bash
     1  setenforce 0
@@ -463,17 +460,16 @@ export PATH=$PATH:$JAVA_HOME/bin
    35  mvn verify
    36  yum install podman-docker -y
    37  mvn verify
-
 ```
 
----
+***
 
 ```bash
 docker build . -t testcontainer-podman -f Dockerfile
 docker run -it --net="host" -p 5432:5432 --rm -v /var/run/docker.sock:/var/run/docker.sock localhost/testcontainer-podman
 ```
 
-```Dockerfile
+```
 FROM centos:8
 
 
@@ -511,5 +507,4 @@ VOLUME ["/var/run/docker.sock"]
 CMD ["/opt/apache-maven-3.8.1/bin/mvn", "-e", "-X", "test", "-Dspring-boot.run.profiles=test"]
 #CMD ["/opt/apache-maven-3.8.1/bin/mvn", "verify"]
 #CMD ["sleep 3000"]
-
 ```

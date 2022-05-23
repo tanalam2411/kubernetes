@@ -1,5 +1,7 @@
+# capd
 
-##### Cluster API Provider Docker
+**Cluster API Provider Docker**
+
 ```
 tan@tan:~/ws/cluster-api$ ./cmd/clusterctl/hack/create-local-repository.py 
 clusterctl local overrides generated from local repositories for the cluster-api, bootstrap-kubeadm, control-plane-kubeadm, infrastructure-docker providers.
@@ -14,8 +16,6 @@ please check the documentation for additional steps required for using the docke
 ```
 
 
-
-##### 
 
 ```bash
 tan@tan:~/clusterapi$ clusterctl init --infrastructure docker
@@ -32,8 +32,8 @@ Your management cluster has been initialized successfully!
 You can now create your first workload cluster by running the following:
 
   clusterctl config cluster [name] --kubernetes-version [version] | kubectl apply -f -
-
 ```
 
----
-- https://github.com/kubernetes-sigs/cluster-api/issues/4027
+***
+
+* https://github.com/kubernetes-sigs/cluster-api/issues/4027

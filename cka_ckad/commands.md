@@ -1,10 +1,10 @@
+# commands
 
----
+***
 
-- Shortcuts
+* Shortcuts
 
 ```bash
-
 
 printf "\nalias k='kubectl'\n\
 alias kgn='k get no'\n\
@@ -19,26 +19,26 @@ alias kcuc='k config use-context'\n\
 "\
 >> ~/.bashrc
 ```
----
+
+***
 
 ```bash
 $ kubectl get pods --show-labels
 ```
 
----
+***
 
 ```bash
 $ kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run=true -o yaml > nginx_pod.yaml
 ```
 
----
-
+***
 
 ```bash
 $ kubectl run --generator=run-pod/v1 nginx --image=nginx --replicas=2 --dry-run=true -o yaml >> nginx_deploy.yaml
 ```
 
----
+***
 
 ```bash
 $ kgp --show-labels
@@ -47,17 +47,16 @@ nginx-5578584966-lggjj   1/1     Running   0          9m36s   pod-template-hash=
 nginx-5578584966-sflrp   1/1     Running   0          9m36s   pod-template-hash=5578584966,run=nginx
 ```
 
----
+***
 
 ```bash
-
 $ kgp -L env
 NAME                     READY   STATUS    RESTARTS   AGE   ENV
 nginx-5578584966-lggjj   1/1     Running   0          23m   prod
 nginx-5578584966-sflrp   1/1     Running   0          23m   
 ```
 
----
+***
 
 ```bash
 $ ka deploy nginx test="true"
@@ -67,50 +66,56 @@ $ kgd nginx -o yaml | grep -A 2 anno
   annotations:
     deployment.kubernetes.io/revision: "1"
     test: "true"
-
 ```
 
----
-- Deleting all pods within a given namespace
+***
+
+* Deleting all pods within a given namespace
 
 ```bash
 $ kubectl get pods -n default --no-headers=true | awk '{print $1}'| xargs  kubectl delete -n default pod
 ```
 
----
-- Delete everything from the current namespace 
+***
+
+* Delete everything from the current namespace
 
 ```bash
 kubectl delete all --all -n {namespace}
 ```
+
 or Delete the namespace - This will delete all resources within ns
+
 ```bash
 kubectl delete all --all -n {namespace}
 ```
 
----
+***
 
-- Create new namespace
+* Create new namespace
+
 ```
 $ kubectl create ns <name>
 ```
 
-- Set default namespace
+* Set default namespace
+
 ```
 $ kubectl config set-context --current --namespace=<name>
 ```
 
-- Check current namespace
+* Check current namespace
+
 ```
 $ kubectl config view --minity=true
 ```
 
----
+***
 
-
-- Dec 2020
+* Dec 2020
 
 1. MultiContainer Deployment
+
 ```bash
 $ k create deploy deploy1 --image=nginx,busybox -r=2 --dry-run=client -o yaml 
 apiVersion: apps/v1
@@ -140,10 +145,10 @@ spec:
         name: busybox
         resources: {}
 status: {}
-
 ```
 
-2. `Back-off restarting failed container` - Add `-- sleep infinity`
+1. `Back-off restarting failed container` - Add `-- sleep infinity`
+
 ```bash
 $ k run busybox --image=busybox -- sleep infinity
 
@@ -166,7 +171,8 @@ $ k get po busybox1 -o yaml | grep -i -A 5 ' args:'
     name: busybox1
 ```
 
-3. Deployment
+1. Deployment
+
 ```bash
 $ k create deploy nginx --image=nginx,busybox -r=3
 
@@ -185,12 +191,14 @@ $ k get deploy nginx -o yaml | grep -i -A 5 -C 5 " args:"
         name: busybox
 ```
 
-4. Change replicas of deployment
+1. Change replicas of deployment
+
 ```bash
 $ k scale deploy nginx --replicas=5
 ```
 
-5. Create Service 
+1. Create Service
+
 ```bash
 $ k create service nodeport nginx-svc --tcp=80:80 --node-port=30001 -o yaml
 
@@ -224,10 +232,10 @@ $ k get svc nginx-svc -o yaml | grep -i -A 5 " selector"
   type: NodePort
 status:
   loadBalancer: {}
-
 ```
 
-6. Create Pod and expose in single cmd:
+1. Create Pod and expose in single cmd:
+
 ```bash
 $ k run httpd --image=httpd:alpine --port=80 --expose --dry-run=client -o yaml
 apiVersion: v1
@@ -263,17 +271,18 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
-
 ```
 
-7. Command line arguments
-  - In dockerfile `ENTRYPOINT` includes the process that needs to be executed on docker run
-  - And `CMD` is the cmd or default argument to the entrypoint
-  - E.g. `ENTRYPOINT ["sleep"]` and `CMD ["5"]`, so if we do just docker run, then it will run `sleep 5` while running the container
-  - If you want to run with different number, docker run with some argument `docker run container_name 10`, this will override the `CMD` default `5` value
-  - If dockerfile includes everything in `CMD` then you can't over write it while running docker run, it will always run `sleep 5`
-  - `ENTRYPOINT` can be overriden while performing docker run `--ENTRYPOINT`
-  - In POD's Spec definition, `command` act as entry point and `args` act as `CMD`  
+1. Command line arguments
+
+* In dockerfile `ENTRYPOINT` includes the process that needs to be executed on docker run
+* And `CMD` is the cmd or default argument to the entrypoint
+* E.g. `ENTRYPOINT ["sleep"]` and `CMD ["5"]`, so if we do just docker run, then it will run `sleep 5` while running the container
+* If you want to run with different number, docker run with some argument `docker run container_name 10`, this will override the `CMD` default `5` value
+* If dockerfile includes everything in `CMD` then you can't over write it while running docker run, it will always run `sleep 5`
+* `ENTRYPOINT` can be overriden while performing docker run `--ENTRYPOINT`
+* In POD's Spec definition, `command` act as entry point and `args` act as `CMD`
+
 ```yaml
 spec:
   containers:
@@ -287,6 +296,7 @@ spec:
   command: ["python", "app.py"]
   args: ["--color", "pink"]
 ```
+
 ```bash
 $ k run busybox --image=busybox --dry-run=client -o yaml > busybox.yaml
 # Add command in the yaml
@@ -309,25 +319,26 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
-
 ```
 
+1. If asked to change or pass the command line argument, then pass it in args
 
-8. If asked to change or pass the command line argument, then pass it in args
-  - Eg. Pass command line argument, `--color=green`
+* Eg. Pass command line argument, `--color=green`
+
 ```yaml
 container:
 - args: ["--color=green"]
 ```
 
-  - Eg. Pass command line argument, `--color green`
+* Eg. Pass command line argument, `--color green`
+
 ```yaml
 container:
 - args: ["--color", "green"]
 ```
 
+1. Set `Environment variables`
 
-9. Set `Environment variables`
 ```yaml
 env:
   - name: KEY1
@@ -344,8 +355,8 @@ env:
       secretKeyRef:
 ```
 
+1. ConfigMaps
 
-10. ConfigMaps
 ```bash
 $ k create cm cm1 --from-literal=KEY1=VALUE1 --from-literal=KEY2=VALUE2 --dry-run=client -o yaml
 apiVersion: v1
@@ -356,10 +367,10 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: cm1
-
 ```
 
-11. ConfigMaps - kubectl Explain
+1. ConfigMaps - kubectl Explain
+
 ```bash
 $ k explain pods --recursive | grep -i volumes -A50 | grep -i config -A5
          configMap	<Object>
@@ -381,9 +392,10 @@ $ k explain pods --recursive | grep -i envFrom -A7
 --
 ```
 
+1. Secretes
 
-12. Secretes
-- https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
+* https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
+
 ```bash
 $ k create secret generic secret1 --from-literal=k1=v1 --from-literal=k2=v2
 
@@ -411,182 +423,184 @@ $ echo "djE=" | base64 --decode
 v1
 ```
 
+1. Security Context - Pod, Container
 
-13. Security Context - Pod, Container
-  - Set UserID to POD or Container
-  - Set Linux capabilities 
-  - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container
-  
-  
-  
-14. Service Accounts
-  - Two types of accounts:
-    - User - for humans
-    - Service - for services
-  ```bash
-  $ k create serviceaccount dashboard-sa
-  serviceaccount/dashboard-sa created
+* Set UserID to POD or Container
+* Set Linux capabilities
+* https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container
+
+1. Service Accounts
+
+* Two types of accounts:
+  * User - for humans
+  * Service - for services
+
+```bash
+$ k create serviceaccount dashboard-sa
+serviceaccount/dashboard-sa created
+$ k get sa
+NAME           SECRETS   AGE
+dashboard-sa   1         5s
+default        1         2d22h
+$ 
+$ kd sa dashboard-sa
+Name:                dashboard-sa
+Namespace:           default
+Labels:              <none>
+Annotations:         <none>
+Image pull secrets:  <none>
+Mountable secrets:   dashboard-sa-token-s5h9q
+Tokens:              dashboard-sa-token-s5h9q
+Events:              <none>
+$ 
+$ k get secrets dashboard-sa-token-s5h9q -o jsonpath='{.data}'
+{"ca.crt":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tL==", "namespace":"ZGVmYXVsdA==","token":"ZXlKaGJHY2lPaUpTVX=="}
+```
+
+* Default service account
+
+```bash
+$ k get po busybox -o yaml | grep -i service
+        f:enableServiceLinks: {}
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+  enableServiceLinks: true
+  serviceAccount: default
+  serviceAccountName: default
+
+
+$ k exec -it busybox -- ls /var/run/secrets/kubernetes.io/serviceaccount
+ca.crt     namespace  token
+$ 
+$ k exec -it busybox -- cat /var/run/secrets/kubernetes.io/serviceaccount/token
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlgzQVM2MU9qR2xKNFVCbVNhSWNTaEs5c3FjY254X3lEXzdCeGhi
+```
+
+* Add ServiceAccount name in spec for Pod and Deployment
+* For pod, delete and recreate to reflect SA.
+
+```yaml
+spec:
+  serviceAccount: dashboard-sa
+```
+
+```bash
+$ kubectl create role pod-reader --verb="get" --resource=pods --dry-run=server -o yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: "2020-12-06T11:43:07Z"
+  managedFields:
+  - apiVersion: rbac.authorization.k8s.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:rules: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2020-12-06T11:43:07Z"
+  name: pod-reader
+  namespace: default
+  selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/roles/pod-reader
+  uid: 5a0c2860-3821-4262-895b-45ffc53a99cb
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+
+$ kubectl create role pod-reader --verb="get" --resource=pods 
+role.rbac.authorization.k8s.io/pod-reader created
+$ k get roles
+NAME         CREATED AT
+pod-reader   2020-12-06T11:44:49Z
+
+$ kubectl create rolebinding pod-reader-rb --role=pod-reader --serviceaccount=default:dashboard-sa --dry-run=server -o yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: "2020-12-06T11:48:31Z"
+  managedFields:
+  - apiVersion: rbac.authorization.k8s.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:roleRef:
+        f:apiGroup: {}
+        f:kind: {}
+        f:name: {}
+      f:subjects: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2020-12-06T11:48:31Z"
+  name: pod-reader-rb
+  namespace: default
+  selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/rolebindings/pod-reader-rb
+  uid: b9c2f5ac-db59-42a6-b8fc-aab580babf45
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-reader
+subjects:
+- kind: ServiceAccount
+  name: dashboard-sa
+  namespace: default
+
+
   $ k get sa
   NAME           SECRETS   AGE
-  dashboard-sa   1         5s
-  default        1         2d22h
-  $ 
-  $ kd sa dashboard-sa
-  Name:                dashboard-sa
-  Namespace:           default
-  Labels:              <none>
-  Annotations:         <none>
-  Image pull secrets:  <none>
-  Mountable secrets:   dashboard-sa-token-s5h9q
-  Tokens:              dashboard-sa-token-s5h9q
-  Events:              <none>
-  $ 
-  $ k get secrets dashboard-sa-token-s5h9q -o jsonpath='{.data}'
-  {"ca.crt":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tL==", "namespace":"ZGVmYXVsdA==","token":"ZXlKaGJHY2lPaUpTVX=="}
-  ```
-  
-  - Default service account
-  ```bash
-  $ k get po busybox -o yaml | grep -i service
-          f:enableServiceLinks: {}
-      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-    enableServiceLinks: true
-    serviceAccount: default
-    serviceAccountName: default
-
-
-  $ k exec -it busybox -- ls /var/run/secrets/kubernetes.io/serviceaccount
-  ca.crt     namespace  token
-  $ 
-  $ k exec -it busybox -- cat /var/run/secrets/kubernetes.io/serviceaccount/token
-  eyJhbGciOiJSUzI1NiIsImtpZCI6IlgzQVM2MU9qR2xKNFVCbVNhSWNTaEs5c3FjY254X3lEXzdCeGhi
-  ```
-
-  - Add ServiceAccount name in spec for Pod and Deployment
-  - For pod, delete and recreate to reflect SA.
-  ```yaml
-  spec:
-    serviceAccount: dashboard-sa
-  ```
-  ```bash
-  $ kubectl create role pod-reader --verb="get" --resource=pods --dry-run=server -o yaml
-  apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    creationTimestamp: "2020-12-06T11:43:07Z"
-    managedFields:
-    - apiVersion: rbac.authorization.k8s.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:rules: {}
-      manager: kubectl-create
-      operation: Update
-      time: "2020-12-06T11:43:07Z"
-    name: pod-reader
-    namespace: default
-    selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/roles/pod-reader
-    uid: 5a0c2860-3821-4262-895b-45ffc53a99cb
-  rules:
-  - apiGroups:
-    - ""
-    resources:
-    - pods
-    verbs:
-    - get
-
-  $ kubectl create role pod-reader --verb="get" --resource=pods 
-  role.rbac.authorization.k8s.io/pod-reader created
-  $ k get roles
+  dashboard-sa   1         113m
+  default        1         3d
+  $ k get role
   NAME         CREATED AT
   pod-reader   2020-12-06T11:44:49Z
+  $ k get rolebindings
+  NAME            ROLE              AGE
+  pod-reader-rb   Role/pod-reader   82s
+```
 
-  $ kubectl create rolebinding pod-reader-rb --role=pod-reader --serviceaccount=default:dashboard-sa --dry-run=server -o yaml
-  apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    creationTimestamp: "2020-12-06T11:48:31Z"
-    managedFields:
-    - apiVersion: rbac.authorization.k8s.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:roleRef:
-          f:apiGroup: {}
-          f:kind: {}
-          f:name: {}
-        f:subjects: {}
-      manager: kubectl-create
-      operation: Update
-      time: "2020-12-06T11:48:31Z"
-    name: pod-reader-rb
-    namespace: default
-    selfLink: /apis/rbac.authorization.k8s.io/v1/namespaces/default/rolebindings/pod-reader-rb
-    uid: b9c2f5ac-db59-42a6-b8fc-aab580babf45
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: pod-reader
-  subjects:
-  - kind: ServiceAccount
-    name: dashboard-sa
-    namespace: default
+1. Resource Requests and Limits
 
+* https://kubernetes.io/docs/tasks/configure-pod-container/
+* https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/
 
-    $ k get sa
-    NAME           SECRETS   AGE
-    dashboard-sa   1         113m
-    default        1         3d
-    $ k get role
-    NAME         CREATED AT
-    pod-reader   2020-12-06T11:44:49Z
-    $ k get rolebindings
-    NAME            ROLE              AGE
-    pod-reader-rb   Role/pod-reader   82s
-  ```
+1. Taints And Tolerations
 
+* Taints are set on node.
 
+```bash
+$ k get no
+NAME                 STATUS   ROLES    AGE    VERSION
+kind-control-plane   Ready    master   3d4h   v1.19.1
+kind-worker          Ready    <none>   3d4h   v1.19.1
+kind-worker2         Ready    <none>   3d4h   v1.19.1
+$ 
+$ k taint node kind-worker2 key=value:NoSchedule
+node/kind-worker2 tainted
 
+$ kd no kind-worker2 | grep -i Taint
+Taints:             key=value:NoSchedule
+```
 
-15. Resource Requests and Limits
-- https://kubernetes.io/docs/tasks/configure-pod-container/
-- https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/
+* Taints are of 3 types:
+  * `NoSchedule` - POD will be not scheduled on this Node
+  * `PerferNoSchedule` - Scheduler will try not to create POD on this not but not guaranteed
+  * `NoExecute` - New PODs will not be scheduled on this node and existing PODs on the node, if any, will be evicted if they do not tolerate the taint.
+* Tolerations are set on Pod
 
+```yaml
+spec:
+  containers:
+    ...
+  tolerations:
+  - key: "key"
+    operator: "Equal"
+    value: "value"
+    effect: "NoSchedule"
+```
 
-16. Taints And Tolerations
-  - Taints are set on node.
-  ```bash
-  $ k get no
-  NAME                 STATUS   ROLES    AGE    VERSION
-  kind-control-plane   Ready    master   3d4h   v1.19.1
-  kind-worker          Ready    <none>   3d4h   v1.19.1
-  kind-worker2         Ready    <none>   3d4h   v1.19.1
-  $ 
-  $ k taint node kind-worker2 key=value:NoSchedule
-  node/kind-worker2 tainted
+1. Node Selectors
 
-  $ kd no kind-worker2 | grep -i Taint
-  Taints:             key=value:NoSchedule
-  ```
-  - Taints are of 3 types:
-    - `NoSchedule` - POD will be not scheduled on this Node
-    - `PerferNoSchedule` - Scheduler will try not to create POD on this not but not guaranteed
-    - `NoExecute` - New PODs will not be scheduled on this node and existing PODs on the node, if any, will be evicted if they do not tolerate the taint.
-     
-  - Tolerations are set on Pod
-  ```yaml
-  spec:
-    containers:
-      ...
-    tolerations:
-    - key: "key"
-      operator: "Equal"
-      value: "value"
-      effect: "NoSchedule"
-
-  ```
-    
-
-17. Node Selectors
-  - Add labels to a node: `kubectl label nodes <node_name> <label-key>=<label-value>`
+* Add labels to a node: `kubectl label nodes <node_name> <label-key>=<label-value>`
 
 ```bash
 $ kd no kind-worker | grep -i "label" -A5
@@ -606,8 +620,8 @@ Labels:             beta.kubernetes.io/arch=amd64
                     kubernetes.io/hostname=kind-worker
                     kubernetes.io/os=linux
                     size=large
-
 ```
+
 ```yaml
 spec:
   containers:
@@ -616,12 +630,13 @@ spec:
     size=large
 ```
 
-18. Node Affinity:
-  - https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
-  - https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
-  
+1. Node Affinity:
 
-19. Labels:
+* https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+* https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+
+1. Labels:
+
 ```bash
 $ k get po --show-labels
 NAME   READY   STATUS    RESTARTS   AGE   LABELS
@@ -639,11 +654,10 @@ pod1   1/1     Running   0          36h
 $ 
 $ k get po -l run=pod1,run2=pod1q,run3=xyz
 No resources found in default namespace.
-
 ```
 
+1. Rolling Updates and Rollbacks in deployment and versioning
 
-20. Rolling Updates and Rollbacks in deployment and versioning
 ```bash
 $ k create deploy dep1 --image=nginx -r=3
 $ k rollout status deploy dep1
@@ -653,7 +667,8 @@ $ k rollout undo deploy dep1
 $ k rollout undo deploy dep1 --to-revision=1
 ```
 
-21. Jobs and CronJob
+1. Jobs and CronJob
+
 ```yaml
 spec:
   completions: 3
@@ -664,26 +679,26 @@ spec:
 kubectl create cronjob date-job --image=busybox --schedule="*/1 * * * *" -- bin/sh -c "date; echo Hello from kubernetes cluster"
 ```
 
+\--- CKA
 
---- CKA
+1. Get metrics of a POD
 
-22. Get metrics of a POD
 ```bash
 $ k top pod <podname> --containers
 ```
 
-23. Set autoscaling to a deployment:
+1. Set autoscaling to a deployment:
+
 ```bash
 $ k autoscale deploy dep1 --min=10 --max=20 --cpu-percent=85
 horizontalpodautoscaler.autoscaling/dep1 autoscaled
 $ k get hpa
 NAME   REFERENCE         TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
 dep1   Deployment/dep1   <unknown>/85%   10        20        0          11s
-
 ```
 
+1. etcd
 
-24. etcd
 ```bash
 cat /etc/kubernetes/manifests/etcd.yaml
 
@@ -708,17 +723,19 @@ ETCDCTL_API=3 etcdctl --endpoints=https://[172.17.0.10]:2379 --cacert=/etc/kuber
      snapshot restore /tmp/snapshot-pre-boot.db
 ```
 
-25. Sort by time stamp
+1. Sort by time stamp
+
 ```bash
 k get pods --sort-by='{.metadata.creationTimeStamp}'
 ```
 
-26. sleep 3600
+1. sleep 3600
+
 ```bash
 k run busybox --image=busybox --restart=Never --dry-run=client -o yaml -- /bin/sh -c "sleep 3600"
 ```
 
+***
 
----
-- Blogs:
-  - https://ahmet.im/blog/kubectl-aliases/
+* Blogs:
+  * https://ahmet.im/blog/kubectl-aliases/

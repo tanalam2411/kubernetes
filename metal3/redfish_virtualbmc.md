@@ -1,3 +1,4 @@
+# redfish\_virtualbmc
 
 ```bash
 [rscloud@iceman ~]$ lscpu | grep -i virtualization
@@ -22,10 +23,10 @@ $ sudo systemctl status libvirtd
 ● libvirtd.service - Virtualization daemon
    Loaded: loaded (/usr/lib/systemd/system/libvirtd.service; enabled; vendor preset: enabled)
    Active: active (running) since Thu 2021-02-25 19:40:55 UTC; 19s ago
-
 ```
 
-- By default dhcpd based network bridge configured by libvirtd. You can verify that with the following commands:
+* By default dhcpd based network bridge configured by libvirtd. You can verify that with the following commands:
+
 ```bash
 [rscloud@iceman ~]$ brctl show
 bridge name	bridge id		STP enabled	interfaces
@@ -43,11 +44,10 @@ virbr0		8000.525400d27169	yes		virbr0-nic
        valid_lft forever preferred_lft forever
 5: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc pfifo_fast master virbr0 state DOWN group default qlen 1000
     link/ether 52:54:00:d2:71:69 brd ff:ff:ff:ff:ff:ff
-
 ```
 
+* Create VM
 
-- Create VM 
 ```bash
 [rscloud@iceman vms]$ tmpfile=$(mktemp /tmp/sushy-domain.XXXXXX)
 [rscloud@iceman vms]$ echo $tmpfile
@@ -66,7 +66,6 @@ rscloud@iceman vms]$ virt-install \
 [rscloud@iceman vms]$ virsh list --all
  Id    Name                           State
 ----------------------------------------------------
-
 
 ```
 
@@ -157,11 +156,9 @@ Autostart:      disable
 Managed save:   no
 Security model: selinux
 Security DOI:   0
-
 ```
 
-
----
+***
 
 ```bash
 [rscloud@iceman ws]$ python3 -m venv py3-venv
@@ -226,18 +223,18 @@ python3-idle.x86_64 : A basic graphical development environment for Python
 
 # Fix 
 (py3-venv) [rscloud@iceman ws]$ sudo usermod --append --groups libvirt `whoami`
-
 ```
 
-- Added this in bashrc
+* Added this in bashrc
+
 ```bash
 [rscloud@iceman ~]$ tail -2 ~/.bashrc 
 export SUSHY_EMULATOR_CONFIG=/home/rscloud/ws/sushy-tools/doc/source/admin/emulator.conf
 alias rf='source /home/rscloud/ws/py3-venv/bin/activate && cd /home/rscloud/ws/sushy-tools/sushy_tools/emulator'
-
 ```
 
-- Run redfish emulator in foreground
+* Run redfish emulator in foreground
+
 ```bash
 (py3-venv) [rscloud@iceman emulator]$ python main.py 
  * Serving Flask app "main" (lazy loading)
@@ -249,12 +246,12 @@ alias rf='source /home/rscloud/ws/py3-venv/bin/activate && cd /home/rscloud/ws/s
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 125-230-089
-
 ```
 
-- In another terminal:
-  - Event though `virsh list --all` was showing one node, the API returns "Members": [] empty becaz the qemu URI `qemu:///system` works for root user.
-  - So run the emulator app with root user. 
+* In another terminal:
+  * Event though `virsh list --all` was showing one node, the API returns "Members": \[] empty becaz the qemu URI `qemu:///system` works for root user.
+  * So run the emulator app with root user.
+
 ```bash
 [rscloud@iceman ~]$ curl http://localhost:8000/redfish/v1/Systems/
 {
@@ -270,8 +267,8 @@ alias rf='source /home/rscloud/ws/py3-venv/bin/activate && cd /home/rscloud/ws/s
 }
 ```
 
+* Running with `root` user:
 
-- Running with `root` user:
 ```bash
 [root@iceman rscloud]# rf
 (py3-venv) [root@iceman emulator]# python main.py 
@@ -305,33 +302,10 @@ alias rf='source /home/rscloud/ws/py3-venv/bin/activate && cd /home/rscloud/ws/s
 [root@iceman rscloud]# virsh define --file $tmpfile
 ```
 
+***
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-- https://www.cyberciti.biz/faq/how-to-install-kvm-on-centos-7-rhel-7-headless-server/
-- https://docs.openstack.org/sushy-tools/latest/install/index.html
-- https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html
-- https://docs.openstack.org/sushy-tools/latest/contributor/index.html
-- https://phoenixnap.com/kb/ubuntu-install-kvm (ubuntu)
+* https://www.cyberciti.biz/faq/how-to-install-kvm-on-centos-7-rhel-7-headless-server/
+* https://docs.openstack.org/sushy-tools/latest/install/index.html
+* https://docs.openstack.org/sushy-tools/latest/user/dynamic-emulator.html
+* https://docs.openstack.org/sushy-tools/latest/contributor/index.html
+* https://phoenixnap.com/kb/ubuntu-install-kvm (ubuntu)

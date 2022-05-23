@@ -1,3 +1,5 @@
+# ubuntu\_18
+
 ```bash
 $ lscpu | grep -i virtualization
 Virtualization:      VT-x
@@ -33,6 +35,5 @@ tan@tan:~/ws/_ironic/ironic$ . .tox/venv/bin/activate
 (venv) tan@tan:~/ws/_ironic/ironic$ sed -i "s/#enabled_power_interfaces = .*/enabled_power_interfaces = fake,ipmitool/" etc/ironic/ironic.conf.local
 (venv) tan@tan:~/ws/_ironic/ironic$ sed -i "s/#sync_power_state_interval = 60/sync_power_state_interval = 604800/" etc/ironic/ironic.conf.local
 (venv) tan@tan:~/ws/_ironic/ironic$ sed -i "s/#rpc_transport = oslo/rpc_transport = json-rpc/" etc/ironic/ironic.conf.local
-
 
 ```
